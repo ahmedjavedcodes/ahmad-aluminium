@@ -53,8 +53,12 @@ export default function ServicesPage() {
         image={heroImage}
       />
 
-      <section className="relative py-20 sm:py-24">
+      <section aria-labelledby="trades-heading" className="relative py-20 sm:py-24">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          {/* The tiles' titles are h3s; this keeps the outline h1 → h2 → h3. */}
+          <h2 id="trades-heading" className="sr-only">
+            Our six trades
+          </h2>
           <ServicesGrid className="h-[clamp(26rem,82svh,52rem)]" />
         </div>
       </section>

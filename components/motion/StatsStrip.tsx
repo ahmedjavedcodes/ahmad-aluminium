@@ -1,52 +1,7 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
-import { animate, useInView, useReducedMotion } from "framer-motion";
+import { Counter } from "@/components/motion/Counter";
 import { Reveal } from "@/lib/motion";
 import { content } from "@/data/content";
 import { cn } from "@/lib/utils";
-
-function Counter({
-  value,
-  suffix,
-  accent,
-}: {
-  value: number;
-  suffix?: string;
-  accent: "gold" | "teal";
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-  const reduceMotion = useReducedMotion();
-  // Starts at 0 on server and client alike (the preference is only known in
-  // the browser); the effect below jumps straight to the value when motion
-  // is reduced.
-  const [display, setDisplay] = useState(0);
-
-  useEffect(() => {
-    if (reduceMotion) {
-      setDisplay(value);
-      return;
-    }
-    if (!inView) return;
-    const controls = animate(0, value, {
-      duration: 1.6,
-      ease: [0.16, 1, 0.3, 1],
-      onUpdate: (v) => setDisplay(Math.round(v)),
-    });
-    return () => controls.stop();
-  }, [inView, value, reduceMotion]);
-
-  return (
-    <span
-      ref={ref}
-      className="font-display text-5xl font-extrabold leading-none tracking-[-0.05em] text-ink tabular-nums sm:text-6xl"
-    >
-      {display}
-      <span className={accent === "gold" ? "text-accent" : "text-teal"}>{suffix}</span>
-    </span>
-  );
-}
 
 /**
  * Four figures set like a readout panel: hairline-divided cells, a mono index
@@ -76,7 +31,10 @@ export function StatsStrip({ className }: { className?: string }) {
             <span aria-hidden className="mb-4 block font-mono text-[11px] text-ink-subtle">
               {String(i + 1).padStart(2, "0")}
             </span>
-            <Counter value={s.value} suffix={s.suffix} accent={s.accent} />
+            <span className="font-display text-5xl font-extrabold leading-none tracking-[-0.05em] text-ink sm:text-6xl">
+              <Counter value={s.value} />
+              <span className={s.accent === "gold" ? "text-accent" : "text-teal"}>{s.suffix}</span>
+            </span>
             <p aria-hidden className="mt-3 max-w-[16ch] text-xs leading-snug text-ink-muted sm:text-sm">
               {s.label}
             </p>

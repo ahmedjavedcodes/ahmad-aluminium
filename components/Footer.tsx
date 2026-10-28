@@ -22,7 +22,7 @@ export default function Footer() {
   const [wordmark] = site.name.split(" ");
 
   return (
-    <footer className="theme-inverse relative overflow-hidden pt-20">
+    <footer className="cv-block theme-inverse relative overflow-hidden pt-20">
       <div aria-hidden className="copper-rule absolute inset-x-0 top-0" />
 
       <div className="mx-auto max-w-7xl px-5 sm:px-8">

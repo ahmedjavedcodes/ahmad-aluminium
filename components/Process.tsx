@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { clamp01, onScrollFrame } from "@/lib/motion-hooks";
 import { processSteps } from "@/data/services";
 import { content } from "@/data/content";
 import { Reveal } from "@/lib/motion";
@@ -19,8 +19,22 @@ import { cn } from "@/lib/utils";
  */
 export default function Process({ index }: { index?: number }) {
   const gridRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: gridRef, offset: ["start 90%", "end 75%"] });
-  const fill = useSpring(scrollYProgress, { stiffness: 110, damping: 26, restDelta: 0.001 });
+  const fillRef = useRef<HTMLDivElement>(null);
+
+  // The rail fills from when the stations' top reaches 90% down the window to
+  // when their bottom passes 75%. Written straight to the style from the
+  // shared scroll frame; a short CSS transition smooths the steps.
+  useEffect(() => {
+    const grid = gridRef.current;
+    const fill = fillRef.current;
+    if (!grid || !fill) return;
+    return onScrollFrame(() => {
+      const r = grid.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const p = clamp01((0.9 * vh - r.top) / (0.15 * vh + r.height));
+      fill.style.transform = `scaleX(${p.toFixed(4)})`;
+    });
+  }, []);
 
   return (
     <Screen
@@ -54,10 +68,11 @@ export default function Process({ index }: { index?: number }) {
       <div ref={gridRef} className="relative mt-[clamp(1.5rem,5svh,3rem)] flex min-h-[14rem] flex-1 flex-col">
         {/* Rail across the station markers (desktop). */}
         <div aria-hidden className="absolute left-0 right-0 top-[clamp(1.75rem,4svh,2.25rem)] hidden h-[2px] rounded-full bg-border-strong lg:block">
-          <motion.div
+          <div
+            ref={fillRef}
             data-parallax=""
-            style={{ scaleX: fill }}
-            className="h-full w-full origin-left rounded-full bg-gradient-to-r from-accent via-accent to-accent-deep"
+            style={{ transform: "scaleX(0)" }}
+            className="h-full w-full origin-left transition-transform duration-300 ease-out rounded-full bg-gradient-to-r from-accent via-accent to-accent-deep"
           />
         </div>
 

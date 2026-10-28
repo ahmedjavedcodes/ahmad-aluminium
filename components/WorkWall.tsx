@@ -51,7 +51,7 @@ function Frame({ item, index, onOpen }: { item: WorkItem; index: number; onOpen?
           src={item.image}
           alt={item.alt}
           fill
-          sizes={index === 0 ? "(min-width: 1024px) 40vw, 80vw" : "(min-width: 1024px) 25vw, (min-width: 640px) 44vw, 80vw"}
+          sizes={index === 0 ? "(min-width: 1024px) 40vw, (min-width: 640px) 80vw, 56vw" : "(min-width: 1024px) 25vw, (min-width: 640px) 44vw, 56vw"}
           className="object-cover transition-transform duration-[1400ms] ease-out-expo group-hover:scale-[1.08]"
         />
       <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/0 to-black/0" />

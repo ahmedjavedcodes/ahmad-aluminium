@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useInView, useReducedMotion } from "framer-motion";
+import { useInView, useReducedMotion } from "@/lib/motion-hooks";
 import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { testimonials, googleRating, type Testimonial } from "@/data/testimonials";
 import { Reveal } from "@/lib/motion";

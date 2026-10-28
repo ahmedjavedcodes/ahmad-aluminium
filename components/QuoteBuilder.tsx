@@ -1,7 +1,6 @@
 "use client";
 
 import { useId, useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { Check, ChevronDown, MessageCircle, Phone, ShieldCheck } from "lucide-react";
 import { services } from "@/data/services";
 import { content } from "@/data/content";
@@ -169,17 +168,9 @@ export function QuoteForm({
 
               <div className="relative hidden flex-1 px-5 py-[clamp(0.75rem,2.5svh,1.25rem)] sm:block" aria-live="polite">
                 <div className="rounded-2xl rounded-tr-sm border border-accent/25 bg-accent-tint p-4">
-                  <AnimatePresence mode="popLayout" initial={false}>
-                    <motion.p
-                      key={message}
-                      initial={{ opacity: 0.4 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.25 }}
-                      className="whitespace-pre-wrap break-words font-mono text-[13px] leading-relaxed text-ink"
-                    >
-                      {message}
-                    </motion.p>
-                  </AnimatePresence>
+                  <p key={message} className="message-in whitespace-pre-wrap break-words font-mono text-[13px] leading-relaxed text-ink">
+                    {message}
+                  </p>
                 </div>
                 <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-ink-muted">
                   <ShieldCheck size={14} className="mt-px shrink-0 text-teal" aria-hidden />

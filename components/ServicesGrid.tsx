@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -44,7 +42,7 @@ export function ServiceCard({ service, index }: { service: Service; index: numbe
               src={service.image}
               alt={`${service.title}: ${service.tagline}`}
               fill
-              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 70vw"
               className="object-cover transition-transform duration-[1200ms] ease-out-expo group-hover:scale-[1.07]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-60 transition-opacity duration-700 group-hover:opacity-100" />
@@ -121,7 +119,7 @@ function BentoTile({ service, index }: { service: Service; index: number }) {
           src={service.image}
           alt={`${service.title}: ${service.tagline}`}
           fill
-          sizes={feature ? "(min-width: 1024px) 42vw, 85vw" : "(min-width: 1024px) 34vw, (min-width: 640px) 46vw, 85vw"}
+          sizes={feature ? "(min-width: 1024px) 42vw, (min-width: 640px) 85vw, 60vw" : "(min-width: 1024px) 34vw, (min-width: 640px) 46vw, 60vw"}
           className="object-cover transition-transform duration-[1400ms] ease-out-expo group-hover:scale-[1.08]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/0 transition-opacity duration-700 group-hover:opacity-90" />

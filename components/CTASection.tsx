@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { Phone } from "lucide-react";
@@ -19,11 +17,11 @@ import { Button, RollText, ArrowSwap } from "@/components/ui/button";
  */
 export default function CTASection() {
   return (
-    <section className="relative px-3 py-12 sm:px-5 sm:py-16">
+    <section className="cv-block relative px-3 py-12 sm:px-5 sm:py-16">
       <Reveal variant="rise">
         <div className="theme-inverse relative isolate mx-auto max-w-[96rem] overflow-hidden rounded-[2.5rem] px-6 py-24 text-center shadow-deep sm:px-14 sm:py-32">
           <Parallax speed={70} scale={[1.2, 1.05]} className="absolute inset-0 -z-20">
-            <Image src={heroImage} alt="" aria-hidden fill sizes="100vw" className="object-cover opacity-45" />
+            <Image src={heroImage} alt="" aria-hidden fill sizes="(min-width: 640px) 100vw, 70vw" className="object-cover opacity-45" />
           </Parallax>
           <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-bg/80 via-bg/70 to-bg/95" />
           <div aria-hidden className="absolute left-1/2 top-0 -z-10 h-80 w-[40rem] -translate-x-1/2 rounded-full bg-accent/25 blur-[120px]" />

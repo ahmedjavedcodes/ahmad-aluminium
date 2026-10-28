@@ -11,7 +11,10 @@
  * modern-format image (3.87 MB → ~231 KB at 1920px, ~31 KB at 640px).
  *
  * Also a direct SEO win: image weight is the dominant term in Largest
- * Contentful Paint on this layout, and Core Web Vitals feed page ranking.
+ * Contentful Paint on this layout, and Core Web Vitals feed page ranking. *
+ * The components' `sizes` give phones (under 640px) roughly 70% of the
+ * viewport width, so a 3× iPhone screen gets about 2× density: no visible
+ * difference at that size, around half the bytes.
  */
 export default function cloudinaryLoader({
   src,

@@ -1,5 +1,3 @@
-"use client";
-
 import { Check, X } from "lucide-react";
 import { site } from "@/data/site";
 import { Reveal } from "@/lib/motion";

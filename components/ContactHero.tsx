@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { ChevronRight, Phone, MessageCircle } from "lucide-react";
 import { content } from "@/data/content";

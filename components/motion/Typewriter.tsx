@@ -1,24 +1,22 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
-import { useInView, useReducedMotion } from "framer-motion";
+import { Fragment, type CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Types its text out character by character behind a blinking copper caret.
+ * Types its text out letter by letter, the copper caret riding on the newest
+ * letter, then blinking a few times at the end and fading.
  *
- * The real text is always present at full size but transparent, which
- * reserves the exact space it will occupy (no layout shift as it types), keeps
- * it in the accessibility tree, and leaves crawlers one clean copy in the
- * server-rendered HTML. The typed copy on top is aria-hidden decoration.
- * Under reduced motion the whole text appears at once.
+ * Pure CSS (".type-char" / ".type-caret" in globals.css). The letters are in
+ * the server HTML from the start and the animation starts with the first
+ * paint, so a headline never waits for JavaScript to show up. Each word's
+ * letters sit together with no break points between them, so the text wraps
+ * like ordinary text. Reduced motion shows the whole text at once.
  */
 export function Typewriter({
   text,
   className,
   delay = 0.5,
   speed = 55,
-  trigger = "mount",
+  suffix,
 }: {
   text: string;
   className?: string;
@@ -26,55 +24,50 @@ export function Typewriter({
   delay?: number;
   /** Milliseconds per character. */
   speed?: number;
-  trigger?: "mount" | "inView";
+  /** Punctuation typed last, in the parent's colour, glued to the last word. */
+  suffix?: string;
 }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-  const reduceMotion = useReducedMotion();
-  const [count, setCount] = useState(0);
-  const start = trigger === "mount" || inView;
-
-  useEffect(() => {
-    if (reduceMotion) {
-      setCount(text.length);
-      return;
-    }
-    if (!start) return;
-    let i = 0;
-    let timer: ReturnType<typeof setInterval> | undefined;
-    const wait = setTimeout(() => {
-      timer = setInterval(() => {
-        i += 1;
-        setCount(i);
-        if (i >= text.length && timer) clearInterval(timer);
-      }, speed);
-    }, delay * 1000);
-    return () => {
-      clearTimeout(wait);
-      if (timer) clearInterval(timer);
-    };
-  }, [start, reduceMotion, text, speed, delay]);
-
-  const done = count >= text.length;
+  const start = Math.round(delay * 1000);
+  const words = text.split(" ");
+  // Index of each word's first letter in the whole text (spaces count too,
+  // so the gap between words takes one beat, as typing would).
+  const starts = words.map((_, w) => words.slice(0, w).join(" ").length + (w > 0 ? 1 : 0));
 
   return (
-    // Plain wrapping, not the headings' `text-wrap: balance`: balancing would
-    // re-flow the typed copy on every keystroke and nudge it sideways.
-    <span ref={ref} className={cn("relative inline-block [text-wrap:wrap]", className)}>
-      <span className="opacity-0">{text}</span>
-      <span aria-hidden className="pointer-events-none absolute inset-0 select-none">
-        {text.slice(0, count)}
-        {/* Zero-width anchor: the caret never adds width, so it can't wrap
-            onto a line of its own at the end of the text. */}
-        <span className="relative inline-block h-[0.82em] w-0 align-baseline">
-          <span
-            className={cn(
-              "typewriter-caret absolute left-[0.05em] top-[0.08em] h-full w-[0.06em] rounded-full bg-accent",
-              done && "typewriter-caret-done"
+    <span
+      className={cn("[text-wrap:wrap]", className)}
+      style={
+        {
+          "--type-delay": `${start}ms`,
+          "--type-speed": `${speed}ms`,
+          "--type-end": `${start + (text.length + (suffix?.length ?? 0)) * speed}ms`,
+        } as CSSProperties
+      }
+    >
+      {words.map((word, w) => (
+        <Fragment key={w}>
+          <span className="whitespace-nowrap">
+            {Array.from(word).map((ch, c) => (
+              <span key={c} className="type-char" style={{ "--i": starts[w] + c } as CSSProperties}>
+                {ch}
+              </span>
+            ))}
+            {w === words.length - 1 && suffix && (
+              <span className="type-char text-ink" style={{ "--i": text.length } as CSSProperties}>
+                {suffix}
+              </span>
             )}
-          />
-        </span>
-      </span>
+            {w === words.length - 1 && (
+              // Zero-width anchor, so the end caret can never wrap onto a
+              // line of its own.
+              <span aria-hidden className="relative inline-block h-[0.82em] w-0 align-baseline">
+                <span className="type-caret absolute left-[0.05em] top-[0.08em] h-full w-[0.06em] rounded-full bg-accent" />
+              </span>
+            )}
+          </span>
+          {w < words.length - 1 ? " " : null}
+        </Fragment>
+      ))}
     </span>
   );
 }

@@ -1,8 +1,6 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import type { CSSProperties } from "react";
 import { Phone, Check, Clock, MapPin, MessageCircle } from "lucide-react";
 import { heroImage, services } from "@/data/services";
 import { content } from "@/data/content";
@@ -10,7 +8,7 @@ import { site, cityName, telHref, whatsappHref } from "@/data/site";
 import { googleRating, testimonials } from "@/data/testimonials";
 import { SplitText } from "@/components/motion/SplitText";
 import { Typewriter } from "@/components/motion/Typewriter";
-import { Counter } from "@/components/motion/Counter";
+import { CssCount } from "@/components/motion/CssCount";
 import { WordRotator } from "@/components/motion/WordRotator";
 import { MagneticButton } from "@/components/motion/MagneticButton";
 import { Marquee } from "@/components/motion/Marquee";
@@ -18,14 +16,6 @@ import { Parallax } from "@/components/motion/Parallax";
 import { Stars } from "@/components/Testimonials";
 import { Button, RollText, ArrowSwap } from "@/components/ui/button";
 import { QUOTE_HREF } from "@/lib/quote";
-
-const EASE = [0.16, 1, 0.3, 1] as const;
-
-const rise = (delay: number) => ({
-  initial: { opacity: 0, y: 24 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.9, delay, ease: EASE },
-});
 
 /**
  * One-screen hero.
@@ -53,9 +43,8 @@ export default function Hero() {
       <div className="mx-auto grid w-full max-w-7xl flex-1 grid-cols-1 grid-rows-[auto_1fr] gap-[clamp(1rem,3svh,2rem)] px-5 pb-[clamp(1rem,3.5svh,2.5rem)] sm:px-8 lg:grid-cols-12 lg:grid-rows-1 lg:gap-12">
         {/* Copy */}
         <div className="flex flex-col justify-center lg:col-span-6">
-          <motion.p
-            {...rise(0)}
-            className="inline-flex max-w-full items-center gap-2.5 self-start rounded-full border border-border bg-bg-elevated/80 px-3.5 py-1.5 text-[10px] font-semibold uppercase leading-relaxed tracking-[0.1em] sm:px-4 sm:text-[11px] sm:tracking-[0.12em] text-accent-deep shadow-card"
+          <p
+            className="enter inline-flex max-w-full items-center gap-2.5 self-start rounded-full border border-border bg-bg-elevated/80 px-3.5 py-1.5 text-[10px] font-semibold uppercase leading-relaxed tracking-[0.1em] sm:px-4 sm:text-[11px] sm:tracking-[0.12em] text-accent-deep shadow-card"
           >
             <span aria-hidden className="status-dot h-2 w-2 shrink-0 rounded-full bg-accent" />
             {/* The six trades take turns in one slot; the full list is still
@@ -63,7 +52,7 @@ export default function Hero() {
             <span>{cityName}</span>
             <span aria-hidden>·</span>
             <WordRotator words={services.map((sv) => sv.title)} />
-          </motion.p>
+          </p>
 
           {/* Line one rises in word by word; line two is typed out after it.
               Both run on load (`mount`) — the hero is always above the fold. */}
@@ -75,14 +64,14 @@ export default function Hero() {
             </span>
           </h1>
 
-          <motion.p
-            {...rise(0.45)}
-            className="mt-[clamp(0.9rem,2.6svh,1.5rem)] line-clamp-3 max-w-xl text-[length:clamp(0.8125rem,min(1.25vw,2.05svh),1.0625rem)] leading-[1.6] sm:leading-[1.65] text-ink-muted sm:line-clamp-none"
+          <p
+            style={{ "--enter-delay": "450ms" } as CSSProperties}
+            className="enter mt-[clamp(0.9rem,2.6svh,1.5rem)] line-clamp-3 max-w-xl text-[length:clamp(0.8125rem,min(1.25vw,2.05svh),1.0625rem)] leading-[1.6] sm:leading-[1.65] text-ink-muted sm:line-clamp-none"
           >
             {content.hero.paragraph}
-          </motion.p>
+          </p>
 
-          <motion.div {...rise(0.55)} className="mt-[clamp(1rem,3svh,2rem)] flex items-center gap-3">
+          <div style={{ "--enter-delay": "550ms" } as CSSProperties} className="enter mt-[clamp(1rem,3svh,2rem)] flex items-center gap-3">
             <MagneticButton strength={0.2} className="min-w-0 flex-1 sm:flex-none">
               <Button asChild size="lg" className="w-full sm:w-auto">
                 <a
@@ -112,14 +101,12 @@ export default function Hero() {
                 </a>
               </Button>
             </MagneticButton>
-          </motion.div>
+          </div>
 
           {/* Trust points: shown when the window is tall enough to spare the room. */}
-          <motion.ul
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="mt-7 hidden flex-wrap gap-x-6 gap-y-2.5 text-sm text-ink-muted [@media(min-height:860px)]:lg:flex"
+          <ul
+            style={{ "--enter-delay": "800ms" } as CSSProperties}
+            className="enter mt-7 hidden flex-wrap gap-x-6 gap-y-2.5 text-sm text-ink-muted [@media(min-height:860px)]:lg:flex"
           >
             {content.hero.trust.map((t) => (
               <li key={t} className="flex items-center gap-2">
@@ -129,18 +116,16 @@ export default function Hero() {
                 {t}
               </li>
             ))}
-          </motion.ul>
+          </ul>
         </div>
 
         {/* Proof bento: the photograph flexes, the two tiles hold their height. */}
         <div className="flex min-h-[110px] flex-col gap-3 sm:gap-4 lg:col-span-6 lg:min-h-0">
           {/* Movement only, no fade: the photograph is the page's largest
               paint, and an opacity-0 start would delay it until hydration. */}
-          <motion.div
-            initial={{ y: 28, scale: 0.985 }}
-            animate={{ y: 0, scale: 1 }}
-            transition={{ duration: 1.1, delay: 0.3, ease: EASE }}
-            className="group relative min-h-[110px] flex-1 overflow-hidden rounded-[clamp(1.25rem,3svh,2rem)] bg-bg-sunken shadow-deep"
+          <div
+            style={{ "--enter-delay": "300ms" } as CSSProperties}
+            className="enter-move group relative min-h-[110px] flex-1 overflow-hidden rounded-[clamp(1.25rem,3svh,2rem)] bg-bg-sunken shadow-deep"
           >
             <Parallax speed={40} scale={[1.18, 1.05]} className="absolute inset-0">
               <Image
@@ -148,7 +133,7 @@ export default function Hero() {
                 alt={`Aluminium and glass building facade fabricated in ${cityName}`}
                 fill
                 priority
-                sizes="(min-width: 1024px) 50vw, 100vw"
+                sizes="(min-width: 1024px) 50vw, (min-width: 640px) 100vw, 70vw"
                 className="object-cover transition-transform duration-[1600ms] ease-out-expo group-hover:scale-[1.03]"
               />
             </Parallax>
@@ -173,18 +158,16 @@ export default function Hero() {
                 <ArrowSwap size={15} />
               </span>
             </Link>
-          </motion.div>
+          </div>
 
           <div className="grid shrink-0 grid-cols-2 gap-3 sm:gap-4 lg:h-[clamp(8.5rem,21svh,12.5rem)] max-lg:[@media(max-height:700px)]:hidden">
             {/* Rating */}
-            <motion.a
+            <a
               href={googleRating.profileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 36 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.5, ease: EASE }}
-              className="focus-ring panel hover-rim group relative flex flex-col justify-between overflow-hidden gap-3 rounded-[clamp(1.25rem,3svh,2rem)] p-3.5 transition-[transform,box-shadow] duration-500 sm:p-[clamp(1rem,2.6svh,1.75rem)] ease-out-expo hover:-translate-y-1 hover:shadow-deep"
+              style={{ "--enter-delay": "500ms", "--enter-y": "36px" } as CSSProperties}
+              className="enter focus-ring panel hover-rim group relative flex flex-col justify-between overflow-hidden gap-3 rounded-[clamp(1.25rem,3svh,2rem)] p-3.5 transition-[transform,box-shadow] duration-500 sm:p-[clamp(1rem,2.6svh,1.75rem)] ease-out-expo hover:-translate-y-1 hover:shadow-deep"
             >
               <span className="flex items-center justify-between">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-subtle sm:text-[11px] sm:tracking-[0.16em]">Google rating</span>
@@ -213,16 +196,14 @@ export default function Hero() {
                 ))}
                 <span className="ml-2.5 text-[11px] font-medium text-ink-muted">Customers in {cityName}</span>
               </span>
-            </motion.a>
+            </a>
 
             {/* Figures. Built to mirror the rating tile beside it: label and
                 round button on top, the numbers on the bottom edge, and the
                 hours/address as an extra line only when there is room. */}
-            <motion.div
-              initial={{ opacity: 0, y: 36 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.62, ease: EASE }}
-              className="theme-inverse relative flex flex-col justify-between gap-3 overflow-hidden rounded-[clamp(1.25rem,3svh,2rem)] p-3.5 sm:p-[clamp(1rem,2.6svh,1.75rem)]"
+            <div
+              style={{ "--enter-delay": "620ms", "--enter-y": "36px" } as CSSProperties}
+              className="enter theme-inverse relative flex flex-col justify-between gap-3 overflow-hidden rounded-[clamp(1.25rem,3svh,2rem)] p-3.5 sm:p-[clamp(1rem,2.6svh,1.75rem)]"
             >
               <div aria-hidden className="absolute -right-14 -top-14 h-48 w-48 rounded-full bg-accent/25 blur-[60px]" />
               <span className="relative flex items-center justify-between">
@@ -241,7 +222,7 @@ export default function Hero() {
                 {[trades, areas].map((s) => (
                   <div key={s.label} className="flex items-center gap-2 sm:block">
                     <p className="w-[1.85em] shrink-0 font-display text-[length:clamp(1.5rem,min(6.4vw,4svh),2rem)] font-extrabold leading-none tracking-[-0.05em] text-ink sm:w-auto sm:text-[length:clamp(2rem,4.5svh,3rem)] lg:text-[length:clamp(2.5rem,6svh,4rem)]">
-                      <Counter value={s.value} />
+                      <CssCount value={s.value} delay={0.7} />
                       <span className="text-accent">{s.suffix}</span>
                     </p>
                     <p className="text-[11px] leading-tight text-ink-muted sm:mt-1.5 sm:text-xs sm:leading-snug">{s.label}</p>
@@ -252,7 +233,7 @@ export default function Hero() {
                 <Clock size={12} className="shrink-0 text-accent" aria-hidden />
                 {site.hours}
               </span>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

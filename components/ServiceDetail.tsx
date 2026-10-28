@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { Check, Phone, Clock } from "lucide-react";
 import type { Service } from "@/data/services";
@@ -101,7 +99,7 @@ export function ServiceDetail({ service, related }: { service: Service; related:
                       src={service.image}
                       alt={`${service.heading}: ${service.tagline}`}
                       fill
-                      sizes="(min-width: 1024px) 40vw, 100vw"
+                      sizes="(min-width: 1024px) 40vw, (min-width: 640px) 100vw, 70vw"
                       className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />

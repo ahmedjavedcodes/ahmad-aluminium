@@ -73,11 +73,14 @@ export function Logo({
   markClassName = "h-9 w-9 text-accent",
   textClassName = "text-[15px] sm:text-base",
   variant = "short",
+  suffix,
 }: {
   className?: string;
   markClassName?: string;
   textClassName?: string;
   variant?: "short" | "full";
+  /** Small second line under the short name, e.g. the company form. */
+  suffix?: string;
 }) {
   if (variant === "full") {
     return (
@@ -102,9 +105,16 @@ export function Logo({
   const [first, ...rest] = site.name.split(" ");
   return (
     <span className={`flex items-center gap-2.5 ${className ?? ""}`}>
-      <LogoMark className={markClassName} />
-      <span className={`font-display font-semibold leading-tight text-ink ${textClassName}`}>
-        {first} <span className="text-accent">{rest.join(" ")}</span>
+      <LogoMark className={`shrink-0 ${markClassName}`} />
+      <span className="min-w-0">
+        <span className={`block whitespace-nowrap font-display font-semibold leading-tight text-ink ${textClassName}`}>
+          {first} <span className="text-accent">{rest.join(" ")}</span>
+        </span>
+        {suffix && (
+          <span className="mt-0.5 block whitespace-nowrap text-[9px] font-semibold uppercase leading-none tracking-[0.22em] text-ink-subtle sm:text-[10px]">
+            {suffix}
+          </span>
+        )}
       </span>
     </span>
   );

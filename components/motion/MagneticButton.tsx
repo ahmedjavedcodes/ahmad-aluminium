@@ -1,19 +1,12 @@
 "use client";
 
-import {
-  motion,
-  useMotionValue,
-  useReducedMotion,
-  useSpring,
-} from "framer-motion";
-import type { ReactNode, PointerEvent } from "react";
+import { createElement, type ReactNode, type PointerEvent } from "react";
+import { prefersReducedMotion } from "@/lib/motion-hooks";
 
-// Created once at module scope. Calling `motion(As)` inside render produces a
-// brand-new component type on every render, which unmounts and remounts the
-// entire subtree — losing focus and restarting any child animation.
-const MotionDiv = motion.div;
-const MotionSpan = motion.span;
-
+/**
+ * Leans toward a mouse pointer and springs back when it leaves. The movement
+ * is a CSS transition on transform; touch and reduced motion stay put.
+ */
 export function MagneticButton({
   children,
   className,
@@ -25,35 +18,26 @@ export function MagneticButton({
   strength?: number;
   as?: "div" | "span";
 }) {
-  const reduceMotion = useReducedMotion();
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const springX = useSpring(x, { stiffness: 180, damping: 15, mass: 0.4 });
-  const springY = useSpring(y, { stiffness: 180, damping: 15, mass: 0.4 });
-
   function handleMove(e: PointerEvent<HTMLElement>) {
-    // Touch has no hover to follow, and reduced motion means staying put.
-    if (reduceMotion || e.pointerType !== "mouse") return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    x.set((e.clientX - rect.left - rect.width / 2) * strength);
-    y.set((e.clientY - rect.top - rect.height / 2) * strength);
+    if (e.pointerType !== "mouse" || prefersReducedMotion()) return;
+    const el = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width / 2) * strength;
+    const y = (e.clientY - rect.top - rect.height / 2) * strength;
+    el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
   }
 
-  function handleLeave() {
-    x.set(0);
-    y.set(0);
+  function handleLeave(e: PointerEvent<HTMLElement>) {
+    e.currentTarget.style.transform = "";
   }
 
-  const Comp = as === "span" ? MotionSpan : MotionDiv;
-
-  return (
-    <Comp
-      onPointerMove={handleMove}
-      onPointerLeave={handleLeave}
-      style={{ x: springX, y: springY }}
-      className={`inline-block will-change-transform ${className ?? ""}`}
-    >
-      {children}
-    </Comp>
+  return createElement(
+    as,
+    {
+      onPointerMove: handleMove,
+      onPointerLeave: handleLeave,
+      className: `inline-block transition-transform duration-300 ease-[cubic-bezier(0.22,1.4,0.36,1)] ${className ?? ""}`,
+    },
+    children
   );
 }

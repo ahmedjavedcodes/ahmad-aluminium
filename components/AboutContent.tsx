@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { Layers, ShieldCheck, Receipt, Wrench, type LucideIcon } from "lucide-react";
 import { Reveal } from "@/lib/motion";
@@ -35,7 +33,7 @@ export function AboutStory({ index }: { index?: number }) {
                   src={services[0].image}
                   alt={`Aluminium and glass fabrication workshop in ${cityName}`}
                   fill
-                  sizes="(min-width: 1024px) 45vw, 100vw"
+                  sizes="(min-width: 1024px) 45vw, (min-width: 640px) 100vw, 70vw"
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />

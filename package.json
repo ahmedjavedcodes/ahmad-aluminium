@@ -17,7 +17,6 @@
     "@react-pdf/renderer": "^4.9.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "framer-motion": "^13.1.1",
     "jose": "^6.2.12",
     "lucide-react": "^0.474.0",
     "mongodb": "^7.7.0",

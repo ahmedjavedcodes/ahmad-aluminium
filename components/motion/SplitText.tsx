@@ -42,6 +42,7 @@ export function SplitText({
    * intro) runs as one sequence off a single observer — see SectionHeading.
    */
   trigger = "inView",
+  suffix,
 }: {
   text: string;
   className?: string;
@@ -52,8 +53,16 @@ export function SplitText({
   /** Seconds between words. */
   stagger?: number;
   trigger?: "mount" | "inView" | "parent";
+  /**
+   * Punctuation glued to the last word (inside its mask), so a closing full
+   * stop can never wrap onto a line of its own. Takes the parent's colour,
+   * not `wordClassName`.
+   */
+  suffix?: string;
 }) {
-  const ref = useReveal<HTMLElement>(trigger === "mount" ? "mount" : "inView");
+  // `mount` is pure CSS (a keyframe animation that starts with the first
+  // paint); only `inView` needs the observer.
+  const ref = useReveal<HTMLElement>();
   const words = text.split(" ").filter(Boolean);
 
   // Identical markup with motion suppressed — the reduced-motion CSS pins
@@ -61,7 +70,7 @@ export function SplitText({
   return createElement(
     as,
     {
-      ref: trigger === "parent" ? undefined : ref,
+      ref: trigger === "inView" ? ref : undefined,
       className: cn("split-text", className),
       "data-split": trigger,
       style: {
@@ -74,6 +83,7 @@ export function SplitText({
         <span className="split-mask">
           <span className={cn("split-word", wordClassName)} style={{ "--w": i } as CSSProperties}>
             {w}
+            {suffix && i === words.length - 1 && <span className="text-ink">{suffix}</span>}
           </span>
         </span>
         {/* Real space between masks — must live outside the clip. */}

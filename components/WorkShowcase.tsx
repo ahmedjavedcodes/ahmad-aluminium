@@ -99,8 +99,7 @@ export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string
               className="font-display text-[length:clamp(2rem,min(5.4vw,7svh),4.75rem)] font-extrabold leading-[1] tracking-[-0.045em] text-ink"
             >
               <CharReveal text={lead} trigger="mount" />{" "}
-              <Typewriter text={accent} className="text-accent" delay={0.9} speed={110} />
-              {tail}
+              <Typewriter text={accent} className="text-accent" delay={0.9} speed={110} suffix={tail} />
             </h1>
           </div>
 
@@ -145,7 +144,7 @@ export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string
                       src={item.image}
                       alt={item.alt}
                       fill
-                      sizes="(min-width: 1024px) 58vw, 100vw"
+                      sizes="(min-width: 1024px) 58vw, (min-width: 640px) 100vw, 70vw"
                       className="object-cover transition-transform duration-[1400ms] ease-out-expo group-hover:scale-[1.06]"
                     />
                   <span className="absolute left-5 top-5 rounded-full bg-white/90 px-3 py-1 font-mono text-[11px] font-medium tracking-[0.12em] text-ink">
@@ -207,7 +206,7 @@ export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string
           {current && (
             <div className="grid grid-cols-1 lg:grid-cols-12">
               <div className="relative aspect-[4/3] bg-bg-sunken lg:col-span-7 lg:aspect-auto lg:min-h-[32rem]">
-                <Image key={current.id} src={current.image} alt={current.alt} fill sizes="(min-width: 1024px) 60vw, 100vw" className="object-cover" />
+                <Image key={current.id} src={current.image} alt={current.alt} fill sizes="(min-width: 1024px) 60vw, (min-width: 640px) 100vw, 70vw" className="object-cover" />
                 <div className="absolute inset-x-3 bottom-3 flex justify-between">
                   <button
                     type="button"

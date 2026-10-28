@@ -1,5 +1,3 @@
-"use client";
-
 import { MessageCircle, Phone, MapPin, Clock, ArrowUpRight, type LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { content } from "@/data/content";

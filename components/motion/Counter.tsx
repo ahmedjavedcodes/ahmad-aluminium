@@ -1,16 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { animate, useInView, useReducedMotion } from "framer-motion";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { animateValue, prefersReducedMotion, useInView } from "@/lib/motion-hooks";
 
 /**
- * Counts up from zero when scrolled into view (or straight away if already
- * visible on load). `decimals` keeps values like 5.0 formatted throughout.
+ * Counts up from zero when scrolled into view. `decimals` keeps values like
+ * 5.0 formatted throughout.
  *
- * Starts at 0 on server and client alike — the reduced-motion preference is
- * only known in the browser — and jumps straight to the value when motion is
- * reduced. The final width is reserved up front, so nothing around the
- * number moves while it counts.
+ * The server HTML carries the final value, so the number is right before any
+ * JavaScript runs and a slow phone never shows a placeholder "0". After
+ * hydration, a counter that is still below the fold drops to 0 (unseen) and
+ * counts up when it scrolls in; one already on screen stays put. (First-screen
+ * figures that should count on load use CssCount, which needs no JavaScript.)
+ * The final width is reserved up front, so nothing around the number moves
+ * while it counts.
  */
 export function Counter({
   value,
@@ -25,22 +28,31 @@ export function Counter({
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
-  const reduceMotion = useReducedMotion();
-  const [display, setDisplay] = useState(0);
+  const [display, setDisplay] = useState(value);
+  const armed = useRef(false);
+
+  // Before the first paint after hydration: arm only counters the visitor
+  // has not seen yet.
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el || prefersReducedMotion()) return;
+    if (el.getBoundingClientRect().top > window.innerHeight) {
+      armed.current = true;
+      setDisplay(0);
+    }
+    // Mount only: whether the number has been seen is decided once.
+  }, []);
 
   useEffect(() => {
-    if (reduceMotion) {
-      setDisplay(value);
-      return;
-    }
-    if (!inView) return;
-    const controls = animate(0, value, {
+    if (!inView || !armed.current) return;
+    return animateValue(0, value, {
       duration,
-      ease: [0.16, 1, 0.3, 1],
       onUpdate: setDisplay,
+      onComplete: () => {
+        armed.current = false;
+      },
     });
-    return () => controls.stop();
-  }, [inView, value, duration, reduceMotion]);
+  }, [inView, value, duration]);
 
   return (
     // The final value sits invisibly in the same grid cell, reserving its

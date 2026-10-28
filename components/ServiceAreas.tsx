@@ -1,5 +1,3 @@
-"use client";
-
 import { MapPin, Phone } from "lucide-react";
 import { content } from "@/data/content";
 import { site, telHref } from "@/data/site";
@@ -32,7 +30,7 @@ export function ServiceAreas({ compact = false, index }: { compact?: boolean; in
   }
 
   return (
-    <section id="areas" className="relative py-24 sm:py-28">
+    <section id="areas" className="cv-block relative py-24 sm:py-28">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 sm:px-8 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <SectionHeading

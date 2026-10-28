@@ -1,14 +1,10 @@
-"use client";
-
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
-import { motion } from "framer-motion";
 import { SplitText } from "@/components/motion/SplitText";
 import { Parallax } from "@/components/motion/Parallax";
 import { Reveal } from "@/lib/motion";
-
-const EASE = [0.16, 1, 0.3, 1] as const;
 
 /**
  * Inner-page header: centred breadcrumb, label, headline and summary, then a
@@ -96,19 +92,17 @@ export function PageHero({
       </div>
 
       {image && (
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.1, delay: 0.3, ease: EASE }}
-          className="mx-auto mt-14 max-w-7xl px-5 sm:mt-16 sm:px-8"
+        <div
+          style={{ "--enter-delay": "300ms", "--enter-y": "40px" } as CSSProperties}
+          className="enter mx-auto mt-14 max-w-7xl px-5 sm:mt-16 sm:px-8"
         >
           <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] bg-bg-sunken shadow-deep sm:aspect-[21/9]">
             <Parallax speed={50} scale={[1.2, 1.05]} className="absolute inset-0">
-              <Image src={image} alt="" aria-hidden fill priority sizes="(min-width: 1280px) 1216px, 100vw" className="object-cover" />
+              <Image src={image} alt="" aria-hidden fill priority sizes="(min-width: 1280px) 1216px, (min-width: 640px) 100vw, 70vw" className="object-cover" />
             </Parallax>
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
           </div>
-        </motion.div>
+        </div>
       )}
     </section>
   );

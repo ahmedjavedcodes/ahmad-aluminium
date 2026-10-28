@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import { useInView } from "framer-motion";
+import { useInView } from "@/lib/motion-hooks";
 
 /**
  * Infinite horizontal rail. Two identical copies slide by exactly one copy's

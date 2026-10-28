@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
 import { Menu, Phone, MessageCircle, Clock } from "lucide-react";
 import { content } from "@/data/content";
 import { site, cityName, telHref, whatsappHref } from "@/data/site";
@@ -75,12 +74,13 @@ export default function Navbar() {
       >
         <Link
           href="/"
-          aria-label={`${site.name} home page`}
+          aria-label={`${site.name} Pvt. Ltd. home page`}
           className="focus-ring group mr-auto shrink-0 rounded-lg lg:mr-0"
         >
           <Logo
             markClassName="h-9 w-9 text-accent transition-transform duration-500 ease-out-expo group-hover:-rotate-6"
-            textClassName="hidden text-[15px] uppercase tracking-[0.02em] sm:block"
+            textClassName="text-[12.5px] uppercase tracking-[0.01em] min-[360px]:text-[13px] min-[380px]:text-[14px] sm:text-[15px] sm:tracking-[0.02em]"
+            suffix="Pvt. Ltd."
           />
         </Link>
 
@@ -100,11 +100,7 @@ export default function Navbar() {
                   )}
                 >
                   {active && (
-                    <motion.span
-                      layoutId="nav-active"
-                      className="absolute inset-x-3.5 -bottom-[3px] z-10 h-[2px] rounded-full bg-accent"
-                      transition={{ type: "spring", stiffness: 420, damping: 36 }}
-                    />
+                    <span className="nav-underline absolute inset-x-3.5 -bottom-[3px] z-10 h-[2px] rounded-full bg-accent" />
                   )}
                   <span className={active ? "font-medium" : undefined}>{link.label}</span>
                 </Link>
@@ -132,7 +128,7 @@ export default function Navbar() {
           <a
             href={telHref}
             aria-label={`Call ${site.phoneLocal}`}
-            className="focus-ring flex h-10 w-10 items-center justify-center rounded-full border border-border bg-bg-elevated text-accent transition-colors hover:border-accent/50 sm:hidden"
+            className="focus-ring flex h-10 w-10 items-center justify-center rounded-full border border-border bg-bg-elevated text-accent transition-colors hover:border-accent/50 max-[379px]:hidden sm:hidden"
           >
             <Phone size={16} aria-hidden />
           </a>
@@ -150,7 +146,7 @@ export default function Navbar() {
               <div className="border-b border-border px-6 pb-5 pt-6">
                 <SheetTitle asChild>
                   <span>
-                    <Logo markClassName="h-9 w-9 text-accent" textClassName="text-base uppercase" />
+                    <Logo markClassName="h-9 w-9 text-accent" textClassName="text-base uppercase" suffix="Pvt. Ltd." />
                   </span>
                 </SheetTitle>
                 <SheetDescription className="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-subtle">

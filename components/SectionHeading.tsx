@@ -84,13 +84,9 @@ export function SectionHeading({
         className="font-display text-[length:clamp(1.85rem,min(4.4vw,6.2svh),3.5rem)] font-extrabold leading-[1.03] tracking-[-0.045em] text-ink"
       >
         <SplitText as="span" text={heading.lead} className="inline" trigger="parent" stagger={STAGGER} delay={wordsStart} />{" "}
-        <SplitText as="span" text={heading.accent} className="inline" wordClassName="text-accent" trigger="parent" stagger={STAGGER} delay={accentStart} />
-        {/* Trailing punctuation joins the sequence instead of waiting alone. */}
-        {heading.tail && (
-          <span className="reveal-child inline-block" style={ms(wordsEnd)}>
-            {heading.tail}
-          </span>
-        )}
+        {/* The full stop rides in with the last word, glued to it so it can
+            never wrap onto a line by itself. */}
+        <SplitText as="span" text={heading.accent} className="inline" wordClassName="text-accent" trigger="parent" stagger={STAGGER} delay={accentStart} suffix={heading.tail} />
       </Tag>
 
       {intro && (

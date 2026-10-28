@@ -1,18 +1,18 @@
 "use client";
 
-import { Fragment } from "react";
-import { motion } from "framer-motion";
+import { Fragment, type CSSProperties } from "react";
+import { useReveal } from "@/lib/reveal";
 import { cn } from "@/lib/utils";
-
-const EASE = [0.16, 1, 0.3, 1] as const;
 
 /**
  * Character-level reveal: each letter rises out of a mask in a quick
  * cascade. Words stay whole (no mid-word line breaks) and spaces are real
  * text nodes between them, so wrapping, copy-paste and screen readers all see
- * ordinary text. `trigger="mount"` for above-the-fold headlines, `inView`
- * otherwise. Reduced motion: the `.split-mask` rules in globals.css pin every
- * letter in place.
+ * ordinary text.
+ *
+ * Shares SplitText's CSS (".split-word" in globals.css) with one letter per
+ * mask: `mount` animates with the first paint, no JavaScript needed; `inView`
+ * waits for the shared observer. Reduced motion pins every letter in place.
  */
 export function CharReveal({
   text,
@@ -29,34 +29,32 @@ export function CharReveal({
   stagger?: number;
   trigger?: "mount" | "inView";
 }) {
+  const ref = useReveal<HTMLSpanElement>();
   const words = text.split(" ").filter(Boolean);
-  let n = 0;
-  const go = { y: "0%", opacity: 1 };
-  const animateProps =
-    trigger === "mount"
-      ? { animate: go }
-      : { whileInView: go, viewport: { once: true, margin: "-60px" } as const };
+  const starts = words.map((_, w) => words.slice(0, w).join("").length);
 
   return (
-    <span className={className}>
+    <span
+      ref={trigger === "inView" ? ref : undefined}
+      className={cn("split-text", className)}
+      data-split={trigger}
+      style={
+        {
+          "--split-delay": `${Math.round(delay * 1000)}ms`,
+          "--split-stagger": `${Math.round(stagger * 1000)}ms`,
+        } as CSSProperties
+      }
+    >
       {words.map((word, w) => (
         <Fragment key={`${word}-${w}`}>
           <span className="inline-block whitespace-nowrap">
-            {Array.from(word).map((ch, c) => {
-              const i = n++;
-              return (
-                <span key={c} className="split-mask">
-                  <motion.span
-                    className={cn("inline-block", charClassName)}
-                    initial={{ y: "110%", opacity: 0 }}
-                    {...animateProps}
-                    transition={{ duration: 0.7, delay: delay + i * stagger, ease: EASE }}
-                  >
-                    {ch}
-                  </motion.span>
+            {Array.from(word).map((ch, c) => (
+              <span key={c} className="split-mask">
+                <span className={cn("split-word", charClassName)} style={{ "--w": starts[w] + c } as CSSProperties}>
+                  {ch}
                 </span>
-              );
-            })}
+              </span>
+            ))}
           </span>
           {w < words.length - 1 ? " " : null}
         </Fragment>

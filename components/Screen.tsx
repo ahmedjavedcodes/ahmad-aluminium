@@ -45,7 +45,7 @@ export function Screen({
       className={cn(
         // Below md the fixed Call/WhatsApp bar (MobileActionBar) covers the
         // bottom ~4.5rem of the screen, so that space is kept clear.
-        "relative isolate flex min-h-[100svh] scroll-mt-0 flex-col overflow-hidden pb-[clamp(1.25rem,5svh,4rem)] pt-[clamp(5rem,12svh,8rem)]",
+        "cv-screen relative isolate flex min-h-[100svh] scroll-mt-0 flex-col overflow-hidden pb-[clamp(1.25rem,5svh,4rem)] pt-[clamp(5rem,12svh,8rem)]",
         reserveActionBar && "max-md:pb-[calc(clamp(1.25rem,5svh,4rem)+4.25rem)]",
         className
       )}
