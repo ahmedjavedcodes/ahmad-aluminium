@@ -164,7 +164,6 @@ p {
 .focus-ring:focus-visible {
   outline: 2px solid rgb(var(--color-accent));
   outline-offset: 3px;
-  border-radius: 0.35rem;
 }
 
 /* Animated underline for text links. */
@@ -513,6 +512,12 @@ html:has(.site-theme)::-webkit-scrollbar-thumb:hover { background: rgb(180 84 31
 .reveal--scale { --reveal-y: 0px; --reveal-s: 0.95; --reveal-d: 0.85s; }
 .reveal--fade { --reveal-y: 0px; }
 .reveal--clip { --reveal-y: 24px; --reveal-s: 0.97; --reveal-d: 1s; }
+
+/* Swipe rails (below lg) reveal all their cards at once, staggered, so the
+   cards waiting off to the right are already settled when swiped in. */
+@media (max-width: 1023.98px) {
+  .swipe-rail[data-shown] .reveal { opacity: 1; transform: none; }
+}
 
 /* Heading parts revealed together by an enclosing .reveal-group. */
 .reveal-child {

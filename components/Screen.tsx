@@ -1,5 +1,8 @@
+"use client";
+
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { useReveal } from "@/lib/reveal";
 
 /**
  * One-screen section shell.
@@ -61,6 +64,10 @@ export function Screen({
  * placement, but no height: rail items and grid items both stretch to the
  * track, and a percentage height would collapse to zero inside the rail. Scroll-snap keeps cards aligned; the region is keyboard
  * scrollable and labelled for assistive tech.
+ *
+ * On the rail the cards reveal together when the rail scrolls into view
+ * (`.swipe-rail` in globals.css). Watched one by one, the cards still off to
+ * the right would only start fading in as they were swiped onto screen.
  */
 export function SwipeGrid({
   label,
@@ -71,13 +78,15 @@ export function SwipeGrid({
   className?: string;
   children: ReactNode;
 }) {
+  const ref = useReveal<HTMLDivElement>();
   return (
     <div
+      ref={ref}
       role="region"
       aria-label={label}
       tabIndex={0}
       className={cn(
-        "focus-ring no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 sm:-mx-8 sm:px-8 lg:mx-0 lg:grid lg:snap-none lg:overflow-visible lg:px-0",
+        "swipe-rail focus-ring no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 sm:-mx-8 sm:px-8 lg:mx-0 lg:grid lg:snap-none lg:overflow-visible lg:px-0",
         className
       )}
     >

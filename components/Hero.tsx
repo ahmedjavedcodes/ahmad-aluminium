@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Phone, Check, Clock, MapPin } from "lucide-react";
+import { Phone, Check, Clock, MapPin, MessageCircle } from "lucide-react";
 import { heroImage, services } from "@/data/services";
 import { content } from "@/data/content";
 import { site, cityName, telHref, whatsappHref } from "@/data/site";
@@ -55,7 +55,7 @@ export default function Hero() {
         <div className="flex flex-col justify-center lg:col-span-6">
           <motion.p
             {...rise(0)}
-            className="inline-flex max-w-full items-center gap-2.5 self-start rounded-full border border-border bg-bg-elevated/80 px-4 py-1.5 text-[10.5px] font-semibold uppercase leading-relaxed tracking-[0.12em] text-accent-deep shadow-card sm:items-center sm:text-[11px]"
+            className="inline-flex max-w-full items-center gap-2.5 self-start rounded-full border border-border bg-bg-elevated/80 px-3.5 py-1.5 text-[10px] font-semibold uppercase leading-relaxed tracking-[0.1em] sm:px-4 sm:text-[11px] sm:tracking-[0.12em] text-accent-deep shadow-card"
           >
             <span aria-hidden className="status-dot h-2 w-2 shrink-0 rounded-full bg-accent" />
             {/* The six trades take turns in one slot; the full list is still
@@ -67,7 +67,7 @@ export default function Hero() {
 
           {/* Line one rises in word by word; line two is typed out after it.
               Both run on load (`mount`) — the hero is always above the fold. */}
-          <h1 className="mt-[clamp(0.9rem,3svh,1.75rem)] font-display text-[length:clamp(2.1rem,min(6.2vw,6.6svh),5.25rem)] font-extrabold leading-[0.98] tracking-[-0.045em] text-ink">
+          <h1 className="mt-[clamp(0.9rem,3svh,1.75rem)] font-display text-[length:clamp(1.85rem,min(6.2vw,6.6svh),5.25rem)] font-extrabold leading-[0.98] tracking-[-0.045em] text-ink">
             <SplitText as="span" text={content.hero.titleLine1} className="block" trigger="mount" />
             {/* Explicit space so text extraction doesn't run the lines together. */}{" "}
             <span className="block">
@@ -77,7 +77,7 @@ export default function Hero() {
 
           <motion.p
             {...rise(0.45)}
-            className="mt-[clamp(0.9rem,2.6svh,1.5rem)] line-clamp-4 max-w-xl [@media(max-height:700px)]:line-clamp-3 text-[length:clamp(0.875rem,min(1.25vw,2.05svh),1.0625rem)] leading-[1.65] text-ink-muted sm:line-clamp-none"
+            className="mt-[clamp(0.9rem,2.6svh,1.5rem)] line-clamp-3 max-w-xl text-[length:clamp(0.8125rem,min(1.25vw,2.05svh),1.0625rem)] leading-[1.6] sm:leading-[1.65] text-ink-muted sm:line-clamp-none"
           >
             {content.hero.paragraph}
           </motion.p>
@@ -89,9 +89,16 @@ export default function Hero() {
                   href={whatsappHref(`Hi ${site.name}, I'd like a free quotation. My area in ${cityName} is: `)}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={content.hero.ctaPrimary}
                 >
-                  <RollText>{content.hero.ctaPrimary}</RollText>
-                  <ArrowSwap size={17} className="hidden min-[400px]:inline-flex" />
+                  {/* Phones get the short label; the full one is the
+                      accessible name everywhere. */}
+                  <MessageCircle size={17} aria-hidden className="sm:hidden" />
+                  <span className="sm:hidden">WhatsApp</span>
+                  <span className="hidden sm:inline-flex">
+                    <RollText>{content.hero.ctaPrimary}</RollText>
+                  </span>
+                  <ArrowSwap size={17} className="hidden sm:inline-flex" />
                 </a>
               </Button>
             </MagneticButton>
@@ -112,7 +119,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="mt-7 hidden flex-wrap gap-x-6 gap-y-2.5 text-sm text-ink-muted [@media(min-height:860px)]:sm:flex"
+            className="mt-7 hidden flex-wrap gap-x-6 gap-y-2.5 text-sm text-ink-muted [@media(min-height:860px)]:lg:flex"
           >
             {content.hero.trust.map((t) => (
               <li key={t} className="flex items-center gap-2">
@@ -168,7 +175,7 @@ export default function Hero() {
             </Link>
           </motion.div>
 
-          <div className="hidden h-[clamp(8.5rem,21svh,12.5rem)] shrink-0 grid-cols-2 gap-4 lg:grid">
+          <div className="grid shrink-0 grid-cols-2 gap-3 sm:gap-4 lg:h-[clamp(8.5rem,21svh,12.5rem)] max-lg:[@media(max-height:700px)]:hidden">
             {/* Rating */}
             <motion.a
               href={googleRating.profileUrl}
@@ -177,24 +184,24 @@ export default function Hero() {
               initial={{ opacity: 0, y: 36 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.5, ease: EASE }}
-              className="focus-ring panel hover-rim group relative flex flex-col justify-between overflow-hidden rounded-[clamp(1.25rem,3svh,2rem)] p-[clamp(1rem,2.6svh,1.75rem)] transition-[transform,box-shadow] duration-500 ease-out-expo hover:-translate-y-1 hover:shadow-deep"
+              className="focus-ring panel hover-rim group relative flex flex-col justify-between overflow-hidden gap-3 rounded-[clamp(1.25rem,3svh,2rem)] p-3.5 transition-[transform,box-shadow] duration-500 sm:p-[clamp(1rem,2.6svh,1.75rem)] ease-out-expo hover:-translate-y-1 hover:shadow-deep"
             >
               <span className="flex items-center justify-between">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-subtle">Google rating</span>
-                <span className="flex h-8 w-8 items-center justify-center rounded-full border border-border-strong text-ink transition-colors duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-on-accent">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-subtle sm:text-[11px] sm:tracking-[0.16em]">Google rating</span>
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border-strong sm:h-8 sm:w-8 text-ink transition-colors duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-on-accent">
                   <ArrowSwap diagonal size={14} />
                 </span>
               </span>
-              <span className="flex items-end gap-3">
-                <span className="font-display text-[length:clamp(2.5rem,6svh,4rem)] font-extrabold leading-none tracking-[-0.05em] text-ink">
+              <span className="flex items-end gap-2 sm:gap-3">
+                <span className="font-display text-[length:clamp(1.75rem,min(8.5vw,4.6svh),2.25rem)] sm:text-[length:clamp(2rem,4.5svh,3rem)] lg:text-[length:clamp(2.5rem,6svh,4rem)] font-extrabold leading-none tracking-[-0.05em] text-ink">
                   {googleRating.value.toFixed(1)}
                 </span>
-                <span className="pb-1">
-                  <Stars rating={5} size={14} />
-                  <span className="mt-1 block text-xs text-ink-muted">{googleRating.count} Google reviews</span>
+                <span className="pb-0.5 sm:pb-1">
+                  <Stars rating={5} size={12} />
+                  <span className="mt-1 block text-[11px] leading-tight text-ink-muted sm:text-xs">{googleRating.count} Google reviews</span>
                 </span>
               </span>
-              <span className="hidden items-center [@media(min-height:780px)]:flex">
+              <span className="hidden items-center [@media(min-height:780px)]:lg:flex">
                 {reviewerInitials.map((initial, i) => (
                   <span
                     key={i}
@@ -215,33 +222,33 @@ export default function Hero() {
               initial={{ opacity: 0, y: 36 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.62, ease: EASE }}
-              className="theme-inverse relative flex flex-col justify-between overflow-hidden rounded-[clamp(1.25rem,3svh,2rem)] p-[clamp(1rem,2.6svh,1.75rem)]"
+              className="theme-inverse relative flex flex-col justify-between gap-3 overflow-hidden rounded-[clamp(1.25rem,3svh,2rem)] p-3.5 sm:p-[clamp(1rem,2.6svh,1.75rem)]"
             >
               <div aria-hidden className="absolute -right-14 -top-14 h-48 w-48 rounded-full bg-accent/25 blur-[60px]" />
               <span className="relative flex items-center justify-between">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-subtle">The workshop</span>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-subtle sm:text-[11px] sm:tracking-[0.16em]">The workshop</span>
                 <a
                   href={site.mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Find the workshop on Google Maps: ${site.address.street}, ${cityName}`}
-                  className="focus-ring group flex h-8 w-8 items-center justify-center rounded-full border border-border-strong text-ink transition-colors duration-300 hover:border-accent hover:bg-accent hover:text-on-accent"
+                  className="focus-ring group flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border-strong sm:h-8 sm:w-8 text-ink transition-colors duration-300 hover:border-accent hover:bg-accent hover:text-on-accent"
                 >
                   <MapPin size={14} aria-hidden />
                 </a>
               </span>
-              <div className="relative grid grid-cols-2 gap-3">
+              <div className="relative grid grid-cols-1 gap-1.5 sm:grid-cols-2 sm:gap-3">
                 {[trades, areas].map((s) => (
-                  <div key={s.label}>
-                    <p className="font-display text-[length:clamp(2.5rem,6svh,4rem)] font-extrabold leading-none tracking-[-0.05em] text-ink">
+                  <div key={s.label} className="flex items-center gap-2 sm:block">
+                    <p className="w-[1.85em] shrink-0 font-display text-[length:clamp(1.5rem,min(6.4vw,4svh),2rem)] font-extrabold leading-none tracking-[-0.05em] text-ink sm:w-auto sm:text-[length:clamp(2rem,4.5svh,3rem)] lg:text-[length:clamp(2.5rem,6svh,4rem)]">
                       <Counter value={s.value} />
                       <span className="text-accent">{s.suffix}</span>
                     </p>
-                    <p className="mt-1.5 text-xs leading-snug text-ink-muted">{s.label}</p>
+                    <p className="text-[11px] leading-tight text-ink-muted sm:mt-1.5 sm:text-xs sm:leading-snug">{s.label}</p>
                   </div>
                 ))}
               </div>
-              <span className="relative hidden items-center gap-2 text-[11px] text-ink-muted [@media(min-height:780px)]:flex">
+              <span className="relative hidden items-center gap-2 text-[11px] text-ink-muted [@media(min-height:780px)]:lg:flex">
                 <Clock size={12} className="shrink-0 text-accent" aria-hidden />
                 {site.hours}
               </span>
