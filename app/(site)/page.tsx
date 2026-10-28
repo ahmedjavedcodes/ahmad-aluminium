@@ -10,7 +10,6 @@ import Gallery from "@/components/Gallery";
 import CTASection from "@/components/CTASection";
 import { FAQ } from "@/components/FAQ";
 import { QuoteBuilder } from "@/components/QuoteBuilder";
-import { StatsStrip } from "@/components/motion/StatsStrip";
 import { SectionHeading } from "@/components/SectionHeading";
 import { JsonLd } from "@/components/JsonLd";
 import { Button } from "@/components/ui/button";
@@ -35,10 +34,8 @@ export default function Home() {
 
       <Hero />
 
-      <section className="relative py-24 sm:py-28">
+      <section className="relative py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <StatsStrip className="mb-24" />
-
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
             <SectionHeading
               index={1}

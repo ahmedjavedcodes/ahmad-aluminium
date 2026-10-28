@@ -7,10 +7,10 @@ import { cn } from "@/lib/utils";
 /**
  * Standard section header: eyebrow → heading → optional intro.
  *
- * The eyebrow is set like a label on a shop drawing — monospace, tracked out,
- * with an optional section number — and the heading in condensed Archivo. The
- * accent word is a solid copper rather than clipped gradient text: it keeps its
- * colour when a heading wraps and can actually be contrast-tested (7.1:1).
+ * The eyebrow is a tracked-out copper label with an optional numbered badge,
+ * and the heading is set large in Plus Jakarta Sans. The accent word is a
+ * solid copper rather than clipped gradient text: it keeps its colour when a
+ * heading wraps and can actually be contrast-tested (4.6:1 at display size).
  */
 export function SectionHeading({
   eyebrow,
@@ -38,19 +38,20 @@ export function SectionHeading({
       {eyebrow && (
         <p
           className={cn(
-            "mb-4 flex items-center gap-3 font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-accent-deep",
+            "mb-5 flex items-center gap-3 text-[12px] font-semibold uppercase tracking-[0.2em] text-accent-deep",
             centered && "justify-center"
           )}
         >
           {index !== undefined && (
-            <span className="text-ink-subtle">{String(index).padStart(2, "0")} /</span>
+            <span className="flex h-7 min-w-7 items-center justify-center rounded-full bg-accent px-2 text-[11px] font-bold tracking-normal text-on-accent">
+              {String(index).padStart(2, "0")}
+            </span>
           )}
           {eyebrow}
-          <span aria-hidden className="h-px w-10 bg-gradient-to-r from-accent/60 to-transparent" />
         </p>
       )}
 
-      <Tag className="font-display text-[2rem] font-bold leading-[1.05] tracking-[-0.025em] text-ink sm:text-[2.6rem] md:text-[3.2rem]">
+      <Tag className="font-display text-[2.25rem] font-extrabold leading-[1.02] tracking-[-0.045em] text-ink sm:text-5xl md:text-[3.6rem]">
         {heading.lead} <span className="text-accent">{heading.accent}</span>
         {heading.tail}
       </Tag>
@@ -58,7 +59,7 @@ export function SectionHeading({
       {intro && (
         <p
           className={cn(
-            "mt-5 max-w-prose text-[15px] leading-relaxed text-ink-muted sm:text-base",
+            "mt-5 max-w-prose text-[15px] leading-[1.75] text-ink-muted sm:text-[17px]",
             centered && "mx-auto"
           )}
         >

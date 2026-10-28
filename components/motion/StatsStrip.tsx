@@ -40,7 +40,7 @@ function Counter({
   return (
     <span
       ref={ref}
-      className="font-display text-5xl font-bold leading-none tracking-[-0.03em] text-ink tabular-nums sm:text-6xl"
+      className="font-display text-5xl font-extrabold leading-none tracking-[-0.05em] text-ink tabular-nums sm:text-6xl"
     >
       {display}
       <span className={accent === "gold" ? "text-accent" : "text-teal"}>{suffix}</span>
@@ -56,7 +56,7 @@ export function StatsStrip({ className }: { className?: string }) {
   return (
     <dl
       className={cn(
-        "panel grid grid-cols-2 overflow-hidden rounded-[1.5rem] lg:grid-cols-4",
+        "grid grid-cols-2 gap-4 lg:grid-cols-4",
         className
       )}
     >
@@ -66,13 +66,11 @@ export function StatsStrip({ className }: { className?: string }) {
           index={i}
           variant="fade"
           className={cn(
-            "relative px-5 py-7 sm:px-7 sm:py-9",
-            i % 2 === 1 && "border-l border-border",
-            i >= 2 && "border-t border-border lg:border-t-0",
-            i === 2 && "lg:border-l"
+            "relative overflow-hidden rounded-[1.75rem] px-6 py-8 sm:px-8 sm:py-10",
+            i === 0 ? "theme-inverse" : "panel"
           )}
         >
-          <span aria-hidden className="absolute left-0 top-7 h-6 w-[2px] bg-accent sm:top-9" />
+
           <dt className="sr-only">{s.label}</dt>
           <dd>
             <span aria-hidden className="mb-4 block font-mono text-[11px] text-ink-subtle">

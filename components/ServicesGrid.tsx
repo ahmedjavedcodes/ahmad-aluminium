@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { services, type ServiceIcon, type Service } from "@/data/services";
 import { Reveal } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 import { Spotlight } from "@/components/motion/Spotlight";
 import { RollText, ArrowSwap } from "@/components/ui/button";
 
@@ -76,12 +77,127 @@ export function ServiceCard({ service, index }: { service: Service; index: numbe
   );
 }
 
-export function ServicesGrid({ exclude }: { exclude?: string }) {
-  const list = exclude ? services.filter((s) => s.slug !== exclude) : services;
+/**
+ * Bento placement for the six services (lg, 12 columns × 270px rows):
+ *
+ *   ┌───────────────┬──────────┐
+ *   │               │    1     │
+ *   │       0       ├──────────┤
+ *   │               │    2     │
+ *   ├──────┬────────┴─┬────────┤
+ *   │  3   │    4     │   5    │
+ *   └──────┴──────────┴────────┘
+ *
+ * On tablets the feature spans both columns and the rest pair up; on phones
+ * every tile stacks at one height.
+ */
+const BENTO = [
+  "sm:col-span-2 lg:col-span-7 lg:row-span-2",
+  "lg:col-span-5",
+  "lg:col-span-5",
+  "lg:col-span-4",
+  "lg:col-span-4",
+  "lg:col-span-4",
+];
+
+function BentoTile({ service, index }: { service: Service; index: number }) {
+  const Icon = iconMap[service.icon];
+  const feature = index === 0;
+  const number = String(services.indexOf(service) + 1).padStart(2, "0");
+
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <Reveal index={index} variant="rise" className={cn("h-full", BENTO[index] ?? "lg:col-span-4")}>
+      <Link
+        href={`/services/${service.slug}`}
+        className="focus-ring group relative block h-full overflow-hidden rounded-[2rem] bg-bg-sunken shadow-card transition-[box-shadow,transform] duration-700 ease-out-expo hover:-translate-y-1 hover:shadow-deep"
+      >
+        <Image
+          src={service.image}
+          alt={`${service.title} — ${service.tagline}`}
+          fill
+          sizes={feature ? "(min-width: 1024px) 58vw, 100vw" : "(min-width: 1024px) 34vw, (min-width: 640px) 50vw, 100vw"}
+          className="object-cover transition-transform duration-[1400ms] ease-out-expo group-hover:scale-[1.08]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/0 transition-opacity duration-700 group-hover:opacity-90" />
+
+        <div className="absolute inset-x-0 top-0 flex items-center justify-between p-5">
+          <span className="rounded-full bg-white/90 px-3 py-1 font-mono text-[11px] font-medium tracking-[0.12em] text-ink backdrop-blur">
+            {number}
+          </span>
+          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-accent backdrop-blur transition-[transform,background-color,color] duration-500 ease-out-expo group-hover:rotate-[-10deg] group-hover:scale-110 group-hover:bg-accent group-hover:text-on-accent">
+            <Icon size={19} aria-hidden />
+          </span>
+        </div>
+
+        <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+          <div className="flex items-end justify-between gap-4">
+            <div className="min-w-0">
+              <h3
+                className={cn(
+                  "font-display font-extrabold leading-[1.05] tracking-[-0.035em] text-white",
+                  feature ? "text-3xl sm:text-[2.6rem]" : "text-2xl"
+                )}
+              >
+                {service.title}
+              </h3>
+              <p className={cn("mt-2 font-medium text-white/80", feature ? "text-base" : "text-sm")}>
+                {service.tagline}
+              </p>
+            </div>
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-ink transition-[background-color,color,transform] duration-500 ease-out-expo group-hover:scale-110 group-hover:bg-accent group-hover:text-on-accent">
+              <ArrowSwap diagonal size={18} />
+            </span>
+          </div>
+
+          {/* Scope list: always open on the large desktop feature tile, slides
+              open on hover elsewhere. The full list is on each service page. */}
+          <ul
+            className={cn(
+              "flex flex-wrap gap-1.5 overflow-hidden transition-[max-height,opacity,margin] duration-700 ease-out-expo",
+              "mt-0 max-h-0 opacity-0 group-hover:mt-4 group-hover:max-h-32 group-hover:opacity-100 group-focus-visible:mt-4 group-focus-visible:max-h-32 group-focus-visible:opacity-100",
+              // The feature tile is tall enough on desktop to keep it open.
+              feature && "lg:mt-5 lg:max-h-40 lg:opacity-100"
+            )}
+          >
+            {service.items.slice(0, feature ? 5 : 3).map((item) => (
+              <li
+                key={item}
+                className="rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-medium text-white backdrop-blur-md"
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Link>
+    </Reveal>
+  );
+}
+
+export function ServicesGrid({
+  exclude,
+  layout = "bento",
+}: {
+  exclude?: string;
+  /** "bento" for the full service list, "cards" for short related lists. */
+  layout?: "bento" | "cards";
+}) {
+  const list = exclude ? services.filter((s) => s.slug !== exclude) : services;
+
+  if (layout === "cards") {
+    return (
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {list.map((service, i) => (
+          <ServiceCard key={service.slug} service={service} index={i} />
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid auto-rows-[340px] grid-cols-1 gap-4 sm:grid-cols-2 sm:auto-rows-[320px] lg:grid-cols-12 lg:auto-rows-[270px]">
       {list.map((service, i) => (
-        <ServiceCard key={service.slug} service={service} index={i} />
+        <BentoTile key={service.slug} service={service} index={i} />
       ))}
     </div>
   );

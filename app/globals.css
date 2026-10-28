@@ -337,10 +337,10 @@ p {
   --color-accent-tint: rgb(180 84 31 / 0.08);
   --color-teal-tint: rgb(46 94 116 / 0.08);
 
-  /* The --font-bricolage/--font-manrope/--font-geist-mono variables come
+  /* The --font-jakarta/--font-inter-site/--font-geist-mono variables come
      from next/font (app/site-fonts.ts) and include metric-matched fallbacks. */
-  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter-site), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 
   /* A stacking context of its own, so its background paints *under* the
@@ -386,17 +386,16 @@ html:has(.site-theme)::-webkit-scrollbar-track { background: rgb(246 246 244); }
 html:has(.site-theme)::-webkit-scrollbar-thumb { background: rgb(205 207 205); }
 html:has(.site-theme)::-webkit-scrollbar-thumb:hover { background: rgb(180 84 31); }
 
-/* Bricolage Grotesque with optical sizing: big headlines get the tighter,
-   more characterful display cut automatically. */
+/* Plus Jakarta Sans for structure: tight, confident headings. */
 .site-theme h1,
 .site-theme h2,
 .site-theme h3,
 .site-theme h4,
 .site-theme .font-display {
   font-family: var(--font-display);
-  font-optical-sizing: auto;
   font-variant-numeric: lining-nums tabular-nums;
 }
+.site-theme { font-feature-settings: "cv11", "ss01"; }
 
 .site-theme .font-mono {
   font-family: var(--font-mono);

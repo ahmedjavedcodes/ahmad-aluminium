@@ -1,10 +1,11 @@
 "use client";
 
-import { Star, Quote, ArrowUpRight } from "lucide-react";
+import { Star, Quote } from "lucide-react";
 import { testimonials, googleRating, type Testimonial } from "@/data/testimonials";
 import { Reveal } from "@/lib/motion";
 import { SectionHeading } from "@/components/SectionHeading";
-import { Spotlight } from "@/components/motion/Spotlight";
+import { Marquee } from "@/components/motion/Marquee";
+import { RollText, ArrowSwap } from "@/components/ui/button";
 import { content } from "@/data/content";
 import { cn } from "@/lib/utils";
 
@@ -46,86 +47,47 @@ export function RatingBadge({ className }: { className?: string }) {
   );
 }
 
-/**
- * Bento tiling.
- *
- * These reviews range from nine characters to ninety-five, so a uniform grid
- * would either crop the longest or leave the short ones as mostly empty boxes.
- * The span is derived from the text length rather than hard-coded to an index,
- * so the layout still packs correctly when new reviews are added — the longest
- * becomes the feature tile, mid-length ones run double-width, and the terse
- * "Excellent work" type sit in single cells.
- */
-function tileClass(text: string, isFeature: boolean): string {
-  if (isFeature) return "sm:col-span-2 lg:col-span-2 lg:row-span-2";
-  if (text.length > 25) return "sm:col-span-2";
-  return "";
-}
-
 /** Review text is rendered exactly as stored — never trimmed or edited. */
-function Card({ t, isFeature }: { t: Testimonial; isFeature: boolean }) {
+function ReviewCard({ t }: { t: Testimonial }) {
   return (
-    <Spotlight className="h-full rounded-[1.5rem]">
-      <figure
-        className={cn(
-          "hover-rim flex h-full flex-col rounded-[1.5rem] p-6 transition-[box-shadow,transform] duration-700 ease-out-expo hover:-translate-y-1 sm:p-7",
-          isFeature
-            ? "theme-inverse relative overflow-hidden hover:shadow-copper-rim sm:p-9"
-            : "panel hover:shadow-deep"
-        )}
-      >
-        {isFeature && (
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/25 blur-[80px]"
-          />
-        )}
-        <div className="mb-4 flex items-center justify-between gap-3">
-          <Quote
-            size={isFeature ? 30 : 20}
-            className={cn("shrink-0", isFeature ? "text-accent" : "text-accent/50")}
-            aria-hidden
-          />
-          <Stars rating={t.rating} size={13} />
-        </div>
-        <blockquote
-          className={cn(
-            "flex-1 text-ink",
-            isFeature
-              ? "relative font-display text-2xl font-semibold leading-snug tracking-[-0.02em] sm:text-[2rem]"
-              : "text-[0.95rem] leading-relaxed"
-          )}
+    <figure className="panel hover-rim group flex h-full w-[300px] shrink-0 flex-col rounded-[1.5rem] p-6 transition-[transform,box-shadow] duration-500 ease-out-expo hover:-translate-y-1 hover:shadow-deep sm:w-[340px]">
+      <div className="flex items-center justify-between">
+        <Quote size={20} className="text-accent/60" aria-hidden />
+        <Stars rating={t.rating} size={13} />
+      </div>
+      <blockquote className="mt-4 flex-1 text-[15px] leading-relaxed text-ink">{t.text}</blockquote>
+      <figcaption className="mt-5 flex items-center gap-3 border-t border-border pt-4">
+        <span
+          aria-hidden
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-tint font-display text-sm font-bold text-accent-deep"
         >
-          {t.text}
-        </blockquote>
-        <figcaption className="mt-6 border-t border-border pt-4">
-          <span className="flex min-w-0 items-center gap-3">
-            <span
-              aria-hidden
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-tint font-display text-sm font-bold text-accent-deep ring-1 ring-accent/20"
-            >
-              {t.name.trim().charAt(0).toUpperCase()}
-            </span>
-            <span className="min-w-0">
-              <span className="block truncate text-sm font-medium text-ink">{t.name}</span>
-              <time dateTime={t.date} className="block font-mono text-[11px] text-ink-subtle">
-                {dateFmt.format(new Date(t.date))} · Google
-              </time>
-            </span>
-          </span>
-        </figcaption>
-      </figure>
-    </Spotlight>
+          {t.name.trim().charAt(0).toUpperCase()}
+        </span>
+        <span className="min-w-0">
+          <span className="block truncate text-sm font-semibold text-ink">{t.name}</span>
+          <time dateTime={t.date} className="block text-xs text-ink-subtle">
+            {dateFmt.format(new Date(t.date))} · Google
+          </time>
+        </span>
+      </figcaption>
+    </figure>
   );
 }
 
+/**
+ * Reviews: the longest review set as a large pull quote, then the rest on
+ * two slow counter-scrolling rails (paused on hover; static under reduced
+ * motion). The rails duplicate their cards for a seamless loop — the copy is
+ * aria-hidden, so every review is announced once.
+ */
 export function Testimonials({ index }: { index?: number }) {
-  // Longest first so the feature tile leads and the short cells pack in behind
-  // it; `grid-flow-dense` then backfills any gap the row-span leaves.
   const ordered = [...testimonials].sort((a, b) => b.text.length - a.text.length);
+  const [featured, ...rest] = ordered;
+  const half = Math.ceil(rest.length / 2);
+  const rails = [rest.slice(0, half), rest.slice(half)].filter((r) => r.length);
 
   return (
-    <section id="reviews" className="relative py-24 sm:py-28">
+    <section id="reviews" className="relative overflow-hidden py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end">
           <SectionHeading
@@ -135,56 +97,58 @@ export function Testimonials({ index }: { index?: number }) {
             intro={content.reviews.intro}
             className="max-w-2xl"
           />
-
           <Reveal index={1}>
-            <a
-              href={googleRating.profileUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="focus-ring glass-panel hover-rim group flex items-center gap-5 rounded-2xl px-6 py-5 transition-[box-shadow,transform] duration-500 ease-out-expo hover:-translate-y-0.5 hover:shadow-copper-rim"
-            >
-              <span className="font-display text-6xl font-bold leading-none text-ink">
-                {googleRating.value.toFixed(1)}
-              </span>
-              <span>
-                <Stars rating={5} size={16} />
-                <span className="mt-1.5 block font-mono text-[11px] uppercase tracking-[0.14em] text-ink-muted">
-                  {googleRating.count} reviews on Google
-                </span>
-              </span>
-              <ArrowUpRight
-                size={18}
-                aria-hidden
-                className="text-ink-subtle transition-[transform,color] duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent"
-              />
-            </a>
+            <RatingBadge />
           </Reveal>
         </div>
 
-        <ul className="mt-12 grid grid-flow-dense grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[minmax(0,1fr)]">
-          {ordered.map((t, i) => (
-            <Reveal
-              key={t.name + t.date}
-              index={i}
-              variant="rise"
-              as="li"
-              className={cn("h-full", tileClass(t.text, i === 0))}
-            >
-              <Card t={t} isFeature={i === 0} />
-            </Reveal>
-          ))}
-        </ul>
+        {featured && (
+          <Reveal variant="rise" className="mt-14">
+            <figure className="theme-inverse relative overflow-hidden rounded-[2rem] px-7 py-12 sm:px-14 sm:py-16">
+              <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-accent/25 blur-[100px]" />
+              <Quote
+                aria-hidden
+                className="pointer-events-none absolute -left-4 -top-6 h-40 w-40 text-white/[0.04] sm:h-56 sm:w-56"
+              />
+              <div className="relative grid grid-cols-1 items-end gap-10 lg:grid-cols-12">
+                <blockquote className="font-display text-[1.75rem] font-bold leading-[1.2] tracking-[-0.03em] text-ink sm:text-4xl lg:col-span-8 lg:text-[2.75rem]">
+                  <span className="text-accent">&ldquo;</span>
+                  {featured.text}
+                  <span className="text-accent">&rdquo;</span>
+                </blockquote>
+                <figcaption className="flex flex-col gap-4 lg:col-span-4 lg:items-end lg:text-right">
+                  <Stars rating={featured.rating} size={18} />
+                  <span>
+                    <span className="block text-lg font-semibold text-ink">{featured.name}</span>
+                    <time dateTime={featured.date} className="block text-sm text-ink-muted">
+                      {dateFmt.format(new Date(featured.date))} · Google review
+                    </time>
+                  </span>
+                  <a
+                    href={googleRating.profileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="focus-ring group inline-flex items-center gap-2 rounded-full text-sm font-semibold text-accent-deep"
+                  >
+                    <RollText>{`Read all ${googleRating.count} reviews on Google`}</RollText>
+                    <ArrowSwap diagonal size={15} />
+                  </a>
+                </figcaption>
+              </div>
+            </figure>
+          </Reveal>
+        )}
+      </div>
 
-        <Reveal index={2} className="mt-8">
-          <a
-            href={googleRating.profileUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="focus-ring link-underline text-sm font-medium text-accent-deep"
-          >
-            Read all {googleRating.count} reviews on Google
-          </a>
-        </Reveal>
+      {/* Rails run edge to edge, faded at both ends. */}
+      <div className="mt-6 flex flex-col gap-5 [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
+        {rails.map((rail, r) => (
+          <Marquee key={r} duration={48 + r * 8} reverse={r === 1} gap={20} className="py-3">
+            {rail.map((t) => (
+              <ReviewCard key={t.name + t.date} t={t} />
+            ))}
+          </Marquee>
+        ))}
       </div>
     </section>
   );
