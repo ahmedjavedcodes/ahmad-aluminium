@@ -534,36 +534,35 @@ html:has(.site-theme)::-webkit-scrollbar-thumb:hover { background: rgb(180 84 31
   animation: split-in 0.85s var(--ease-reveal) calc(var(--split-delay, 0ms) + var(--w, 0) * var(--split-stagger, 45ms)) both;
 }
 
-/* Typewriter (components/motion/Typewriter.tsx): each letter appears in turn
-   with the caret drawn on its right edge, then the caret blinks and goes. */
+/* Typewriter (components/motion/Typewriter.tsx): each letter appears in turn,
+   then the caret blinks and goes. Opacity only, on inline-block letters, so
+   the compositor runs it: typing stays even while a phone's main thread is
+   busy hydrating the page. */
 @keyframes type-char {
-  from { opacity: 1; box-shadow: 0.07em 0 0 0 rgb(var(--color-accent)); }
-  to { opacity: 1; box-shadow: none; }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 .type-char {
-  opacity: 0;
-  animation: type-char var(--type-speed, 50ms) steps(1, end) calc(var(--type-delay, 0ms) + var(--i, 0) * var(--type-speed, 50ms)) forwards;
+  display: inline-block;
+  animation: type-char var(--type-speed, 50ms) steps(1, start) calc(var(--type-delay, 0ms) + var(--i, 0) * var(--type-speed, 50ms)) both;
 }
 .type-caret {
   opacity: 0;
   animation: caret-blink 1s steps(1) var(--type-end, 0ms) 4 forwards;
 }
 
-/* Counting number (components/motion/CssCount.tsx): an integer custom
-   property animates from 0 and is printed with a CSS counter. Without
-   @property support it simply shows the final value. */
-@property --count {
-  syntax: "<integer>";
-  initial-value: 0;
-  inherits: false;
+/* Counting number (components/motion/CssCount.tsx): each digit is a 0–9
+   column that rolls up to its value inside a one-digit window, like an
+   odometer. Transform only, so it runs on the compositor and never stalls
+   behind script work. The resting style is the final position. */
+.odo { display: inline-block; height: 1em; line-height: 1; overflow: hidden; vertical-align: top; }
+.odo-col {
+  display: flex;
+  flex-direction: column;
+  transform: translate3d(0, calc(var(--d) * -10%), 0);
+  animation: odo-roll var(--count-duration, 1.4s) var(--ease-reveal) var(--count-delay, 0ms) both;
 }
-@keyframes count-up { from { --count: 0; } }
-.css-count {
-  --count: var(--to);
-  counter-reset: count var(--count);
-  animation: count-up var(--count-duration, 1.6s) var(--ease-reveal) var(--count-delay, 0ms) both;
-}
-.css-count::after { content: counter(count); }
+@keyframes odo-roll { from { transform: translate3d(0, 0, 0); } }
 
 /* Sections below the first screen skip layout and paint until they come
    near the viewport. The page's first layout used to cover every section at
@@ -575,6 +574,22 @@ html:has(.site-theme)::-webkit-scrollbar-thumb:hover { background: rgb(180 84 31
    intrinsic size counts inside the padding, so 100svh here overshot). */
 .cv-screen { content-visibility: auto; contain-intrinsic-size: auto 1px; }
 .cv-block { content-visibility: auto; contain-intrinsic-size: auto 720px; }
+
+/* Phones: the same entrance, lighter. Word masks (clip-path) are dropped so
+   each word animates as a plain composited layer instead of repainting
+   inside its clip every frame; distances and durations are shorter. */
+@media (max-width: 767px) {
+  .split-mask { clip-path: none; }
+  .split-word { transform: translate3d(0, 0.3em, 0); }
+  .split-text[data-split="mount"] .split-word { animation-duration: 0.55s; }
+  @keyframes split-in {
+    from { opacity: 0.01; transform: translate3d(0, 0.3em, 0); }
+    to { opacity: 1; transform: none; }
+  }
+  .enter { --enter-y: 12px; animation-duration: 0.55s; }
+  .enter-move { animation-duration: 0.6s; }
+  .odo-col { animation-duration: 1s; }
+}
 
 /* Route change (components/PageTransition.tsx). */
 @keyframes page-enter {
@@ -805,12 +820,14 @@ html:has(.site-theme)::-webkit-scrollbar-thumb:hover { background: rgb(180 84 31
   .nav-underline,
   .message-in,
   .split-text[data-split="mount"] .split-word,
-  .type-char,
-  .css-count {
+  .type-char {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
-    box-shadow: none !important;
+  }
+  /* The odometer's resting transform *is* the value: stop the roll only. */
+  .odo-col {
+    animation: none !important;
   }
   .btn-sheen::before {
     display: none;

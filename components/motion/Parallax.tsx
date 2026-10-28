@@ -54,6 +54,16 @@ export function Parallax({
     };
 
     el.style.transition = "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)";
+
+    // Touch screens: no scroll-linked movement. On iOS a transform written
+    // from a scroll handler trails the native scroll and judders; the photo
+    // just eases once to its mid-pass framing and stays there.
+    if (window.matchMedia("(pointer: coarse)").matches) {
+      el.style.transform = `translate3d(0, 0, 0) scale(${((s0 + s1) / 2).toFixed(4)})`;
+      io.disconnect();
+      return;
+    }
+
     const off = onScrollFrame(update);
     const settle = setTimeout(() => (el.style.transition = ""), 800);
     return () => {

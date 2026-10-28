@@ -39,8 +39,8 @@ export default function Hero() {
       className="relative isolate flex min-h-[100svh] flex-col overflow-hidden pt-[clamp(5.25rem,11svh,7rem)]"
     >
       <div aria-hidden className="blueprint absolute inset-0 -z-10" />
-      <div aria-hidden className="absolute -right-40 top-0 -z-10 h-[640px] w-[640px] rounded-full bg-accent/[0.12] blur-[130px]" />
-      <div aria-hidden className="absolute -left-40 bottom-0 -z-10 h-[520px] w-[520px] rounded-full bg-teal/[0.07] blur-[130px]" />
+      <div aria-hidden className="absolute -right-40 top-0 -z-10 hidden h-[640px] w-[640px] rounded-full bg-accent/[0.12] blur-[130px] md:block" />
+      <div aria-hidden className="absolute -left-40 bottom-0 -z-10 hidden h-[520px] w-[520px] rounded-full bg-teal/[0.07] blur-[130px] md:block" />
 
       <div className="mx-auto grid w-full max-w-7xl flex-1 grid-cols-1 grid-rows-[auto_1fr] gap-[clamp(1rem,3svh,2rem)] px-5 pb-[clamp(1rem,3.5svh,2.5rem)] sm:px-8 lg:grid-cols-12 lg:grid-rows-1 lg:gap-12">
         {/* Copy */}

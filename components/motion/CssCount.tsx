@@ -1,16 +1,19 @@
 import type { CSSProperties } from "react";
 
 /**
- * An integer that counts up from zero, entirely in CSS (".css-count" in
- * globals.css), for figures on the first screen: it starts with the first
- * paint instead of after hydration, and the server HTML never shows a
- * placeholder "0". The real number is kept for screen readers and crawlers;
- * the hidden copy reserves the final width so nothing beside it moves.
+ * A whole number that counts up on load, for figures on the first screen.
+ *
+ * Each digit is a 0–9 column rolling up to its value inside a one-digit
+ * window (".odo" in globals.css). It is a transform animation, so the
+ * compositor runs it from the first paint, with no JavaScript, and it keeps
+ * moving even while a phone's main thread is busy. The resting position is the
+ * final value, so the server HTML never shows a placeholder "0". Screen
+ * readers and crawlers get the plain number.
  */
 export function CssCount({
   value,
   delay = 0,
-  duration = 1.6,
+  duration = 1.4,
   className,
 }: {
   value: number;
@@ -20,24 +23,32 @@ export function CssCount({
   duration?: number;
   className?: string;
 }) {
+  const digits = String(Math.round(value)).split("");
   return (
-    <span className={className} style={{ display: "inline-grid", justifyItems: "end", fontVariantNumeric: "tabular-nums" }}>
+    <span
+      className={className}
+      style={
+        {
+          "--count-delay": `${Math.round(delay * 1000)}ms`,
+          "--count-duration": `${duration}s`,
+          fontVariantNumeric: "tabular-nums",
+        } as CSSProperties
+      }
+    >
       <span className="sr-only">{value}</span>
-      <span aria-hidden style={{ gridArea: "1 / 1", visibility: "hidden" }}>
-        {value}
+      <span aria-hidden className="inline-flex">
+        {digits.map((d, i) => (
+          <span key={i} className="odo">
+            <span className="odo-col" style={{ "--d": Number(d) } as CSSProperties}>
+              {Array.from({ length: 10 }, (_, n) => (
+                <span key={n} className="block h-[1em]">
+                  {n}
+                </span>
+              ))}
+            </span>
+          </span>
+        ))}
       </span>
-      <span
-        aria-hidden
-        className="css-count"
-        style={
-          {
-            gridArea: "1 / 1",
-            "--to": value,
-            "--count-delay": `${Math.round(delay * 1000)}ms`,
-            "--count-duration": `${duration}s`,
-          } as CSSProperties
-        }
-      />
     </span>
   );
 }
