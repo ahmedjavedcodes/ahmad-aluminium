@@ -1,6 +1,5 @@
 "use client";
 
-import { useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 
 export function Marquee({
@@ -14,16 +13,8 @@ export function Marquee({
   className?: string;
   reverse?: boolean;
 }) {
-  const reduceMotion = useReducedMotion();
-
-  if (reduceMotion) {
-    return (
-      <div className={`overflow-hidden ${className ?? ""}`}>
-        <div className="flex w-max gap-10">{children}</div>
-      </div>
-    );
-  }
-
+  // One tree for everyone: under reduced motion the CSS in globals.css stops
+  // the animation, which avoids a server/client markup mismatch.
   return (
     <div className={`group overflow-hidden ${className ?? ""}`}>
       <div

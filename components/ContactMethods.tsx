@@ -1,6 +1,7 @@
 "use client";
 
-import { MessageCircle, Phone, MapPin, Clock, ArrowUpRight } from "lucide-react";
+import { MessageCircle, Phone, MapPin, Clock, ArrowUpRight, type LucideIcon } from "lucide-react";
+import type { ReactNode } from "react";
 import { content } from "@/data/content";
 import {
   site,
@@ -12,175 +13,190 @@ import {
   cityName,
 } from "@/data/site";
 import { Reveal } from "@/lib/motion";
-import { MagneticButton } from "@/components/motion/MagneticButton";
+import { Spotlight } from "@/components/motion/Spotlight";
 import { RatingBadge } from "@/components/Testimonials";
+import { SectionHeading } from "@/components/SectionHeading";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+function Channel({
+  icon: Icon,
+  number,
+  title,
+  body,
+  detail,
+  action,
+  primary = false,
+}: {
+  icon: LucideIcon;
+  number: string;
+  title: string;
+  body: string;
+  detail: ReactNode;
+  action: ReactNode;
+  primary?: boolean;
+}) {
+  return (
+    <Spotlight className="h-full rounded-xl">
+      <div
+        className={cn(
+          "flex h-full flex-col rounded-xl p-7",
+          primary ? "glass-panel border-accent/35" : "panel"
+        )}
+      >
+        <div className="mb-6 flex items-center justify-between">
+          <span
+            className={cn(
+              "flex h-12 w-12 items-center justify-center rounded-lg",
+              primary ? "bg-accent text-on-accent" : "border border-border bg-bg text-accent"
+            )}
+          >
+            <Icon size={22} aria-hidden />
+          </span>
+          <span className="font-mono text-[11px] text-ink-subtle">{number}</span>
+        </div>
+        <h3 className="font-display text-2xl font-bold tracking-[-0.02em] text-ink">{title}</h3>
+        <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-muted">{body}</p>
+        <div className="mt-5">{detail}</div>
+        <div className="mt-6">{action}</div>
+      </div>
+    </Spotlight>
+  );
+}
 
 /**
- * Three ways to make contact — WhatsApp, phone, or visiting the workshop.
- *
- * This replaces the enquiry form deliberately. A form on a local trade site
- * adds a step, needs a delivery backend to avoid silently dropping leads, and
- * competes with the two channels customers in Lahore actually use. WhatsApp
- * and tel: links open the app directly, on the device the visitor is already
- * holding, with the enquiry pre-written.
+ * Three ways to make contact — WhatsApp, phone, or visiting the workshop —
+ * followed by the map. On the contact page this sits under the quote builder,
+ * for visitors who would rather just call or drop in.
  */
-export function ContactMethods() {
+export function ContactMethods({ index }: { index?: number }) {
   const waMessage = `Hi ${site.name}, I'd like a free quotation. My area in ${cityName} is: `;
 
   return (
-    <section id="contact" className="relative py-10 sm:py-14">
+    <section id="contact" className="relative py-24 sm:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-          {/* WhatsApp — primary channel */}
+        <SectionHeading
+          index={index}
+          eyebrow={content.contact.eyebrow}
+          heading={{ lead: "Call, message or", accent: "visit the workshop", tail: "." }}
+          className="max-w-2xl"
+        />
+
+        <div className="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-3">
           <Reveal className="h-full">
-            <div className="glass-panel flex h-full flex-col rounded-3xl border-accent/25 p-8">
-              <span className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-accent-tint text-accent">
-                <MessageCircle size={22} aria-hidden />
-              </span>
-              <h2 className="font-display text-xl font-semibold text-ink">
-                {content.contactMethods.whatsapp.title}
-              </h2>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-muted">
-                {content.contactMethods.whatsapp.body}
-              </p>
-              <p className="mt-4 font-display text-lg font-semibold text-ink">
-                {site.phoneLocal}
-              </p>
-              <MagneticButton className="mt-5 block w-full" strength={0.15}>
-                <a
-                  href={whatsappHref(waMessage)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-cursor="hover"
-                  className="focus-ring group flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-on-accent transition-shadow duration-300 hover:shadow-glow-accent"
-                >
-                  {content.contactMethods.whatsapp.cta}
-                  <ArrowUpRight
-                    size={16}
-                    aria-hidden
-                    className="transition-transform duration-300 ease-out-expo group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                </a>
-              </MagneticButton>
-            </div>
+            <Channel
+              primary
+              icon={MessageCircle}
+              number="01"
+              title={content.contactMethods.whatsapp.title}
+              body={content.contactMethods.whatsapp.body}
+              detail={<p className="font-mono text-lg text-ink">{site.phoneLocal}</p>}
+              action={
+                <Button asChild className="w-full">
+                  <a href={whatsappHref(waMessage)} target="_blank" rel="noopener noreferrer">
+                    {content.contactMethods.whatsapp.cta}
+                    <ArrowUpRight
+                      size={16}
+                      aria-hidden
+                      className="transition-transform duration-300 ease-out-expo group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    />
+                  </a>
+                </Button>
+              }
+            />
           </Reveal>
 
-          {/* Call */}
           <Reveal index={1} className="h-full">
-            <div className="glass-panel flex h-full flex-col rounded-3xl p-8">
-              <span className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-teal-tint text-teal">
-                <Phone size={22} aria-hidden />
-              </span>
-              <h2 className="font-display text-xl font-semibold text-ink">
-                {content.contactMethods.call.title}
-              </h2>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-muted">
-                {content.contactMethods.call.body}
-              </p>
-              <p className="mt-4 font-display text-lg font-semibold text-ink">
-                {site.phoneLocal}
-              </p>
-              <MagneticButton className="mt-5 block w-full" strength={0.15}>
-                <a
-                  href={telHref}
-                  data-cursor="hover"
-                  className="focus-ring flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-border bg-bg-elevated px-6 py-3.5 text-sm font-semibold text-ink transition-colors duration-300 hover:border-accent/40 hover:text-accent"
-                >
-                  <Phone size={15} aria-hidden />
-                  {content.contactMethods.call.cta}
-                </a>
-              </MagneticButton>
-            </div>
+            <Channel
+              icon={Phone}
+              number="02"
+              title={content.contactMethods.call.title}
+              body={content.contactMethods.call.body}
+              detail={<p className="font-mono text-lg text-ink">{site.phoneLocal}</p>}
+              action={
+                <Button asChild variant="outline" className="w-full">
+                  <a href={telHref}>
+                    <Phone size={15} aria-hidden />
+                    {content.contactMethods.call.cta}
+                  </a>
+                </Button>
+              }
+            />
           </Reveal>
 
-          {/* Visit */}
           <Reveal index={2} className="h-full">
-            <div className="glass-panel flex h-full flex-col rounded-3xl p-8">
-              <span className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-accent-tint text-accent">
-                <MapPin size={22} aria-hidden />
-              </span>
-              <h2 className="font-display text-xl font-semibold text-ink">
-                {content.contactMethods.visit.title}
-              </h2>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-muted">
-                {content.contactMethods.visit.body}
-              </p>
-              <address className="mt-4 not-italic">
-                <span className="block font-display text-lg font-semibold leading-snug text-ink">
-                  {site.address.street}
-                </span>
-                <span className="block text-sm text-ink-muted">
-                  {site.address.city} {site.address.postalCode}, {site.address.country}
-                </span>
-              </address>
-              <p className="mt-3 flex items-center gap-2 text-sm text-ink-muted">
-                <Clock size={14} className="shrink-0 text-teal" aria-hidden />
-                {site.hours}
-              </p>
-              <MagneticButton className="mt-5 block w-full" strength={0.15}>
-                <a
-                  href={directionsHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-cursor="hover"
-                  className="focus-ring group flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-border bg-bg-elevated px-6 py-3.5 text-sm font-semibold text-ink transition-colors duration-300 hover:border-accent/40 hover:text-accent"
-                >
-                  {content.contactMethods.visit.cta}
-                  <ArrowUpRight
-                    size={16}
-                    aria-hidden
-                    className="transition-transform duration-300 ease-out-expo group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                </a>
-              </MagneticButton>
-            </div>
+            <Channel
+              icon={MapPin}
+              number="03"
+              title={content.contactMethods.visit.title}
+              body={content.contactMethods.visit.body}
+              detail={
+                <>
+                  <address className="not-italic">
+                    <span className="block font-display text-lg font-semibold leading-snug text-ink">
+                      {site.address.street}
+                    </span>
+                    <span className="block text-sm text-ink-muted">
+                      {site.address.city} {site.address.postalCode}, {site.address.country}
+                    </span>
+                  </address>
+                  <p className="mt-3 flex items-center gap-2 text-sm text-ink-muted">
+                    <Clock size={14} className="shrink-0 text-teal" aria-hidden />
+                    {site.hours}
+                  </p>
+                </>
+              }
+              action={
+                <Button asChild variant="outline" className="w-full">
+                  <a href={directionsHref} target="_blank" rel="noopener noreferrer">
+                    {content.contactMethods.visit.cta}
+                    <ArrowUpRight size={16} aria-hidden />
+                  </a>
+                </Button>
+              }
+            />
           </Reveal>
         </div>
 
-        {/*
-          Map of the workshop.
-
-          Loaded lazily and only as an iframe embed — no Maps JS API key, no
-          third-party script on the page, and nothing that blocks first paint.
-          The overlaid link opens the business's own Google listing so a
-          visitor can read the reviews and get directions from there too.
-        */}
+        {/* Map of the workshop: a lazy iframe embed — no Maps JS, no key, and
+            nothing that blocks first paint. The darkening filter keeps the
+            light map tiles from glaring against the page. */}
         <Reveal index={3} className="mt-5">
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-bg-elevated">
+          <div className="panel relative overflow-hidden rounded-xl">
             <iframe
               src={mapEmbedSrc}
               title={`Map showing ${site.name} in ${site.address.street}, ${cityName}`}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               allowFullScreen
-              className="block h-[320px] w-full border-0 sm:h-[380px]"
+              className="block h-[320px] w-full border-0 [filter:invert(0.9)_hue-rotate(180deg)_saturate(0.6)_brightness(0.95)] sm:h-[400px]"
             />
             <div className="flex flex-col gap-3 border-t border-border p-5 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-ink-muted">
-                <span className="font-medium text-ink">{site.address.street}</span>
+                <MapPin size={14} className="mr-2 inline text-accent" aria-hidden />
+                <span className="font-medium text-ink">{nap.short}</span>
                 {" — "}
-                {cityName} {site.address.postalCode}, {site.address.country}
+                {site.address.postalCode}, {site.address.country}
               </p>
               <a
                 href={site.mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="focus-ring group inline-flex w-fit items-center gap-1.5 rounded-lg text-sm font-medium text-accent"
+                className="focus-ring group inline-flex w-fit items-center gap-1.5 rounded-lg text-sm font-medium text-accent-deep"
               >
                 Open in Google Maps
                 <ArrowUpRight
                   size={15}
                   aria-hidden
-                  className="transition-transform duration-300 ease-out-expo group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  className="transition-transform duration-300 ease-out-expo group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                 />
               </a>
             </div>
           </div>
         </Reveal>
 
-        {/* Email kept as a secondary line rather than a fourth card: WhatsApp,
-            phone and visiting are the routes customers here actually use, and
-            a fourth tile would dilute them. */}
+        {/* Email as a secondary line rather than a fourth card: WhatsApp,
+            phone and visiting are the routes customers here actually use. */}
         <Reveal index={4} className="mt-8 flex flex-col items-center gap-4">
           <p className="text-sm text-ink-muted">
             Prefer email?{" "}
@@ -188,7 +204,7 @@ export function ContactMethods() {
               href={`mailto:${site.email}?subject=${encodeURIComponent(
                 `Quotation request — ${cityName}`
               )}`}
-              className="focus-ring link-underline font-medium text-accent"
+              className="focus-ring link-underline font-medium text-accent-deep"
             >
               {site.email}
             </a>

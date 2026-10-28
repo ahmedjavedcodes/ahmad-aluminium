@@ -28,7 +28,7 @@ export function PageHero({
   const accentText = words.slice(splitAt).join(" ");
 
   return (
-    <section className="relative overflow-hidden pb-16 pt-36 sm:pb-20 sm:pt-44">
+    <section className="relative isolate overflow-hidden border-b border-border pb-16 pt-36 sm:pb-20 sm:pt-44">
       <div className="absolute inset-0 -z-20">
         {image && (
           <Image
@@ -41,26 +41,25 @@ export function PageHero({
             className="object-cover"
           />
         )}
-        {/* Same split treatment as the home hero: a solid ground under the
-            copy column, clearing to the right so the photograph is actually
-            visible instead of being scrimmed down to a flat block. */}
-        <div className="absolute inset-0 bg-gradient-to-b from-bg via-transparent to-bg" />
-        <div className="absolute inset-0 bg-gradient-to-r from-bg from-[52%] via-bg/60 via-[72%] to-transparent to-[92%]" />
+        {/* Dark ground under the copy, clearing to the right so the
+            photograph still reads on wide screens. */}
+        <div className="absolute inset-0 bg-bg/80 lg:bg-transparent" />
+        <div className="absolute inset-0 hidden bg-gradient-to-r from-bg from-[40%] via-bg/80 via-[65%] to-bg/25 lg:block" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-bg to-transparent" />
       </div>
-      <div aria-hidden className="absolute inset-0 -z-10 bg-mesh-accent" />
-      <div aria-hidden className="absolute inset-0 -z-10 bg-grid opacity-30" />
+      <div aria-hidden className="blueprint absolute inset-0 -z-10 opacity-60" />
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <Reveal>
           <nav
             aria-label="Breadcrumb"
-            className="mb-6 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-ink-muted"
+            className="mb-8 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-subtle"
           >
             {crumbs.map((c, i) => (
-              <span key={c.href} className="flex items-center gap-1.5">
-                {i > 0 && <ChevronRight size={12} className="text-ink-muted/50" aria-hidden />}
+              <span key={c.href} className="flex items-center gap-2">
+                {i > 0 && <ChevronRight size={12} className="text-ink-subtle/60" aria-hidden />}
                 {i === crumbs.length - 1 ? (
-                  <span aria-current="page" className="font-medium text-accent-deep">
+                  <span aria-current="page" className="text-accent-deep">
                     {c.label}
                   </span>
                 ) : (
@@ -74,17 +73,16 @@ export function PageHero({
         </Reveal>
 
         <Reveal index={1}>
-          <p className="glass-panel mb-5 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-accent-deep">
+          <p className="mb-6 inline-flex items-center gap-2.5 rounded-md border border-accent/30 bg-accent-tint px-3 py-1.5 font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-accent-deep">
+            <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent" />
             {eyebrow}
           </p>
         </Reveal>
 
-        {/* Split across two SplitText runs so the trailing words can take the
-            accent colour without nesting spans inside a single animated run. */}
-        <h1 className="max-w-4xl font-display text-[2.2rem] font-semibold leading-[1.14] tracking-[-0.02em] text-ink sm:text-5xl md:text-[3.4rem]">
-          {leadText && (
-            <SplitText as="span" text={leadText} className="inline" trigger="mount" />
-          )}
+        {/* Two SplitText runs so the trailing words can take the accent colour
+            without nesting spans inside a single animated run. */}
+        <h1 className="max-w-4xl font-display text-[2.4rem] font-bold leading-[1.02] tracking-[-0.035em] text-ink sm:text-6xl md:text-[4.2rem]">
+          {leadText && <SplitText as="span" text={leadText} className="inline" trigger="mount" />}
           {leadText && accentText ? " " : null}
           {accentText && (
             <SplitText
@@ -100,7 +98,7 @@ export function PageHero({
 
         {description && (
           <Reveal index={3}>
-            <p className="mt-6 max-w-prose text-base leading-relaxed text-ink-muted sm:text-lg">
+            <p className="mt-7 max-w-prose text-base leading-relaxed text-ink-muted sm:text-lg">
               {description}
             </p>
           </Reveal>

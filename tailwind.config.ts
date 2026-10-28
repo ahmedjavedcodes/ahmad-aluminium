@@ -44,6 +44,7 @@ const config: Config = {
       fontFamily: {
         display: ["var(--font-display)"],
         body: ["var(--font-body)"],
+        mono: ["var(--font-mono, ui-monospace)", "ui-monospace", "monospace"],
       },
       backgroundImage: {
         "mesh-accent":
@@ -55,6 +56,18 @@ const config: Config = {
         glass: "0 8px 32px rgb(28 26 22 / 0.10)",
         "glow-accent": "0 10px 30px -10px rgb(154 69 19 / 0.55)",
         lift: "0 18px 40px -18px rgb(28 26 22 / 0.28)",
+        // Public site (dark) — deep drop plus a copper rim on hover.
+        deep: "0 30px 60px -30px rgb(0 0 0 / 0.85)",
+        "copper-rim": "0 0 0 1px rgb(222 135 80 / 0.35), 0 24px 50px -24px rgb(222 135 80 / 0.35)",
+        "copper-glow": "0 12px 36px -10px rgb(222 135 80 / 0.6)",
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.32s cubic-bezier(0.16, 1, 0.3, 1)",
+        "accordion-up": "accordion-up 0.26s cubic-bezier(0.16, 1, 0.3, 1)",
+        "sheet-in": "sheet-in 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
+        "sheet-out": "sheet-out 0.3s cubic-bezier(0.7, 0, 0.84, 0)",
+        "overlay-in": "overlay-in 0.3s ease-out",
+        "overlay-out": "overlay-out 0.25s ease-in",
       },
       borderRadius: {
         xl2: "1.25rem",

@@ -295,3 +295,224 @@ p {
     clip-path: none;
   }
 }
+
+/* ===========================================================================
+   Public site theme — "anodised workshop"
+
+   Everything below is scoped to `.site-theme`, the wrapper rendered by
+   app/(site)/layout.tsx and app/not-found.tsx. The /admin billing area never
+   sits inside that wrapper, so it keeps the light palette defined on :root.
+
+   The channel-triplet convention above still applies. Contrast against the
+   page ground (#0b0d0f):
+
+     ink          #edeef0  →  17.4:1
+     ink-muted    #a3aab2  →   8.1:1
+     ink-subtle   #7c848d  →   5.1:1
+     accent       #de8750  →   7.1:1   (copper — headings, icons, buttons)
+     accent-deep  #eca06e  →   8.9:1   (small copper text, eyebrows)
+     teal         #8fb4c6  →   9.4:1   (cool "glass" secondary)
+     on-accent    #0b0d0f  on copper  →  7.1:1
+   ========================================================================= */
+
+.site-theme {
+  --color-bg: 11 13 15;
+  --color-bg-elevated: 21 24 27;
+  --color-bg-sunken: 7 8 10;
+
+  --color-ink: 237 238 240;
+  --color-ink-muted: 163 170 178;
+  --color-ink-subtle: 124 132 141;
+
+  --color-accent: 222 135 80;
+  --color-accent-deep: 236 160 110;
+
+  --color-teal: 143 180 198;
+  --color-teal-deep: 170 201 216;
+
+  --color-on-accent: 11 13 15;
+
+  --color-surface: rgb(255 255 255 / 0.035);
+  --color-border: rgb(255 255 255 / 0.09);
+  --color-border-strong: rgb(255 255 255 / 0.16);
+  --color-accent-tint: rgb(222 135 80 / 0.12);
+  --color-teal-tint: rgb(143 180 198 / 0.1);
+
+  --font-display: "Archivo Variable", "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* A stacking context of its own, so its background paints *under* the
+     negative-z-index hero photographs instead of over them (see the note on
+     <html> above). */
+  isolation: isolate;
+  min-height: 100dvh;
+  background: rgb(var(--color-bg));
+  color: rgb(var(--color-ink));
+  color-scheme: dark;
+}
+
+/* The ground behind overscroll and the scrollbar, for site pages only. */
+html:has(.site-theme) {
+  background: rgb(11 13 15);
+  color-scheme: dark;
+}
+html:has(.site-theme)::-webkit-scrollbar-track { background: rgb(11 13 15); }
+html:has(.site-theme)::-webkit-scrollbar-thumb { background: rgb(52 57 63); }
+html:has(.site-theme)::-webkit-scrollbar-thumb:hover { background: rgb(222 135 80); }
+
+/* Archivo is a grotesque with a width axis; set slightly condensed it reads as
+   stamped, engineered type rather than editorial serif. */
+.site-theme h1,
+.site-theme h2,
+.site-theme h3,
+.site-theme h4,
+.site-theme .font-display {
+  font-stretch: 88%;
+  font-variant-numeric: tabular-nums;
+}
+
+.site-theme .font-mono {
+  font-family: var(--font-mono);
+  font-variant-ligatures: none;
+}
+
+/* Smoked glass. Overrides the light-theme panel for every existing usage on
+   the public pages. */
+.site-theme .glass-panel {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.055), rgb(255 255 255 / 0.02));
+  border: 1px solid var(--color-border);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.06),
+    0 24px 48px -24px rgb(0 0 0 / 0.7);
+}
+
+/* Solid machined panel: brushed vertical grain plus a top bevel highlight. */
+.site-theme .panel {
+  background-color: rgb(var(--color-bg-elevated));
+  background-image:
+    linear-gradient(180deg, rgb(255 255 255 / 0.035), transparent 40%),
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.012) 0 1px, transparent 1px 3px);
+  border: 1px solid var(--color-border);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05);
+}
+
+.site-theme .bg-grid {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.04) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* Blueprint grid that fades out towards the edges of its box. */
+.blueprint {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+    linear-gradient(rgb(255 255 255 / 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.02) 1px, transparent 1px);
+  background-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 100%);
+}
+
+.site-theme .noise-overlay { opacity: 0.05; mix-blend-mode: overlay; }
+
+/* Copper hairline — a thin rule that brightens in the middle. */
+.copper-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(222 135 80 / 0.7), transparent);
+}
+
+/* Corner brackets, like crop marks on a shop drawing. */
+.crop-marks { position: relative; }
+.crop-marks::before,
+.crop-marks::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: rgb(var(--color-accent) / 0.8);
+  pointer-events: none;
+  z-index: 2;
+}
+.crop-marks::before { top: -6px; left: -6px; border-top: 1px solid; border-left: 1px solid; }
+.crop-marks::after { bottom: -6px; right: -6px; border-bottom: 1px solid; border-right: 1px solid; }
+
+/* Cursor spotlight. `--mx`/`--my` are set by components/motion/Spotlight.tsx. */
+.spotlight { position: relative; }
+.spotlight::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+  background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgb(222 135 80 / 0.12), transparent 65%);
+}
+.spotlight:hover::after { opacity: 1; }
+
+/* Primary-button sheen: a diagonal highlight that sweeps across on hover. */
+.btn-sheen { position: relative; overflow: hidden; isolation: isolate; }
+.btn-sheen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: translateX(-120%) skewX(-20deg);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.35), transparent);
+  transition: transform 0.75s var(--ease-out-expo);
+}
+.btn-sheen:hover::before { transform: translateX(120%) skewX(-20deg); }
+
+/* Slow light sweep across glass in the hero. */
+@keyframes glass-sweep {
+  0%, 15% { transform: translateX(-130%) skewX(-18deg); }
+  55%, 100% { transform: translateX(230%) skewX(-18deg); }
+}
+.glass-sweep { position: relative; overflow: hidden; }
+.glass-sweep::before {
+  content: "";
+  position: absolute;
+  inset: -20% auto -20% 0;
+  width: 40%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.07), transparent);
+  animation: glass-sweep 7s ease-in-out infinite;
+}
+
+/* Gentle pulse for "open now"-style status dots. */
+@keyframes status-pulse {
+  0% { box-shadow: 0 0 0 0 rgb(222 135 80 / 0.55); }
+  70%, 100% { box-shadow: 0 0 0 8px rgb(222 135 80 / 0); }
+}
+.status-dot { animation: status-pulse 2.4s ease-out infinite; }
+
+/* Accordion height animation (components/ui/accordion.tsx). */
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
+/* Mobile sheet (components/ui/sheet.tsx). */
+@keyframes sheet-in { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes sheet-out { from { transform: translateX(0); } to { transform: translateX(100%); } }
+@keyframes overlay-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes overlay-out { from { opacity: 1; } to { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-sweep::before,
+  .status-dot {
+    animation: none;
+  }
+  .btn-sheen::before {
+    display: none;
+  }
+}

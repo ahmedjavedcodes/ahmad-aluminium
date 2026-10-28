@@ -4,6 +4,7 @@ import { ServicesGrid } from "@/components/ServicesGrid";
 import { ServiceAreas } from "@/components/ServiceAreas";
 import CTASection from "@/components/CTASection";
 import Process from "@/components/Process";
+import { QuoteBuilder } from "@/components/QuoteBuilder";
 import { JsonLd } from "@/components/JsonLd";
 import { heroImage, services } from "@/data/services";
 import { content } from "@/data/content";
@@ -51,14 +52,15 @@ export default function ServicesPage() {
         image={heroImage}
       />
 
-      <section className="relative pb-24 sm:pb-28">
+      <section className="relative py-20 sm:py-24">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <ServicesGrid />
         </div>
       </section>
 
-      <Process />
-      <ServiceAreas />
+      <Process index={1} />
+      <QuoteBuilder index={2} />
+      <ServiceAreas index={3} />
       <CTASection />
     </>
   );

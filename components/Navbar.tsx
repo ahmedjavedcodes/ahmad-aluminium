@@ -3,11 +3,21 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, MessageCircle } from "lucide-react";
+import { motion } from "framer-motion";
+import { Menu, Phone, MessageCircle, ArrowRight, Clock } from "lucide-react";
 import { content } from "@/data/content";
 import { site, cityName, telHref, whatsappHref } from "@/data/site";
-import { LogoMark } from "@/components/Logo";
+import { Logo } from "@/components/Logo";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
+import { QUOTE_HREF } from "@/lib/quote";
 
 const links = [
   { href: "/", label: content.nav.home },
@@ -21,12 +31,15 @@ const waHref = whatsappHref(
 );
 
 /**
- * Floating pill navigation.
+ * Workshop-bar navigation.
  *
- * Sized to its contents and centred rather than spanning the full width — a
- * full-bleed bar on a page whose content sits in a 1280px column reads as a
- * heavy band across the top and competes with the hero. The pill keeps the
- * chrome proportional to the content beneath it.
+ * A slim glass bar aligned to the 1280px content column. It carries the short
+ * wordmark (the hero still shows the full registered name), the four routes,
+ * the phone number as text on wide screens — a visible number is itself a
+ * trust signal for a local trade — and one copper call to action.
+ *
+ * On phones the links move into a shadcn Sheet, which brings a real focus
+ * trap, Escape-to-close and scroll locking.
  */
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -44,36 +57,33 @@ export default function Navbar() {
     setOpen(false);
   }, [pathname]);
 
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
-
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 sm:pt-5">
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4">
       <nav
         aria-label="Main"
-        className={`glass-panel flex items-center gap-1 rounded-full p-1.5 transition-shadow duration-500 ease-out-expo ${
-          scrolled ? "shadow-glass" : "shadow-none"
-        }`}
+        className={cn(
+          "mx-auto flex h-16 max-w-7xl items-center gap-3 rounded-xl border px-3 transition-[background-color,border-color,box-shadow] duration-500 ease-out-expo sm:px-4",
+          scrolled
+            ? "glass-panel border-border"
+            : "border-transparent bg-transparent"
+        )}
       >
         <Link
           href="/"
           aria-label={`${site.name} — home`}
-          className="focus-ring group shrink-0 rounded-full"
+          className="focus-ring group mr-auto shrink-0 rounded-lg md:mr-0"
         >
-          {/* Mark only — no wordmark. The pill stays the same short width at
-              every breakpoint; the hero lockup is what names the business. */}
-          <LogoMark className="h-9 w-9 shrink-0 text-accent transition-transform duration-500 ease-out-expo group-hover:-rotate-6" />
+          <Logo
+            markClassName="h-9 w-9 text-accent transition-transform duration-500 ease-out-expo group-hover:-rotate-6"
+            textClassName="hidden text-[15px] uppercase tracking-[0.02em] sm:block"
+          />
         </Link>
 
         {/* Desktop links */}
-        <ul className="hidden items-center gap-0.5 pl-1 md:flex">
+        <ul className="mx-auto hidden items-center gap-1 md:flex">
           {links.map((link) => {
             const active = isActive(link.href);
             return (
@@ -81,14 +91,15 @@ export default function Navbar() {
                 <Link
                   href={link.href}
                   aria-current={active ? "page" : undefined}
-                  className={`focus-ring relative block rounded-full px-3.5 py-2 text-sm transition-colors duration-300 ${
+                  className={cn(
+                    "focus-ring relative block rounded-md px-3.5 py-2 text-sm transition-colors duration-300",
                     active ? "text-ink" : "text-ink-muted hover:text-ink"
-                  }`}
+                  )}
                 >
                   {active && (
                     <motion.span
-                      layoutId="nav-pill"
-                      className="absolute inset-0 -z-10 rounded-full bg-accent-tint"
+                      layoutId="nav-active"
+                      className="absolute inset-x-3 -bottom-[3px] h-[2px] rounded-full bg-accent"
                       transition={{ type: "spring", stiffness: 420, damping: 36 }}
                     />
                   )}
@@ -99,95 +110,116 @@ export default function Navbar() {
           })}
         </ul>
 
-        <span aria-hidden className="mx-1 hidden h-6 w-px bg-border md:block" />
-
-        {/* Contact actions — icon-only to keep the pill short */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
           <a
             href={telHref}
-            title={`Call ${site.phoneLocal}`}
+            className="focus-ring hidden items-center gap-2 rounded-md px-2 py-1.5 font-mono text-[13px] text-ink-muted transition-colors hover:text-ink lg:flex"
+          >
+            <Phone size={14} className="text-accent" aria-hidden />
+            {site.phoneLocal}
+          </a>
+
+          <Button asChild size="sm" className="hidden sm:inline-flex">
+            <Link href={QUOTE_HREF}>
+              {content.nav.quote}
+              <ArrowRight
+                size={15}
+                aria-hidden
+                className="transition-transform duration-300 group-hover:translate-x-0.5"
+              />
+            </Link>
+          </Button>
+
+          <a
+            href={telHref}
             aria-label={`Call ${site.phoneLocal}`}
-            className="focus-ring flex h-9 w-9 items-center justify-center rounded-full text-ink-muted transition-colors duration-300 hover:bg-accent-tint hover:text-accent"
+            className="focus-ring flex h-10 w-10 items-center justify-center rounded-lg border border-border text-accent transition-colors hover:border-accent/50 sm:hidden"
           >
             <Phone size={16} aria-hidden />
           </a>
-          <a
-            href={waHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            title={`WhatsApp ${site.phoneLocal}`}
-            aria-label={`WhatsApp ${site.phoneLocal}`}
-            className="focus-ring flex h-9 w-9 items-center justify-center rounded-full bg-accent text-on-accent transition-shadow duration-300 hover:shadow-glow-accent"
-          >
-            <MessageCircle size={16} aria-hidden />
-          </a>
 
-          <button
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-            onClick={() => setOpen((v) => !v)}
-            className="focus-ring flex h-9 w-9 cursor-pointer items-center justify-center rounded-full text-ink transition-colors duration-300 hover:bg-surface md:hidden"
-          >
-            {open ? <X size={18} /> : <Menu size={18} />}
-          </button>
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>
+              <button
+                aria-label="Open menu"
+                className="focus-ring flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-border text-ink transition-colors hover:border-accent/50 md:hidden"
+              >
+                <Menu size={18} aria-hidden />
+              </button>
+            </SheetTrigger>
+            <SheetContent>
+              <div className="border-b border-border px-6 pb-5 pt-6">
+                <SheetTitle asChild>
+                  <span>
+                    <Logo markClassName="h-9 w-9 text-accent" textClassName="text-base uppercase" />
+                  </span>
+                </SheetTitle>
+                <SheetDescription className="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-subtle">
+                  {cityName} · {site.phoneLocal}
+                </SheetDescription>
+              </div>
+
+              <ul className="flex flex-col px-3 py-4">
+                {links.map((link, i) => {
+                  const active = isActive(link.href);
+                  return (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        aria-current={active ? "page" : undefined}
+                        onClick={() => setOpen(false)}
+                        className={cn(
+                          "focus-ring flex items-baseline gap-4 rounded-lg px-3 py-3.5 transition-colors",
+                          active ? "bg-accent-tint" : "hover:bg-surface"
+                        )}
+                      >
+                        <span className="font-mono text-xs text-ink-subtle">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span
+                          className={cn(
+                            "font-display text-2xl font-semibold",
+                            active ? "text-accent" : "text-ink"
+                          )}
+                        >
+                          {link.label}
+                        </span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <div className="mt-auto flex flex-col gap-2.5 border-t border-border p-5">
+                <Button asChild size="lg">
+                  <Link href={QUOTE_HREF} onClick={() => setOpen(false)}>
+                    {content.nav.quote}
+                    <ArrowRight size={16} aria-hidden />
+                  </Link>
+                </Button>
+                <div className="grid grid-cols-2 gap-2.5">
+                  <Button asChild variant="outline">
+                    <a href={telHref}>
+                      <Phone size={15} className="text-accent" aria-hidden />
+                      {content.hero.ctaSecondary}
+                    </a>
+                  </Button>
+                  <Button asChild variant="outline">
+                    <a href={waHref} target="_blank" rel="noopener noreferrer">
+                      <MessageCircle size={15} className="text-accent" aria-hidden />
+                      WhatsApp
+                    </a>
+                  </Button>
+                </div>
+                <p className="mt-1 flex items-center gap-2 text-xs text-ink-subtle">
+                  <Clock size={13} aria-hidden />
+                  {site.hours}
+                </p>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </nav>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            id="mobile-menu"
-            initial={{ opacity: 0, y: -8, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.97 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="glass-panel absolute inset-x-4 top-[4.75rem] rounded-2xl p-4 md:hidden"
-          >
-            <ul className="flex flex-col gap-1">
-              {links.map((link, i) => (
-                <motion.li
-                  key={link.href}
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 + i * 0.05, duration: 0.3 }}
-                >
-                  <Link
-                    href={link.href}
-                    aria-current={isActive(link.href) ? "page" : undefined}
-                    className={`focus-ring block rounded-xl px-3 py-2.5 text-base transition-colors ${
-                      isActive(link.href)
-                        ? "bg-accent-tint font-medium text-accent"
-                        : "text-ink-muted hover:text-ink"
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                </motion.li>
-              ))}
-            </ul>
-
-            <div className="mt-3 grid grid-cols-2 gap-2.5 border-t border-border pt-3">
-              <a
-                href={telHref}
-                className="focus-ring flex items-center justify-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-ink"
-              >
-                <Phone size={15} className="text-accent" aria-hidden />
-                Call
-              </a>
-              <a
-                href={waHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="focus-ring flex items-center justify-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-on-accent"
-              >
-                <MessageCircle size={15} aria-hidden />
-                WhatsApp
-              </a>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </header>
   );
 }

@@ -51,17 +51,10 @@ export function SplitText({
   const words = text.split(" ").filter(Boolean);
   const Comp = motion[as];
 
-  // With motion suppressed, render the plain string — no masks, no transforms,
-  // nothing that could leave the heading invisible.
-  if (reduceMotion) {
-    const Static = as;
-    return (
-      <Static className={className}>
-        {wordClassName ? <span className={wordClassName}>{text}</span> : text}
-      </Static>
-    );
-  }
-
+  // The markup is identical with motion suppressed — the server cannot know
+  // the visitor's preference, and a different tree fails hydration. Instead
+  // the words start in their final position (`initial={false}`) and the
+  // reduced-motion CSS drops the clip mask, so the heading is never hidden.
   const animateProps =
     trigger === "mount"
       ? { animate: { y: "0%" } }
@@ -77,7 +70,7 @@ export function SplitText({
           <span className="split-mask">
             <motion.span
               className={`inline-block will-change-transform ${wordClassName ?? ""}`}
-              initial={{ y: "115%" }}
+              initial={reduceMotion ? false : { y: "115%" }}
               {...animateProps}
               transition={{
                 duration,

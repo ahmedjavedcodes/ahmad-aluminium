@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Layers, ShieldCheck, Receipt, Wrench, type LucideIcon } from "lucide-react";
 import { Reveal } from "@/lib/motion";
-import { TiltCard } from "@/components/motion/TiltCard";
+import { Spotlight } from "@/components/motion/Spotlight";
 import { SectionHeading } from "@/components/SectionHeading";
 import { content } from "@/data/content";
 import { services } from "@/data/services";
@@ -11,25 +11,26 @@ import { cityName } from "@/data/site";
 
 const icons: LucideIcon[] = [Layers, ShieldCheck, Receipt, Wrench];
 
-export function AboutStory() {
+export function AboutStory({ index }: { index?: number }) {
   return (
     <section className="relative py-24 sm:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+        <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2">
           <div>
             <SectionHeading
+              index={index}
               eyebrow={content.about.storyEyebrow}
               heading={content.about.storyHeading}
             />
             <Reveal index={1}>
-              <p className="mt-5 leading-relaxed text-ink-muted">{content.about.storyP1}</p>
+              <p className="mt-6 leading-relaxed text-ink-muted">{content.about.storyP1}</p>
               <p className="mt-4 leading-relaxed text-ink-muted">{content.about.storyP2}</p>
             </Reveal>
           </div>
 
           <Reveal index={1} variant="scale">
-            <TiltCard className="rounded-3xl">
-              <div className="relative h-[420px] overflow-hidden rounded-3xl border border-border">
+            <div className="crop-marks">
+              <div className="relative h-[440px] overflow-hidden rounded-xl border border-border">
                 <Image
                   src={services[0].image}
                   alt={`Aluminium and glass fabrication workshop in ${cityName}`}
@@ -37,9 +38,12 @@ export function AboutStory() {
                   sizes="(min-width: 1024px) 45vw, 100vw"
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                <span className="absolute bottom-4 left-4 rounded bg-black/60 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.16em] text-white/90 backdrop-blur">
+                  Workshop · {cityName}
+                </span>
               </div>
-            </TiltCard>
+            </div>
           </Reveal>
         </div>
       </div>
@@ -47,40 +51,40 @@ export function AboutStory() {
   );
 }
 
-export function AboutValues() {
+export function AboutValues({ index }: { index?: number }) {
   return (
     <section className="relative py-24 sm:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
+          index={index}
           eyebrow={content.about.valuesEyebrow}
           heading={content.about.valuesHeading}
           className="max-w-2xl"
         />
 
-        <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2">
-          {content.about.values.map((v, i) => {
-            const Icon = icons[i];
-            return (
-              <Reveal key={v.title} index={i} className="h-full">
-                <TiltCard className="h-full" intensity={4}>
-                  <div className="glass-panel h-full rounded-2xl p-8 transition-[border-color,box-shadow] duration-500 hover:border-accent/30 hover:shadow-lift">
-                    <span
-                      className={`mb-5 flex h-11 w-11 items-center justify-center rounded-xl ${
-                        i % 2 === 0
-                          ? "bg-accent-tint text-accent"
-                          : "bg-teal-tint text-teal"
-                      }`}
-                    >
-                      <Icon size={20} aria-hidden />
-                    </span>
-                    <h3 className="font-display text-lg font-semibold text-ink">{v.title}</h3>
-                    <p className="mt-2 leading-relaxed text-ink-muted">{v.description}</p>
+        <Reveal index={1} className="mt-14">
+          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2">
+            {content.about.values.map((v, i) => {
+              const Icon = icons[i];
+              return (
+                <Spotlight key={v.title} className="group h-full bg-bg-elevated">
+                  <div className="flex h-full flex-col p-8 sm:p-10">
+                    <div className="mb-8 flex items-center justify-between">
+                      <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-bg text-accent transition-colors duration-500 group-hover:border-accent/50">
+                        <Icon size={20} aria-hidden />
+                      </span>
+                      <span className="font-mono text-[11px] text-ink-subtle">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <h3 className="font-display text-xl font-bold tracking-[-0.015em] text-ink">{v.title}</h3>
+                    <p className="mt-2.5 leading-relaxed text-ink-muted">{v.description}</p>
                   </div>
-                </TiltCard>
-              </Reveal>
-            );
-          })}
-        </div>
+                </Spotlight>
+              );
+            })}
+          </div>
+        </Reveal>
       </div>
     </section>
   );

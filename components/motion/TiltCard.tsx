@@ -32,7 +32,7 @@ export function TiltCard({
   // Interpolating motion values straight into a template literal stringifies
   // them as "[object Object]", which shipped an invalid gradient in the
   // server-rendered HTML. useMotionTemplate produces a real reactive string.
-  const glow = useMotionTemplate`radial-gradient(280px circle at ${glowX} ${glowY}, rgba(154,69,19,0.13), transparent 70%)`;
+  const glow = useMotionTemplate`radial-gradient(280px circle at ${glowX} ${glowY}, rgba(222,135,80,0.12), transparent 70%)`;
 
   function handleMove(e: MouseEvent<HTMLDivElement>) {
     if (reduceMotion) return;

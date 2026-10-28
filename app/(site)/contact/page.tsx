@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { ContactMethods } from "@/components/ContactMethods";
+import { QuoteBuilder } from "@/components/QuoteBuilder";
 import { FAQ } from "@/components/FAQ";
 import { ServiceAreas } from "@/components/ServiceAreas";
 import { JsonLd } from "@/components/JsonLd";
@@ -45,9 +46,10 @@ export default function ContactPage() {
         image={heroImage}
       />
 
-      <ContactMethods />
-      <ServiceAreas />
-      <FAQ />
+      <QuoteBuilder index={1} />
+      <ContactMethods index={2} />
+      <ServiceAreas index={3} />
+      <FAQ index={4} />
     </>
   );
 }

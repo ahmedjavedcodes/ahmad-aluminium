@@ -43,20 +43,18 @@ export default function AboutPage() {
         image={services[4].image}
       />
 
-      <section className="relative pb-4">
+      <section className="relative pt-16">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <div className="glass-panel rounded-3xl p-8 sm:p-10">
-            <StatsStrip />
-          </div>
+          <StatsStrip />
         </div>
       </section>
 
-      <AboutStory />
-      <AboutValues />
-      <Testimonials />
-      <Process />
-      <ServiceAreas />
-      <Gallery />
+      <AboutStory index={1} />
+      <AboutValues index={2} />
+      <Testimonials index={3} />
+      <Process index={4} />
+      <ServiceAreas index={5} />
+      <Gallery index={6} />
       <CTASection />
     </>
   );
