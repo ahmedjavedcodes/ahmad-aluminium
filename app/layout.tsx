@@ -73,7 +73,12 @@ export const viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-PK">
+    // `data-scroll-behavior` lets Next.js switch smooth scrolling off while it
+    // moves to the top of a new page (it no longer does so by default in
+    // v16). Without it, the 6rem scroll-padding in globals.css made Next think
+    // a fresh page's top was hidden, and its scroll then glided smoothly down
+    // to the page's second section.
+    <html lang="en-PK" data-scroll-behavior="smooth">
       {/* No background utility here on purpose — the ground is set on <html>
           in globals.css so that negative-z-index hero imagery stays visible. */}
       <body className="text-ink antialiased">{children}</body>

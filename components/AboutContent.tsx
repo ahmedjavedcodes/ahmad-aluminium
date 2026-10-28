@@ -11,7 +11,7 @@ const icons: LucideIcon[] = [Layers, ShieldCheck, Receipt, Wrench];
 
 export function AboutStory({ index }: { index?: number }) {
   return (
-    <section className="relative py-24 sm:py-28">
+    <section className="relative py-14 sm:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2">
           <div>
@@ -51,7 +51,7 @@ export function AboutStory({ index }: { index?: number }) {
 
 export function AboutValues({ index }: { index?: number }) {
   return (
-    <section className="relative py-24 sm:py-28">
+    <section className="relative py-14 sm:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
           index={index}

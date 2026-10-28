@@ -18,6 +18,12 @@ import { useReveal } from "@/lib/reveal";
  * It is a *minimum* height: on an unusually short window (or with large text
  * zoom) the section grows instead of clipping, which WCAG 1.4.10 (reflow)
  * requires.
+ *
+ * Phones get tighter padding: just clear of the fixed navbar at the top
+ * (76px) and a short bottom margin, so consecutive sections read as one page
+ * rather than separate slides. The floating Call/WhatsApp bar overlaps the
+ * bottom edge while scrolling, like any fixed bar; the quote form, where it
+ * would cover the send button, makes it step aside.
  */
 export function Screen({
   id,
@@ -26,7 +32,6 @@ export function Screen({
   background,
   children,
   labelledBy,
-  reserveActionBar = true,
 }: {
   id?: string;
   className?: string;
@@ -35,18 +40,13 @@ export function Screen({
   background?: ReactNode;
   children: ReactNode;
   labelledBy?: string;
-  /** Keep the bottom clear for the phone action bar (false where it hides). */
-  reserveActionBar?: boolean;
 }) {
   return (
     <section
       id={id}
       aria-labelledby={labelledBy}
       className={cn(
-        // Below md the fixed Call/WhatsApp bar (MobileActionBar) covers the
-        // bottom ~4.5rem of the screen, so that space is kept clear.
-        "cv-screen relative isolate flex min-h-[100svh] scroll-mt-0 flex-col overflow-hidden pb-[clamp(1.25rem,5svh,4rem)] pt-[clamp(5rem,12svh,8rem)]",
-        reserveActionBar && "max-md:pb-[calc(clamp(1.25rem,5svh,4rem)+4.25rem)]",
+        "cv-screen relative isolate flex min-h-[100svh] scroll-mt-0 flex-col overflow-hidden pb-[clamp(1.25rem,5svh,4rem)] pt-[clamp(5rem,12svh,8rem)] max-md:pb-6 max-md:pt-[5.25rem]",
         className
       )}
     >

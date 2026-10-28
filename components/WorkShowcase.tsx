@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, MessageCircle } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react";
 import { content } from "@/data/content";
 import { site, cityName, whatsappHref } from "@/data/site";
 import { googleRating } from "@/data/testimonials";
@@ -125,7 +125,7 @@ export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string
       </Screen>
 
       {/* Project rows */}
-      <section aria-label="Projects in detail" className="relative py-[clamp(4rem,10svh,7rem)]">
+      <section aria-label="Projects in detail" className="relative py-[clamp(4rem,10svh,7rem)] max-sm:py-12">
         <div className="mx-auto flex max-w-7xl flex-col gap-[clamp(3rem,9svh,6rem)] px-5 sm:px-8">
           {workItems.map((item, i) => (
             <article key={item.id} id={`project-${item.id}`} className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-14">
@@ -195,17 +195,27 @@ export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string
         </div>
       </section>
 
-      {/* Viewer */}
+      {/* Viewer: photo on top (left on desktop), details in the middle, and the
+          two actions pinned to the bottom so they are always in sight. The
+          window itself never scrolls; a long scope list folds behind "Show
+          more" on phones and tablets. */}
       <Dialog open={open !== null} onOpenChange={(o) => !o && show(null)}>
         <DialogContent
+          className="flex flex-col overflow-hidden"
+          // Focus the window itself rather than its first button, so opening a
+          // project doesn't light up a focus ring on the "previous" arrow.
+          onOpenAutoFocus={(e) => {
+            e.preventDefault();
+            (e.currentTarget as HTMLElement).focus();
+          }}
           onKeyDown={(e) => {
             if (e.key === "ArrowRight") step(1);
             if (e.key === "ArrowLeft") step(-1);
           }}
         >
           {current && (
-            <div className="grid grid-cols-1 lg:grid-cols-12">
-              <div className="relative aspect-[4/3] bg-bg-sunken lg:col-span-7 lg:aspect-auto lg:min-h-[32rem]">
+            <div className="flex min-h-0 flex-1 flex-col lg:grid lg:grid-cols-12">
+              <div className="relative h-[clamp(6.5rem,22svh,16rem)] shrink-0 sm:h-[clamp(7.5rem,26svh,16rem)] bg-bg-sunken lg:col-span-7 lg:h-auto lg:min-h-[32rem]">
                 <Image key={current.id} src={current.image} alt={current.alt} fill sizes="(min-width: 1024px) 60vw, (min-width: 640px) 100vw, 70vw" className="object-cover" />
                 <div className="absolute inset-x-3 bottom-3 flex justify-between">
                   <button
@@ -226,46 +236,98 @@ export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string
                   </button>
                 </div>
               </div>
-              <div className="flex flex-col p-6 sm:p-8 lg:col-span-5">
-                <p className="font-mono text-[11px] tracking-[0.14em] text-ink-subtle">
-                  {String((open ?? 0) + 1).padStart(2, "0")} / {String(workItems.length).padStart(2, "0")} ·{" "}
-                  {[current.client, current.location ?? cityName, current.year].filter(Boolean).join(" · ")}
-                </p>
-                <DialogTitle className="mt-3 font-display text-3xl font-extrabold leading-tight tracking-[-0.035em] text-ink">
-                  {current.title}
-                </DialogTitle>
-                <DialogDescription className="mt-2 text-base text-ink-muted">
-                  {current.tagline ?? content.gallery.heading.lead + " " + content.gallery.heading.accent + "."}
-                </DialogDescription>
-                {current.items.length > 0 && (
-                  <ul className="mt-5 flex flex-wrap gap-2">
-                    {current.items.map((it) => (
-                      <li key={it} className="rounded-full border border-border px-3 py-1 text-sm text-ink">
-                        {it}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                <div className="mt-auto flex flex-col gap-2.5 pt-8">
-                  <Button asChild size="lg">
-                    <a href={quoteFor(current.title)} target="_blank" rel="noopener noreferrer">
-                      <MessageCircle size={17} aria-hidden />
-                      <RollText>Get a quote like this</RollText>
-                    </a>
-                  </Button>
-                  {current.serviceHref && (
-                    <Button asChild variant="outline" size="lg">
-                      <Link href={current.serviceHref} onClick={() => setOpen(null)}>
-                        <RollText>{current.tagline ? `About ${current.title.toLowerCase()}` : content.home.viewAllServices}</RollText>
-                      </Link>
-                    </Button>
-                  )}
-                </div>
-              </div>
+              <ProjectDetails
+                key={current.id}
+                item={current}
+                position={`${String((open ?? 0) + 1).padStart(2, "0")} / ${String(workItems.length).padStart(2, "0")}`}
+                onLeave={() => setOpen(null)}
+              />
             </div>
           )}
         </DialogContent>
       </Dialog>
     </>
+  );
+}
+
+/** Scope chips shown before "Show more" on phones and tablets. */
+const SCOPE_PREVIEW = 3;
+
+/**
+ * The viewer's text column. Keyed by project, so the "Show more" state resets
+ * when the visitor steps to the next one. Only the middle part scrolls (if a
+ * fully expanded list needs it); the actions stay put underneath.
+ */
+function ProjectDetails({
+  item,
+  position,
+  onLeave,
+}: {
+  item: (typeof workItems)[number];
+  position: string;
+  onLeave: () => void;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const hidden = Math.max(0, item.items.length - SCOPE_PREVIEW);
+
+  return (
+    <div className="flex min-h-0 flex-1 flex-col lg:col-span-5">
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 pb-4 pt-5 sm:px-8 sm:pt-8">
+        <p className="font-mono text-[11px] tracking-[0.14em] text-ink-subtle">
+          {position} · {[item.client, item.location ?? cityName, item.year].filter(Boolean).join(" · ")}
+        </p>
+        <DialogTitle className="mt-2 font-display text-[length:clamp(1.5rem,4svh,1.875rem)] font-extrabold leading-tight tracking-[-0.035em] text-ink">
+          {item.title}
+        </DialogTitle>
+        <DialogDescription className="mt-1.5 text-[0.9375rem] text-ink-muted sm:text-base">
+          {item.tagline ?? content.gallery.heading.lead + " " + content.gallery.heading.accent + "."}
+        </DialogDescription>
+        {item.items.length > 0 && (
+          <>
+            <ul id={`scope-${item.id}`} className="mt-4 flex flex-wrap gap-2">
+              {item.items.map((it, i) => (
+                <li
+                  key={it}
+                  className={cn(
+                    "rounded-full border border-border px-3 py-1 text-sm text-ink",
+                    !expanded && i >= SCOPE_PREVIEW && "max-lg:hidden"
+                  )}
+                >
+                  {it}
+                </li>
+              ))}
+            </ul>
+            {hidden > 0 && (
+              <button
+                type="button"
+                onClick={() => setExpanded((v) => !v)}
+                aria-expanded={expanded}
+                aria-controls={`scope-${item.id}`}
+                className="focus-ring mt-3 inline-flex cursor-pointer items-center gap-1.5 rounded-full text-sm font-semibold text-accent-deep lg:hidden"
+              >
+                {expanded ? "Show less" : `Show ${hidden} more`}
+                <ChevronDown size={16} aria-hidden className={cn("transition-transform duration-300", expanded && "rotate-180")} />
+              </button>
+            )}
+          </>
+        )}
+      </div>
+
+      <div className="grid shrink-0 gap-2 border-t border-border p-3 sm:gap-2.5 sm:p-5 lg:border-t-0 lg:px-8 lg:pb-8">
+        <Button asChild size="lg" className="max-sm:h-12">
+          <a href={quoteFor(item.title)} target="_blank" rel="noopener noreferrer">
+            <MessageCircle size={17} aria-hidden />
+            <RollText>Get a quote like this</RollText>
+          </a>
+        </Button>
+        {item.serviceHref && (
+          <Button asChild variant="outline" size="lg" className="max-sm:h-12">
+            <Link href={item.serviceHref} onClick={onLeave}>
+              <RollText>{item.tagline ? `About ${item.title.toLowerCase()}` : content.home.viewAllServices}</RollText>
+            </Link>
+          </Button>
+        )}
+      </div>
+    </div>
   );
 }

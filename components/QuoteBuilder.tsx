@@ -250,7 +250,6 @@ export function QuoteBuilder({
     <Screen
       id="quote"
       labelledBy="quote-heading"
-      reserveActionBar={false}
       className={className}
       background={<div aria-hidden className="blueprint absolute inset-0 -z-10 opacity-50" />}
     >

@@ -24,7 +24,6 @@ export function ContactHero({ crumbs }: { crumbs: { href: string; label: string 
     <Screen
       id="quote"
       labelledBy="contact-heading"
-      reserveActionBar={false}
       className="pt-[clamp(5.25rem,11svh,7rem)]"
       background={
         <>

@@ -23,9 +23,11 @@ import { QUOTE_HREF } from "@/lib/quote";
  * Copy on the left, proof on the right, and the services rail along the
  * bottom edge — all inside `100svh`. Type is sized against viewport height as
  * well as width, and the photograph tile is the flexible element: it takes
- * whatever height the copy leaves, so the hero fits above the fold on a phone,
- * a tablet or a laptop. (The paragraph names the registered company, so the
- * full legal-name lockup now lives in the footer.)
+ * whatever height the copy leaves, so the hero fits above the fold on a
+ * tablet or a laptop. Phones (under 640px) show everything instead: the full
+ * paragraph and a 4:3 photograph, with the hero simply running longer than
+ * one screen. (The paragraph names the registered company, so the full
+ * legal-name lockup now lives in the footer.)
  */
 export default function Hero() {
   const reviewerInitials = testimonials.slice(0, 4).map((t) => t.name.trim().charAt(0).toUpperCase());
@@ -66,7 +68,7 @@ export default function Hero() {
 
           <p
             style={{ "--enter-delay": "450ms" } as CSSProperties}
-            className="enter mt-[clamp(0.9rem,2.6svh,1.5rem)] line-clamp-3 max-w-xl text-[length:clamp(0.8125rem,min(1.25vw,2.05svh),1.0625rem)] leading-[1.6] sm:leading-[1.65] text-ink-muted sm:line-clamp-none"
+            className="enter mt-[clamp(0.9rem,2.6svh,1.5rem)] max-w-xl text-[length:clamp(0.8125rem,min(1.25vw,2.05svh),1.0625rem)] leading-[1.6] text-ink-muted max-sm:text-[0.875rem] sm:leading-[1.65]"
           >
             {content.hero.paragraph}
           </p>
@@ -125,7 +127,7 @@ export default function Hero() {
               paint, and an opacity-0 start would delay it until hydration. */}
           <div
             style={{ "--enter-delay": "300ms" } as CSSProperties}
-            className="enter-move group relative min-h-[110px] flex-1 overflow-hidden rounded-[clamp(1.25rem,3svh,2rem)] bg-bg-sunken shadow-deep"
+            className="enter-move group relative min-h-[110px] flex-1 overflow-hidden max-sm:aspect-[4/3] max-sm:flex-none rounded-[clamp(1.25rem,3svh,2rem)] bg-bg-sunken shadow-deep"
           >
             <Parallax speed={40} scale={[1.18, 1.05]} className="absolute inset-0">
               <Image
@@ -160,7 +162,7 @@ export default function Hero() {
             </Link>
           </div>
 
-          <div className="grid shrink-0 grid-cols-2 gap-3 sm:gap-4 lg:h-[clamp(8.5rem,21svh,12.5rem)] max-lg:[@media(max-height:700px)]:hidden">
+          <div className="grid shrink-0 grid-cols-2 gap-3 sm:gap-4 lg:h-[clamp(8.5rem,21svh,12.5rem)]">
             {/* Rating */}
             <a
               href={googleRating.profileUrl}

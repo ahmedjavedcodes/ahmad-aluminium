@@ -71,7 +71,7 @@ export function ContactMethods({ index }: { index?: number }) {
   const waMessage = `Hi ${site.name}, I'd like a free quotation. My area in ${cityName} is: `;
 
   return (
-    <section id="contact" className="relative py-24 sm:py-28">
+    <section id="contact" className="relative py-14 sm:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
           index={index}

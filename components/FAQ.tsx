@@ -67,7 +67,7 @@ export function FAQ({
   }
 
   return (
-    <section className="cv-block relative py-24 sm:py-28">
+    <section className="cv-block relative py-14 sm:py-28">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 sm:px-8 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <div className={cn("lg:sticky lg:top-28")}>

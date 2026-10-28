@@ -23,7 +23,7 @@ const ROWS: { label: string; us: string; them: string }[] = [
 
 export function Compare({ index }: { index?: number }) {
   return (
-    <section aria-labelledby="compare-heading" className="relative py-[clamp(4rem,10svh,7rem)]">
+    <section aria-labelledby="compare-heading" className="relative py-[clamp(4rem,10svh,7rem)] max-sm:py-12">
       <div className="mx-auto max-w-5xl px-5 sm:px-8">
         <SectionHeading
           id="compare-heading"
