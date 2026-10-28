@@ -48,10 +48,10 @@ export function ServiceCard({ service, index }: { service: Service; index: numbe
               className="object-cover transition-transform duration-[1200ms] ease-out-expo group-hover:scale-[1.07]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-60 transition-opacity duration-700 group-hover:opacity-100" />
-            <span className="absolute left-3 top-3 rounded-full bg-white/85 px-2.5 py-1 font-mono text-[11px] font-medium tracking-[0.12em] text-ink backdrop-blur">
+            <span className="absolute left-3 top-3 rounded-full bg-white/85 px-2.5 py-1 font-mono text-[11px] font-medium tracking-[0.12em] text-ink">
               {number}
             </span>
-            <span className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/85 text-accent backdrop-blur transition-[transform,background-color,color] duration-500 ease-out-expo group-hover:rotate-[-8deg] group-hover:scale-110 group-hover:bg-accent group-hover:text-on-accent">
+            <span className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/85 text-accent transition-[transform,background-color,color] duration-500 ease-out-expo group-hover:rotate-[-8deg] group-hover:scale-110 group-hover:bg-accent group-hover:text-on-accent">
               <Icon size={18} aria-hidden />
             </span>
           </Reveal>
@@ -129,13 +129,13 @@ function BentoTile({ service, index }: { service: Service; index: number }) {
         <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4 sm:p-5">
           <span
             className={cn(
-              "rounded-full bg-white/90 px-3 py-1 font-mono text-[11px] font-medium tracking-[0.12em] text-ink backdrop-blur",
+              "rounded-full bg-white/90 px-3 py-1 font-mono text-[11px] font-medium tracking-[0.12em] text-ink",
               index > 1 && "lg:invisible"
             )}
           >
             {number}
           </span>
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-accent backdrop-blur transition-[transform,background-color,color] duration-500 ease-out-expo group-hover:rotate-[-10deg] group-hover:scale-110 group-hover:bg-accent group-hover:text-on-accent">
+          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-accent transition-[transform,background-color,color] duration-500 ease-out-expo group-hover:rotate-[-10deg] group-hover:scale-110 group-hover:bg-accent group-hover:text-on-accent">
             <Icon size={18} aria-hidden />
           </span>
         </div>
@@ -181,7 +181,7 @@ function BentoTile({ service, index }: { service: Service; index: number }) {
             {service.items.slice(0, feature ? 4 : 3).map((item) => (
               <li
                 key={item}
-                className="rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-medium text-white backdrop-blur-md"
+                className="rounded-full border border-white/25 bg-black/35 px-3 py-1 text-xs font-medium text-white"
               >
                 {item}
               </li>

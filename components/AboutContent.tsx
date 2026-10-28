@@ -39,7 +39,7 @@ export function AboutStory({ index }: { index?: number }) {
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                <span className="absolute bottom-4 left-4 rounded bg-black/60 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.16em] text-white/90 backdrop-blur">
+                <span className="absolute bottom-4 left-4 rounded bg-black/60 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.16em] text-white/90">
                   Workshop · {cityName}
                 </span>
               </div>

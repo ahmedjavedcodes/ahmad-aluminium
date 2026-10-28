@@ -35,7 +35,11 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       >
         Skip to content
       </a>
-      <div aria-hidden className="noise-overlay fixed z-[1]" />
+      {/* Without JavaScript nothing would ever be marked as revealed, so show
+          everything outright. */}
+      <noscript>
+        <style>{`.reveal,.reveal-child,.split-word{opacity:1!important;transform:none!important}`}</style>
+      </noscript>
       <ScrollProgress />
       <Navbar />
       <PageTransition>{children}</PageTransition>

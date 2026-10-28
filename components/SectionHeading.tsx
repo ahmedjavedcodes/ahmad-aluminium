@@ -1,8 +1,12 @@
 "use client";
 
 import type { SplitHeading } from "@/data/content";
-import { Reveal } from "@/lib/motion";
+import type { CSSProperties } from "react";
 import { SplitText } from "@/components/motion/SplitText";
+import { useReveal } from "@/lib/reveal";
+
+/** Seconds between heading words. */
+const STAGGER = 0.04;
 import { cn } from "@/lib/utils";
 
 /**
@@ -39,15 +43,30 @@ export function SectionHeading({
 }) {
   const Tag = level;
   const centered = align === "center";
+  const ref = useReveal<HTMLDivElement>();
+
+  // One observer for the whole block; CSS delays sequence the parts: label,
+  // then the lead words, the accent words, the full stop and the intro.
+  const leadCount = heading.lead.split(" ").filter(Boolean).length;
+  const accentCount = heading.accent.split(" ").filter(Boolean).length;
+  const wordsStart = 0.12;
+  const accentStart = wordsStart + leadCount * STAGGER + 0.04;
+  const wordsEnd = accentStart + accentCount * STAGGER;
+  const ms = (sec: number) => ({ "--reveal-delay": `${Math.round(sec * 1000)}ms` }) as CSSProperties;
 
   return (
-    <Reveal className={cn(centered && "mx-auto text-center", className)}>
+    <div
+      ref={ref}
+      data-reveal=""
+      className={cn("reveal-group", centered && "mx-auto text-center", className)}
+    >
       {eyebrow && (
         <p
           className={cn(
-            "mb-[clamp(0.75rem,2svh,1.25rem)] flex items-center gap-3 text-[12px] font-semibold uppercase tracking-[0.2em] text-accent-deep",
+            "reveal-child mb-[clamp(0.75rem,2svh,1.25rem)] flex items-center gap-3 text-[12px] font-semibold uppercase tracking-[0.2em] text-accent-deep",
             centered && "justify-center"
           )}
+          style={ms(0)}
         >
           {index !== undefined && (
             <span className="flex h-7 min-w-7 items-center justify-center rounded-full bg-accent px-2 text-[11px] font-bold tracking-normal text-on-accent">
@@ -64,22 +83,28 @@ export function SectionHeading({
         id={id}
         className="font-display text-[length:clamp(1.85rem,min(4.4vw,6.2svh),3.5rem)] font-extrabold leading-[1.03] tracking-[-0.045em] text-ink"
       >
-        <SplitText as="span" text={heading.lead} className="inline" />{" "}
-        <SplitText as="span" text={heading.accent} className="inline" wordClassName="text-accent" delay={0.12} />
-        {heading.tail}
+        <SplitText as="span" text={heading.lead} className="inline" trigger="parent" stagger={STAGGER} delay={wordsStart} />{" "}
+        <SplitText as="span" text={heading.accent} className="inline" wordClassName="text-accent" trigger="parent" stagger={STAGGER} delay={accentStart} />
+        {/* Trailing punctuation joins the sequence instead of waiting alone. */}
+        {heading.tail && (
+          <span className="reveal-child inline-block" style={ms(wordsEnd)}>
+            {heading.tail}
+          </span>
+        )}
       </Tag>
 
       {intro && (
         <p
           className={cn(
-            "mt-[clamp(0.75rem,2svh,1.25rem)] max-w-prose text-[length:clamp(0.9rem,min(1.3vw,2.1svh),1.0625rem)] leading-[1.7] text-ink-muted",
+            "reveal-child mt-[clamp(0.75rem,2svh,1.25rem)] max-w-prose text-[length:clamp(0.9rem,min(1.3vw,2.1svh),1.0625rem)] leading-[1.7] text-ink-muted",
             centered && "mx-auto",
             introClassName
           )}
+          style={ms(wordsEnd + 0.08)}
         >
           {intro}
         </p>
       )}
-    </Reveal>
+    </div>
   );
 }

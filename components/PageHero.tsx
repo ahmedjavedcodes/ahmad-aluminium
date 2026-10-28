@@ -38,9 +38,7 @@ export function PageHero({
 
   return (
     <section className="relative isolate overflow-hidden pb-10 pt-32 sm:pt-40">
-      <Parallax speed={-60} className="absolute inset-0 -z-10">
-        <div aria-hidden className="blueprint h-full w-full" />
-      </Parallax>
+      <div aria-hidden className="blueprint absolute inset-0 -z-10" />
       <div aria-hidden className="absolute left-1/2 top-0 -z-10 h-[460px] w-[760px] -translate-x-1/2 rounded-full bg-accent/[0.1] blur-[130px]" />
 
       <div className="mx-auto max-w-5xl px-5 text-center sm:px-8">

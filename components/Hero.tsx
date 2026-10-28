@@ -45,9 +45,7 @@ export default function Hero() {
       id="top"
       className="relative isolate flex min-h-[100svh] flex-col overflow-hidden pt-[clamp(5.25rem,11svh,7rem)]"
     >
-      <Parallax speed={-70} className="absolute inset-0 -z-10">
-        <div aria-hidden className="blueprint h-full w-full" />
-      </Parallax>
+      <div aria-hidden className="blueprint absolute inset-0 -z-10" />
       <div aria-hidden className="absolute -right-40 top-0 -z-10 h-[640px] w-[640px] rounded-full bg-accent/[0.12] blur-[130px]" />
       <div aria-hidden className="absolute -left-40 bottom-0 -z-10 h-[520px] w-[520px] rounded-full bg-teal/[0.07] blur-[130px]" />
 
@@ -56,7 +54,7 @@ export default function Hero() {
         <div className="flex flex-col justify-center lg:col-span-6">
           <motion.p
             {...rise(0)}
-            className="inline-flex max-w-full items-start gap-2.5 self-start rounded-full border border-border bg-bg-elevated/80 px-4 py-1.5 text-[10.5px] font-semibold uppercase leading-relaxed tracking-[0.12em] text-accent-deep shadow-card backdrop-blur sm:items-center sm:text-[11px]"
+            className="inline-flex max-w-full items-start gap-2.5 self-start rounded-full border border-border bg-bg-elevated/80 px-4 py-1.5 text-[10.5px] font-semibold uppercase leading-relaxed tracking-[0.12em] text-accent-deep shadow-card sm:items-center sm:text-[11px]"
           >
             <span aria-hidden className="status-dot mt-[0.4em] h-2 w-2 shrink-0 rounded-full bg-accent sm:mt-0" />
             <span>{content.hero.eyebrow}</span>
@@ -124,9 +122,11 @@ export default function Hero() {
 
         {/* Proof bento: the photograph flexes, the two tiles hold their height. */}
         <div className="flex min-h-[110px] flex-col gap-3 sm:gap-4 lg:col-span-6 lg:min-h-0">
+          {/* Movement only, no fade: the photograph is the page's largest
+              paint, and an opacity-0 start would delay it until hydration. */}
           <motion.div
-            initial={{ opacity: 0, y: 36, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
+            initial={{ y: 28, scale: 0.985 }}
+            animate={{ y: 0, scale: 1 }}
             transition={{ duration: 1.1, delay: 0.3, ease: EASE }}
             className="group relative min-h-[110px] flex-1 overflow-hidden rounded-[clamp(1.25rem,3svh,2rem)] bg-bg-sunken shadow-deep"
           >
@@ -141,7 +141,7 @@ export default function Hero() {
               />
             </Parallax>
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent" />
-            <span className="absolute left-4 top-4 rounded-full bg-black/45 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-md">
+            <span className="absolute left-4 top-4 rounded-full bg-black/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white">
               {content.gallery.heroLabel}
             </span>
 

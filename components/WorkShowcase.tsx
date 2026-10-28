@@ -14,7 +14,6 @@ import { WorkWall } from "@/components/WorkWall";
 import { CharReveal } from "@/components/motion/CharReveal";
 import { Typewriter } from "@/components/motion/Typewriter";
 import { Counter } from "@/components/motion/Counter";
-import { Parallax } from "@/components/motion/Parallax";
 import { Button, RollText, ArrowSwap } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
@@ -74,9 +73,7 @@ export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string
         labelledBy="work-page-heading"
         background={
           <>
-            <Parallax speed={-70} className="absolute inset-0 -z-10">
-              <div aria-hidden className="blueprint h-full w-full" />
-            </Parallax>
+            <div aria-hidden className="blueprint absolute inset-0 -z-10" />
             <div aria-hidden className="absolute -right-40 -top-20 -z-10 h-[560px] w-[560px] rounded-full bg-accent/[0.11] blur-[130px]" />
           </>
         }
@@ -144,7 +141,6 @@ export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string
                   aria-haspopup="dialog"
                   className="focus-ring group relative block aspect-[16/10] w-full cursor-zoom-in overflow-hidden rounded-[2rem] bg-bg-sunken shadow-deep"
                 >
-                  <Parallax speed={30} scale={[1.14, 1.14]} className="absolute inset-0">
                     <Image
                       src={item.image}
                       alt={item.alt}
@@ -152,7 +148,6 @@ export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string
                       sizes="(min-width: 1024px) 58vw, 100vw"
                       className="object-cover transition-transform duration-[1400ms] ease-out-expo group-hover:scale-[1.06]"
                     />
-                  </Parallax>
                   <span className="absolute left-5 top-5 rounded-full bg-white/90 px-3 py-1 font-mono text-[11px] font-medium tracking-[0.12em] text-ink">
                     {String(i + 1).padStart(2, "0")} / {String(workItems.length).padStart(2, "0")}
                   </span>
@@ -161,7 +156,9 @@ export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string
 
               <div className={cn("lg:col-span-5", i % 2 === 1 && "lg:order-1")}>
                 <Reveal>
-                  <p className="text-[12px] font-semibold uppercase tracking-[0.2em] text-accent-deep">{cityName}</p>
+                  <p className="text-[12px] font-semibold uppercase tracking-[0.2em] text-accent-deep">
+                    {[item.client, item.location ?? cityName, item.year].filter(Boolean).join(" · ")}
+                  </p>
                   <h2 className="mt-3 font-display text-[length:clamp(1.9rem,4vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.04em] text-ink">
                     {item.title}
                   </h2>
@@ -216,7 +213,7 @@ export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string
                     type="button"
                     onClick={() => step(-1)}
                     aria-label="Previous project"
-                    className="focus-ring flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-white/90 text-ink shadow-card backdrop-blur transition-colors hover:bg-accent hover:text-on-accent"
+                    className="focus-ring flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-white/90 text-ink shadow-card transition-colors hover:bg-accent hover:text-on-accent"
                   >
                     <ChevronLeft size={20} aria-hidden />
                   </button>
@@ -224,7 +221,7 @@ export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string
                     type="button"
                     onClick={() => step(1)}
                     aria-label="Next project"
-                    className="focus-ring flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-white/90 text-ink shadow-card backdrop-blur transition-colors hover:bg-accent hover:text-on-accent"
+                    className="focus-ring flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-white/90 text-ink shadow-card transition-colors hover:bg-accent hover:text-on-accent"
                   >
                     <ChevronRight size={20} aria-hidden />
                   </button>
@@ -232,7 +229,8 @@ export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string
               </div>
               <div className="flex flex-col p-6 sm:p-8 lg:col-span-5">
                 <p className="font-mono text-[11px] tracking-[0.14em] text-ink-subtle">
-                  {String((open ?? 0) + 1).padStart(2, "0")} / {String(workItems.length).padStart(2, "0")} · {cityName}
+                  {String((open ?? 0) + 1).padStart(2, "0")} / {String(workItems.length).padStart(2, "0")} ·{" "}
+                  {[current.client, current.location ?? cityName, current.year].filter(Boolean).join(" · ")}
                 </p>
                 <DialogTitle className="mt-3 font-display text-3xl font-extrabold leading-tight tracking-[-0.035em] text-ink">
                   {current.title}

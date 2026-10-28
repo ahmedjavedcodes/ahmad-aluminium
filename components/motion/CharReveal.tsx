@@ -47,7 +47,7 @@ export function CharReveal({
               return (
                 <span key={c} className="split-mask">
                   <motion.span
-                    className={cn("inline-block will-change-transform", charClassName)}
+                    className={cn("inline-block", charClassName)}
                     initial={{ y: "110%", opacity: 0 }}
                     {...animateProps}
                     transition={{ duration: 0.7, delay: delay + i * stagger, ease: EASE }}

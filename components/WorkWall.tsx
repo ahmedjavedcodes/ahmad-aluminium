@@ -6,15 +6,13 @@ import { Maximize2 } from "lucide-react";
 import { cityName } from "@/data/site";
 import { Reveal } from "@/lib/motion";
 import { workItems, workHref, WORK_PLACEMENT, type WorkItem } from "@/lib/work";
-import { Parallax } from "@/components/motion/Parallax";
 import { SwipeGrid } from "@/components/Screen";
 import { ArrowSwap } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 /**
  * The portfolio wall: seven frames on an explicit 12 × 3 grid (a swipe rail
- * below lg). Each photograph drifts inside its frame, wipes in on reveal and
- * zooms on hover.
+ * below lg). Each photograph settles in on reveal and zooms on hover.
  *
  * On the home page every frame links to /work#<project>; on /work itself the
  * frames are buttons that open the project viewer (`onOpen`).
@@ -32,7 +30,7 @@ export function WorkWall({
       label="Our work — swipe for more"
       className={cn("lg:grid-cols-12 lg:grid-rows-3 lg:gap-4", className)}
     >
-      {workItems.map((item, i) => (
+      {workItems.slice(0, WORK_PLACEMENT.length).map((item, i) => (
         <Reveal
           key={item.id}
           index={i % 4}
@@ -49,19 +47,19 @@ export function WorkWall({
 function Frame({ item, index, onOpen }: { item: WorkItem; index: number; onOpen?: (index: number) => void }) {
   const body = (
     <>
-      <Parallax speed={index % 2 ? -22 : 22} scale={[1.16, 1.16]} className="absolute inset-0">
-        <Image
+      <Image
           src={item.image}
           alt={item.alt}
           fill
           sizes={index === 0 ? "(min-width: 1024px) 40vw, 80vw" : "(min-width: 1024px) 25vw, (min-width: 640px) 44vw, 80vw"}
           className="object-cover transition-transform duration-[1400ms] ease-out-expo group-hover:scale-[1.08]"
         />
-      </Parallax>
       <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/0 to-black/0" />
       <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 text-left sm:p-5">
         <div className="min-w-0 transition-transform duration-500 ease-out-expo group-hover:-translate-y-1">
-          <span className="block text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white/75">{cityName}</span>
+          <span className="block text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white/75">
+            {[item.location ?? cityName, item.year].filter(Boolean).join(" · ")}
+          </span>
           <span
             className={cn(
               "mt-0.5 block font-display font-extrabold leading-tight tracking-[-0.02em] text-white",

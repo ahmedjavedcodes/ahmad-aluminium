@@ -8,7 +8,6 @@ import { content } from "@/data/content";
 import { Reveal } from "@/lib/motion";
 import { QUOTE_HREF } from "@/lib/quote";
 import { SectionHeading } from "@/components/SectionHeading";
-import { Parallax } from "@/components/motion/Parallax";
 import { Screen, SwipeGrid } from "@/components/Screen";
 import { Button, RollText, ArrowSwap } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -30,9 +29,7 @@ export default function Process({ index }: { index?: number }) {
       background={
         <>
           <div aria-hidden className="brushed absolute inset-0 -z-20" />
-          <Parallax speed={-60} className="absolute inset-0 -z-10">
-            <div aria-hidden className="blueprint h-full w-full opacity-80" />
-          </Parallax>
+          <div aria-hidden className="blueprint absolute inset-0 -z-10 opacity-80" />
         </>
       }
     >

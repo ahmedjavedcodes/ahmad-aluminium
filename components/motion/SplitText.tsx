@@ -1,9 +1,8 @@
 "use client";
 
-import { Fragment } from "react";
-import { motion, type Transition } from "framer-motion";
-
-const EASE: Transition["ease"] = [0.16, 1, 0.3, 1];
+import { Fragment, createElement, type CSSProperties } from "react";
+import { useReveal } from "@/lib/reveal";
+import { cn } from "@/lib/utils";
 
 /**
  * Word-by-word masked reveal.
@@ -23,18 +22,24 @@ const EASE: Transition["ease"] = [0.16, 1, 0.3, 1];
  *    baseline and at the sides, while still hiding the word in its start
  *    position a full line below.
  */
+/**
+ * The motion is CSS (".split-word" in app/globals.css): each word rises a short
+ * way out of its mask while fading up, with a per-word delay — a transition on
+ * transform/opacity that runs on the compositor, so it stays smooth even while
+ * the page is scrolling. The words carry their index as `--w`.
+ */
 export function SplitText({
   text,
   className,
   wordClassName,
   as = "span",
   delay = 0,
-  stagger = 0.055,
-  duration = 0.9,
+  stagger = 0.045,
   /**
-   * `mount` animates immediately — correct for above-the-fold headings, which
-   * can otherwise sit permanently hidden if the in-view observer never fires.
-   * `inView` defers until scrolled to.
+   * `mount` reveals on load (above-the-fold headings). `inView` waits until
+   * the text scrolls into view. `parent` waits for the nearest enclosing
+   * `.reveal-group` to be revealed, so a whole heading block (label, words,
+   * intro) runs as one sequence off a single observer — see SectionHeading.
    */
   trigger = "inView",
 }: {
@@ -42,48 +47,38 @@ export function SplitText({
   className?: string;
   wordClassName?: string;
   as?: "span" | "h1" | "h2" | "h3" | "p";
+  /** Seconds before the first word. */
   delay?: number;
+  /** Seconds between words. */
   stagger?: number;
-  duration?: number;
-  trigger?: "mount" | "inView";
+  trigger?: "mount" | "inView" | "parent";
 }) {
+  const ref = useReveal<HTMLElement>(trigger === "mount" ? "mount" : "inView");
   const words = text.split(" ").filter(Boolean);
-  const Comp = motion[as];
 
-  // The markup is identical with motion suppressed — the server cannot know
-  // the visitor's preference, and a different tree fails hydration. The
-  // reduced-motion CSS pins each word in place and drops the clip mask, so
-  // the heading is never hidden.
-  const animateProps =
-    trigger === "mount"
-      ? { animate: { y: "0%" } }
-      : {
-          whileInView: { y: "0%" },
-          viewport: { once: true, margin: "-80px" } as const,
-        };
-
-  return (
-    <Comp className={className}>
-      {words.map((word, i) => (
-        <Fragment key={`${word}-${i}`}>
-          <span className="split-mask">
-            <motion.span
-              className={`inline-block will-change-transform ${wordClassName ?? ""}`}
-              initial={{ y: "115%" }}
-              {...animateProps}
-              transition={{
-                duration,
-                delay: delay + i * stagger,
-                ease: EASE,
-              }}
-            >
-              {word}
-            </motion.span>
+  // Identical markup with motion suppressed — the reduced-motion CSS pins
+  // every word in place — so server and client always agree.
+  return createElement(
+    as,
+    {
+      ref: trigger === "parent" ? undefined : ref,
+      className: cn("split-text", className),
+      "data-split": trigger,
+      style: {
+        "--split-delay": `${Math.round(delay * 1000)}ms`,
+        "--split-stagger": `${Math.round(stagger * 1000)}ms`,
+      } as CSSProperties,
+    },
+    words.map((w, i) => (
+      <Fragment key={`${w}-${i}`}>
+        <span className="split-mask">
+          <span className={cn("split-word", wordClassName)} style={{ "--w": i } as CSSProperties}>
+            {w}
           </span>
-          {/* Real space between masks — must live outside the clip. */}
-          {i < words.length - 1 ? " " : null}
-        </Fragment>
-      ))}
-    </Comp>
+        </span>
+        {/* Real space between masks — must live outside the clip. */}
+        {i < words.length - 1 ? " " : null}
+      </Fragment>
+    ))
   );
 }

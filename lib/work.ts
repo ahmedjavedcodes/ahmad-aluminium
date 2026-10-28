@@ -12,12 +12,21 @@ export interface WorkItem {
   /** The service page for this trade, if there is one. */
   serviceHref?: string;
   items: string[];
+  /** Real-project details, shown when present (filled in once the
+   *  customer project photographs are added). */
+  client?: string;
+  location?: string;
+  year?: string;
 }
 
 /**
- * The portfolio, derived (read-only) from data/: the facade photograph plus
- * one project image per trade. Adding photographs to data/services.ts flows
- * through here to the home-page wall and the /work page alike.
+ * The portfolio shown on the home page's "Our Work" wall and on /work.
+ *
+ * For now it is derived (read-only) from data/: the facade photograph plus one
+ * image per trade. When the real customer projects arrive, each becomes an
+ * entry here with its photograph and, where known, `client`, `location` and
+ * `year` — both pages pick them up with no other changes. The wall shows the
+ * first seven (most recent first).
  */
 export const workItems: WorkItem[] = [
   {

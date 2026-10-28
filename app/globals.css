@@ -416,7 +416,11 @@ html:has(.site-theme)::-webkit-scrollbar-thumb:hover { background: rgb(180 84 31
 /* Denser frost for cards that float over photographs, where the thin glass
    would let a dark image through and drown the text. */
 .site-theme .glass-panel.glass-solid {
-  background: linear-gradient(180deg, rgb(255 255 255 / 0.96), rgb(255 255 255 / 0.9));
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.97), rgb(255 255 255 / 0.93));
+  /* Nearly opaque, so a live blur adds nothing visible — but over a moving
+     (parallax) photo it would be recomputed every scroll frame. */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 .site-theme .theme-inverse .glass-panel,
 .theme-inverse .glass-panel {
@@ -484,6 +488,54 @@ html:has(.site-theme)::-webkit-scrollbar-thumb:hover { background: rgb(180 84 31
   height: 1px;
   background: linear-gradient(90deg, transparent, rgb(var(--color-accent) / 0.7), transparent);
 }
+
+/* ---------------------------------------------------------------------------
+   Reveals (lib/motion.tsx Reveal, components/motion/SplitText.tsx,
+   components/SectionHeading.tsx)
+
+   CSS transitions on opacity and transform only, switched on by a
+   `data-shown` attribute from one shared IntersectionObserver
+   (lib/reveal.ts). The compositor runs them, so they stay smooth while the
+   page scrolls — unlike per-frame JavaScript, which competes with scrolling.
+   Ease-out-quint everywhere: elements settle rather than snap.
+   ------------------------------------------------------------------------- */
+:root { --ease-reveal: cubic-bezier(0.22, 1, 0.36, 1); }
+
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-y, 18px), 0) scale(var(--reveal-s, 1));
+  transition:
+    opacity var(--reveal-d, 0.8s) var(--ease-reveal) var(--reveal-delay, 0ms),
+    transform var(--reveal-d, 0.8s) var(--ease-reveal) var(--reveal-delay, 0ms);
+}
+.reveal[data-shown] { opacity: 1; transform: none; }
+.reveal--rise { --reveal-y: 26px; --reveal-s: 0.985; --reveal-d: 0.9s; }
+.reveal--scale { --reveal-y: 0px; --reveal-s: 0.95; --reveal-d: 0.85s; }
+.reveal--fade { --reveal-y: 0px; }
+.reveal--clip { --reveal-y: 24px; --reveal-s: 0.97; --reveal-d: 1s; }
+
+/* Heading parts revealed together by an enclosing .reveal-group. */
+.reveal-child {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+  transition:
+    opacity 0.7s var(--ease-reveal) var(--reveal-delay, 0ms),
+    transform 0.7s var(--ease-reveal) var(--reveal-delay, 0ms);
+}
+.reveal-group[data-shown] .reveal-child { opacity: 1; transform: none; }
+
+/* Words rise a short way out of their mask while fading up. */
+.split-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 70%, 0);
+  transition:
+    opacity 0.85s var(--ease-reveal),
+    transform 0.85s var(--ease-reveal);
+  transition-delay: calc(var(--split-delay, 0ms) + var(--w, 0) * var(--split-stagger, 45ms));
+}
+.split-text[data-shown] .split-word,
+.reveal-group[data-shown] .split-text[data-split="parent"] .split-word { opacity: 1; transform: none; }
 
 /* Swipe rails: scrollable, but without a visible scrollbar. */
 .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
@@ -682,10 +734,13 @@ html:has(.site-theme)::-webkit-scrollbar-thumb:hover { background: rgb(180 84 31
 @media (prefers-reduced-motion: reduce) {
   [data-reveal],
   [data-parallax],
+  .reveal,
+  .reveal-child,
   .split-mask > span {
     opacity: 1 !important;
     transform: none !important;
     clip-path: none !important;
+    transition: none !important;
   }
   .glass-sweep::before,
   .status-dot,

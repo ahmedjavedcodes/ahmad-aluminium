@@ -105,7 +105,7 @@ export function ServiceDetail({ service, related }: { service: Service; related:
                       className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-                    <span className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/85 text-accent backdrop-blur">
+                    <span className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/85 text-accent">
                       <Icon size={20} aria-hidden />
                     </span>
                     <span className="absolute bottom-4 left-4 font-mono text-[11px] uppercase tracking-[0.16em] text-white/90">
