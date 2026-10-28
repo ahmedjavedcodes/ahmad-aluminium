@@ -10,7 +10,9 @@ import type { Config } from "tailwindcss";
 const withAlpha = (name: string) => `rgb(var(--color-${name}) / <alpha-value>)`;
 
 const config: Config = {
-  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
+  // lib/ holds shared class lists too (e.g. the portfolio grid placement in
+  // lib/work.ts), so it must be scanned or those utilities are never built.
+  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./lib/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -69,6 +71,8 @@ const config: Config = {
         "sheet-out": "sheet-out 0.3s cubic-bezier(0.7, 0, 0.84, 0)",
         "overlay-in": "overlay-in 0.3s ease-out",
         "overlay-out": "overlay-out 0.25s ease-in",
+        "dialog-in": "dialog-in 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
+        "dialog-out": "dialog-out 0.2s ease-in",
       },
       borderRadius: {
         xl2: "1.25rem",

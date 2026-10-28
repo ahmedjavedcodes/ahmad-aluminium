@@ -9,7 +9,7 @@ import { Logo } from "@/components/Logo";
 const companyLinks = [
   { href: "/about", label: content.footer.aboutUs },
   { href: "/services", label: content.footer.allServices },
-  { href: "/#gallery", label: content.footer.galleryLink },
+  { href: "/work", label: content.footer.galleryLink },
   { href: "/#areas", label: content.footer.areasHeading },
   { href: "/contact", label: content.footer.contactLink },
 ];

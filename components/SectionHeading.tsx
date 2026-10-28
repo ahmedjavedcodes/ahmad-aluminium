@@ -2,6 +2,7 @@
 
 import type { SplitHeading } from "@/data/content";
 import { Reveal } from "@/lib/motion";
+import { SplitText } from "@/components/motion/SplitText";
 import { cn } from "@/lib/utils";
 
 /**
@@ -63,7 +64,8 @@ export function SectionHeading({
         id={id}
         className="font-display text-[length:clamp(1.85rem,min(4.4vw,6.2svh),3.5rem)] font-extrabold leading-[1.03] tracking-[-0.045em] text-ink"
       >
-        {heading.lead} <span className="text-accent">{heading.accent}</span>
+        <SplitText as="span" text={heading.lead} className="inline" />{" "}
+        <SplitText as="span" text={heading.accent} className="inline" wordClassName="text-accent" delay={0.12} />
         {heading.tail}
       </Tag>
 

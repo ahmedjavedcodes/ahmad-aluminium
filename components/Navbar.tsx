@@ -18,10 +18,12 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { QUOTE_HREF } from "@/lib/quote";
+import { WORK_HREF } from "@/lib/work";
 
 const links = [
   { href: "/", label: content.nav.home },
   { href: "/services", label: content.nav.services },
+  { href: WORK_HREF, label: content.footer.galleryLink },
   { href: "/about", label: content.nav.about },
   { href: "/contact", label: content.nav.contact },
 ];
@@ -74,7 +76,7 @@ export default function Navbar() {
         <Link
           href="/"
           aria-label={`${site.name} — home`}
-          className="focus-ring group mr-auto shrink-0 rounded-lg md:mr-0"
+          className="focus-ring group mr-auto shrink-0 rounded-lg lg:mr-0"
         >
           <Logo
             markClassName="h-9 w-9 text-accent transition-transform duration-500 ease-out-expo group-hover:-rotate-6"
@@ -83,7 +85,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop links */}
-        <ul className="mx-auto hidden items-center gap-1 md:flex">
+        <ul className="mx-auto hidden items-center gap-1 lg:flex">
           {links.map((link) => {
             const active = isActive(link.href);
             return (
@@ -92,7 +94,7 @@ export default function Navbar() {
                   href={link.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "focus-ring relative block rounded-md px-3.5 py-2 text-sm transition-colors duration-300",
+                    "focus-ring relative block whitespace-nowrap rounded-md px-2.5 py-2 text-sm transition-colors duration-300 lg:px-3.5",
                     active ? "text-ink" : "text-ink-muted hover:text-ink",
                     "after:absolute after:inset-x-3.5 after:-bottom-[3px] after:h-[2px] after:origin-left after:scale-x-0 after:rounded-full after:bg-ink/25 after:transition-transform after:duration-500 after:ease-out-expo hover:after:scale-x-100"
                   )}
@@ -114,7 +116,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           <a
             href={telHref}
-            className="focus-ring hidden items-center gap-2 rounded-md px-2 py-1.5 font-mono text-[13px] text-ink-muted transition-colors hover:text-ink lg:flex"
+            className="focus-ring hidden items-center gap-2 whitespace-nowrap rounded-md px-2 py-1.5 font-mono text-[13px] text-ink-muted transition-colors hover:text-ink xl:flex"
           >
             <Phone size={14} className="text-accent" aria-hidden />
             {site.phoneLocal}
@@ -139,7 +141,7 @@ export default function Navbar() {
             <SheetTrigger asChild>
               <button
                 aria-label="Open menu"
-                className="focus-ring flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-border bg-bg-elevated text-ink transition-colors hover:border-accent/50 md:hidden"
+                className="focus-ring flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-border bg-bg-elevated text-ink transition-colors hover:border-accent/50 lg:hidden"
               >
                 <Menu size={18} aria-hidden />
               </button>

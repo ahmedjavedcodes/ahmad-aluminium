@@ -9,6 +9,8 @@ import { content } from "@/data/content";
 import { site, cityName, telHref, whatsappHref } from "@/data/site";
 import { googleRating, testimonials } from "@/data/testimonials";
 import { SplitText } from "@/components/motion/SplitText";
+import { Typewriter } from "@/components/motion/Typewriter";
+import { Counter } from "@/components/motion/Counter";
 import { MagneticButton } from "@/components/motion/MagneticButton";
 import { Marquee } from "@/components/motion/Marquee";
 import { Parallax } from "@/components/motion/Parallax";
@@ -60,18 +62,14 @@ export default function Hero() {
             <span>{content.hero.eyebrow}</span>
           </motion.p>
 
-          {/* `trigger="mount"`: above the fold, so it animates on load. */}
+          {/* Line one rises in word by word; line two is typed out after it.
+              Both run on load (`mount`) — the hero is always above the fold. */}
           <h1 className="mt-[clamp(0.9rem,3svh,1.75rem)] font-display text-[length:clamp(2.1rem,min(6.2vw,6.6svh),5.25rem)] font-extrabold leading-[0.98] tracking-[-0.045em] text-ink">
             <SplitText as="span" text={content.hero.titleLine1} className="block" trigger="mount" />
             {/* Explicit space so text extraction doesn't run the lines together. */}{" "}
-            <SplitText
-              as="span"
-              text={content.hero.titleLine2}
-              delay={0.3}
-              className="block"
-              wordClassName="text-accent"
-              trigger="mount"
-            />
+            <span className="block">
+              <Typewriter text={content.hero.titleLine2} className="text-accent" delay={0.75} speed={48} />
+            </span>
           </h1>
 
           <motion.p
@@ -217,7 +215,7 @@ export default function Hero() {
                 {[trades, areas].map((s) => (
                   <div key={s.label}>
                     <p className="font-display text-[length:clamp(2rem,5svh,3rem)] font-extrabold leading-none tracking-[-0.04em] text-ink">
-                      {s.value}
+                      <Counter value={s.value} />
                       <span className="text-accent">{s.suffix}</span>
                     </p>
                     <p className="mt-1.5 text-[11px] leading-snug text-ink-muted">{s.label}</p>
