@@ -1,0 +1,297 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   Palette
+   Every foreground value below is checked against the page ground (#faf7f1)
+   for WCAG AA. The previous soft gold (#e08a2e) sat at 2.50:1 and failed on
+   every eyebrow label; the accents here are deliberately deeper so heading
+   and label text carries real contrast without resorting to gradient fills.
+
+     ink          #1c1a16  →  16.25:1
+     ink-muted    #5c554a  →   6.88:1
+     accent       #9a4513  →   6.07:1   (headings, links, icons)
+     accent-deep  #8a3d0f  →   7.13:1   (small text, eyebrows)
+     teal         #0b6470  →   6.39:1   (secondary accent)
+     teal-deep    #0a5560  →   7.92:1
+   ------------------------------------------------------------------------- */
+
+/*
+  Colours are stored as bare "R G B" channel triplets, not hex.
+
+  Tailwind can only build an opacity modifier (`border-accent/40`,
+  `from-ink/95`) when the palette entry carries an `<alpha-value>` placeholder,
+  which in turn needs the channels separated from the colour function. While
+  these were plain `var(--color-x)` hex values every `/opacity` utility on a
+  custom token was silently dropped at build time and emitted no CSS at all —
+  35 of them across the site, including every hover border.
+
+  In plain CSS these must therefore be wrapped: `rgb(var(--color-ink))`, or
+  `rgb(var(--color-ink) / 0.5)` for a translucent value.
+*/
+:root {
+  --color-bg: 250 247 241;
+  --color-bg-elevated: 255 255 255;
+  --color-bg-sunken: 243 238 228;
+
+  --color-ink: 28 26 22;
+  --color-ink-muted: 92 85 74;
+  --color-ink-subtle: 125 117 102;
+
+  --color-accent: 154 69 19;
+  --color-accent-deep: 138 61 15;
+
+  --color-teal: 11 100 112;
+  --color-teal-deep: 10 85 96;
+
+  /* Text that sits on top of a solid accent fill. 6.19:1 on --color-accent. */
+  --color-on-accent: 253 249 242;
+
+  /* Derived translucent surfaces — already carry their own alpha, so they are
+     used without an opacity modifier. */
+  --color-surface: rgb(28 26 22 / 0.04);
+  --color-border: rgb(28 26 22 / 0.11);
+  --color-border-strong: rgb(28 26 22 / 0.18);
+  --color-accent-tint: rgb(154 69 19 / 0.09);
+  --color-teal-tint: rgb(11 100 112 / 0.09);
+
+  --font-display: "Fraunces Variable", "Fraunces", ui-serif, Georgia, serif;
+  --font-body: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Smooth scrolling belongs on the scroll container, not on every element —
+   applying it universally forces needless style work on every node. */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* The page ground lives on <html> only, and <body> stays transparent.
+   Painting order inside a stacking context puts negative-z-index children
+   (step 2) *before* the backgrounds of block-level descendants (step 3) — so
+   an opaque background on <body> paints straight over anything at `-z-20`.
+   That is what hid the hero and page-hero background photographs entirely. */
+html {
+  background: rgb(var(--color-bg));
+}
+
+body {
+  background: transparent;
+  color: rgb(var(--color-ink));
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-display), ui-serif, Georgia, serif;
+  font-optical-sizing: auto;
+  font-variant-numeric: lining-nums proportional-nums;
+  font-kerning: normal;
+}
+
+/* Headings are set tight; guarantee the inter-word gap survives that so words
+   never read as a single run. */
+h1,
+h2 {
+  word-spacing: 0.02em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: rgb(var(--color-accent));
+  color: rgb(var(--color-on-accent));
+}
+
+/* ---------------------------------------------------------------------------
+   Components
+   ------------------------------------------------------------------------- */
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid var(--color-border);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow:
+    0 1px 2px rgba(28, 26, 22, 0.03),
+    0 12px 28px -8px rgba(28, 26, 22, 0.08);
+}
+
+/* Replaces the old .text-gradient-gold. A solid, high-contrast accent reads
+   cleanly at every size, keeps its colour when a heading wraps, and does not
+   disappear behind background-clip quirks the way clipped gradient text does. */
+.text-accent {
+  color: rgb(var(--color-accent));
+}
+
+/* Optional understroke for an accent word — a flat rule, not a gradient. */
+.accent-underline {
+  background-image: linear-gradient(rgb(var(--color-accent)), rgb(var(--color-accent)));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 2px;
+  padding-bottom: 0.06em;
+}
+
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(23, 21, 16, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 21, 16, 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid rgb(var(--color-accent));
+  outline-offset: 3px;
+  border-radius: 0.35rem;
+}
+
+/* Animated underline for text links. */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 0.4s var(--ease-out-expo);
+}
+.link-underline:hover {
+  background-size: 100% 1px;
+}
+
+/* ---------------------------------------------------------------------------
+   Split-text reveal
+   The mask is a clip-path rather than `overflow: hidden` so it can be opened
+   past the box edge. A plain overflow clip cuts descenders (g, y, p, j) and
+   serif overhang off the heading — the reason words looked truncated — and
+   clip-path lets the mask sit below the baseline while still hiding the word
+   in its pre-animation position well below the line.
+   ------------------------------------------------------------------------- */
+.split-mask {
+  display: inline-block;
+  vertical-align: baseline;
+  clip-path: inset(-0.7em -0.16em -0.24em -0.16em);
+}
+
+/* ---------------------------------------------------------------------------
+   Marquee
+   ------------------------------------------------------------------------- */
+
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes marquee-reverse {
+  from { transform: translate3d(-50%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+.animate-marquee { animation: marquee linear infinite; }
+.animate-marquee-reverse { animation: marquee-reverse linear infinite; }
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* ---------------------------------------------------------------------------
+   Loading screen
+   The selectors follow LogoMark's markup (components/Logo.tsx): its four
+   panes are the <rect>s inside its <g>, in the order TL, TR, BL, BR.
+   ------------------------------------------------------------------------- */
+
+@keyframes loading-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pane-glaze {
+  0%, 100% { opacity: 0.25; }
+  25%, 55% { opacity: 1; }
+}
+
+/* Held invisible for 150ms so a quick navigation never flashes the loader. */
+.loading-screen { animation: loading-in 0.3s ease-out 0.15s both; }
+
+.loading-mark g > rect { animation: pane-glaze 1.4s ease-in-out infinite both; }
+/* Clockwise: TL, TR, BR, BL. */
+.loading-mark g > rect:nth-child(2) { animation-delay: 0.175s; }
+.loading-mark g > rect:nth-child(4) { animation-delay: 0.35s; }
+.loading-mark g > rect:nth-child(3) { animation-delay: 0.525s; }
+
+/* ---------------------------------------------------------------------------
+   Toasts (components/admin/Toaster.tsx)
+   Sonner positions the cards; these rules cover what it only does for its own
+   built-in styling.
+   ------------------------------------------------------------------------- */
+
+/* Sonner only sizes its own styled toasts; custom ones would shrink to their
+   text. Phones keep its full-width layout. */
+@media (min-width: 601px) {
+  [data-sonner-toaster] [data-sonner-toast] { width: var(--width); }
+}
+
+/* In the collapsed stack Sonner squashes the cards behind the front one to its
+   height; fade their content so only the edges peek out. */
+.toast-card > * { transition: opacity 0.4s; }
+[data-sonner-toast][data-expanded="false"][data-front="false"] .toast-card > * { opacity: 0; }
+
+[data-sonner-toast]:focus-visible .toast-card {
+  outline: 2px solid rgb(var(--color-accent) / 0.55);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   Scrollbar
+   ------------------------------------------------------------------------- */
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: rgb(var(--color-bg)); }
+::-webkit-scrollbar-thumb { background: #ddd3c4; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgb(var(--color-accent)); }
+
+/* ---------------------------------------------------------------------------
+   Reduced motion
+   ------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .animate-marquee,
+  .animate-marquee-reverse,
+  .loading-mark g > rect {
+    animation: none;
+  }
+  .toast-timer {
+    display: none;
+  }
+  /* Never let a reveal mask hide content when motion is off. */
+  .split-mask {
+    clip-path: none;
+  }
+}
