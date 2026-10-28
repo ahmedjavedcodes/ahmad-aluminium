@@ -208,7 +208,9 @@ export default function Hero() {
               </span>
             </motion.a>
 
-            {/* Figures */}
+            {/* Figures. Built to mirror the rating tile beside it: label and
+                round button on top, the numbers on the bottom edge, and the
+                hours/address as an extra line only when there is room. */}
             <motion.div
               initial={{ opacity: 0, y: 36 }}
               animate={{ opacity: 1, y: 0 }}
@@ -216,27 +218,33 @@ export default function Hero() {
               className="theme-inverse relative flex flex-col justify-between overflow-hidden rounded-[clamp(1.25rem,3svh,2rem)] p-[clamp(1rem,2.6svh,1.75rem)]"
             >
               <div aria-hidden className="absolute -right-14 -top-14 h-48 w-48 rounded-full bg-accent/25 blur-[60px]" />
+              <span className="relative flex items-center justify-between">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-subtle">The workshop</span>
+                <a
+                  href={site.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Find the workshop on Google Maps: ${site.address.street}, ${cityName}`}
+                  className="focus-ring group flex h-8 w-8 items-center justify-center rounded-full border border-border-strong text-ink transition-colors duration-300 hover:border-accent hover:bg-accent hover:text-on-accent"
+                >
+                  <MapPin size={14} aria-hidden />
+                </a>
+              </span>
               <div className="relative grid grid-cols-2 gap-3">
                 {[trades, areas].map((s) => (
                   <div key={s.label}>
-                    <p className="font-display text-[length:clamp(2rem,5svh,3rem)] font-extrabold leading-none tracking-[-0.04em] text-ink">
+                    <p className="font-display text-[length:clamp(2.5rem,6svh,4rem)] font-extrabold leading-none tracking-[-0.05em] text-ink">
                       <Counter value={s.value} />
                       <span className="text-accent">{s.suffix}</span>
                     </p>
-                    <p className="mt-1.5 text-[11px] leading-snug text-ink-muted">{s.label}</p>
+                    <p className="mt-1.5 text-xs leading-snug text-ink-muted">{s.label}</p>
                   </div>
                 ))}
               </div>
-              <div className="relative hidden flex-col gap-1 border-t border-border pt-3 text-[11px] text-ink-muted [@media(min-height:780px)]:flex">
-                <span className="flex items-center gap-2">
-                  <Clock size={12} className="shrink-0 text-accent" aria-hidden />
-                  {site.hours}
-                </span>
-                <span className="flex items-center gap-2">
-                  <MapPin size={12} className="shrink-0 text-accent" aria-hidden />
-                  {site.address.street}, {cityName}
-                </span>
-              </div>
+              <span className="relative hidden items-center gap-2 text-[11px] text-ink-muted [@media(min-height:780px)]:flex">
+                <Clock size={12} className="shrink-0 text-accent" aria-hidden />
+                {site.hours}
+              </span>
             </motion.div>
           </div>
         </div>
