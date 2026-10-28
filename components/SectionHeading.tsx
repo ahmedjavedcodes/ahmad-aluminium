@@ -20,6 +20,8 @@ export function SectionHeading({
   align = "start",
   level = "h2",
   className,
+  id,
+  introClassName,
 }: {
   eyebrow?: string;
   heading: SplitHeading;
@@ -29,6 +31,10 @@ export function SectionHeading({
   align?: "start" | "center";
   level?: "h1" | "h2";
   className?: string;
+  /** id for the heading, so a section can point aria-labelledby at it. */
+  id?: string;
+  /** Extra classes for the intro, e.g. hiding it where space is tightest. */
+  introClassName?: string;
 }) {
   const Tag = level;
   const centered = align === "center";
@@ -38,7 +44,7 @@ export function SectionHeading({
       {eyebrow && (
         <p
           className={cn(
-            "mb-5 flex items-center gap-3 text-[12px] font-semibold uppercase tracking-[0.2em] text-accent-deep",
+            "mb-[clamp(0.75rem,2svh,1.25rem)] flex items-center gap-3 text-[12px] font-semibold uppercase tracking-[0.2em] text-accent-deep",
             centered && "justify-center"
           )}
         >
@@ -51,7 +57,12 @@ export function SectionHeading({
         </p>
       )}
 
-      <Tag className="font-display text-[2.25rem] font-extrabold leading-[1.02] tracking-[-0.045em] text-ink sm:text-5xl md:text-[3.6rem]">
+      {/* Sized against both width and height, so a heading never pushes its
+          one-screen section past the fold on a short window. */}
+      <Tag
+        id={id}
+        className="font-display text-[length:clamp(1.85rem,min(4.4vw,6.2svh),3.5rem)] font-extrabold leading-[1.03] tracking-[-0.045em] text-ink"
+      >
         {heading.lead} <span className="text-accent">{heading.accent}</span>
         {heading.tail}
       </Tag>
@@ -59,8 +70,9 @@ export function SectionHeading({
       {intro && (
         <p
           className={cn(
-            "mt-5 max-w-prose text-[15px] leading-[1.75] text-ink-muted sm:text-[17px]",
-            centered && "mx-auto"
+            "mt-[clamp(0.75rem,2svh,1.25rem)] max-w-prose text-[length:clamp(0.9rem,min(1.3vw,2.1svh),1.0625rem)] leading-[1.7] text-ink-muted",
+            centered && "mx-auto",
+            introClassName
           )}
         >
           {intro}

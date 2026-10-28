@@ -485,6 +485,10 @@ html:has(.site-theme)::-webkit-scrollbar-thumb:hover { background: rgb(180 84 31
   background: linear-gradient(90deg, transparent, rgb(var(--color-accent) / 0.7), transparent);
 }
 
+/* Swipe rails: scrollable, but without a visible scrollbar. */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
 /* Corner brackets, like crop marks on a shop drawing. */
 .crop-marks { position: relative; }
 .crop-marks::before,

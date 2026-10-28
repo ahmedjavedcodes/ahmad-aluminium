@@ -54,7 +54,7 @@ export default function ServicesPage() {
 
       <section className="relative py-20 sm:py-24">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <ServicesGrid />
+          <ServicesGrid className="h-[clamp(26rem,82svh,52rem)]" />
         </div>
       </section>
 

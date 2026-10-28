@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import Hero from "@/components/Hero";
 import { ServicesGrid } from "@/components/ServicesGrid";
 import { ServiceAreas } from "@/components/ServiceAreas";
@@ -11,16 +10,18 @@ import CTASection from "@/components/CTASection";
 import { FAQ } from "@/components/FAQ";
 import { QuoteBuilder } from "@/components/QuoteBuilder";
 import { SectionHeading } from "@/components/SectionHeading";
+import { Screen } from "@/components/Screen";
 import { JsonLd } from "@/components/JsonLd";
-import { Button } from "@/components/ui/button";
+import { Button, RollText, ArrowSwap } from "@/components/ui/button";
 import { Reveal } from "@/lib/motion";
 import { content } from "@/data/content";
 import { graph, faqSchema, breadcrumbSchema } from "@/lib/structured-data";
 
 /**
- * Home, ordered as a funnel: what we do → why trust us (values, real work,
- * Google reviews) → how a job runs → build a quote → coverage and FAQs for
- * the undecided → final call to action.
+ * Home, as a run of one-screen chapters ordered like a sales conversation:
+ * who we are → the work itself → what we do → why trust us → what customers
+ * say → how a job runs → build a quote. Coverage, FAQs and the closing call
+ * to action follow as ordinary flowing sections.
  */
 export default function Home() {
   return (
@@ -33,39 +34,31 @@ export default function Home() {
       />
 
       <Hero />
+      <Gallery index={1} />
 
-      <section className="relative py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
-            <SectionHeading
-              index={1}
-              eyebrow={content.home.servicesEyebrow}
-              heading={content.home.servicesHeading}
-              intro={content.home.servicesIntro}
-              className="max-w-2xl"
-            />
-            <Reveal index={1}>
-              <Button asChild variant="outline">
-                <Link href="/services">
-                  {content.home.viewAllServices}
-                  <ArrowRight
-                    size={16}
-                    aria-hidden
-                    className="transition-transform duration-300 ease-out-expo group-hover:translate-x-1"
-                  />
-                </Link>
-              </Button>
-            </Reveal>
-          </div>
-
-          <div className="mt-12">
-            <ServicesGrid />
-          </div>
+      <Screen id="services" labelledBy="services-heading">
+        <div className="flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-end">
+          <SectionHeading
+            id="services-heading"
+            index={2}
+            eyebrow={content.home.servicesEyebrow}
+            heading={content.home.servicesHeading}
+            intro={content.home.servicesIntro}
+            className="max-w-2xl"
+          />
+          <Reveal index={1} className="hidden sm:block">
+            <Button asChild variant="outline">
+              <Link href="/services">
+                <RollText>{content.home.viewAllServices}</RollText>
+                <ArrowSwap size={16} />
+              </Link>
+            </Button>
+          </Reveal>
         </div>
-      </section>
+        <ServicesGrid className="mt-[clamp(1.25rem,4svh,2.5rem)] min-h-[20rem] flex-1" />
+      </Screen>
 
-      <WhyUs index={2} />
-      <Gallery index={3} />
+      <WhyUs index={3} />
       <Testimonials index={4} />
       <Process index={5} />
       <QuoteBuilder index={6} />

@@ -4,6 +4,7 @@ import { Star, Quote } from "lucide-react";
 import { testimonials, googleRating, type Testimonial } from "@/data/testimonials";
 import { Reveal } from "@/lib/motion";
 import { SectionHeading } from "@/components/SectionHeading";
+import { Screen } from "@/components/Screen";
 import { Marquee } from "@/components/motion/Marquee";
 import { RollText, ArrowSwap } from "@/components/ui/button";
 import { content } from "@/data/content";
@@ -50,16 +51,16 @@ export function RatingBadge({ className }: { className?: string }) {
 /** Review text is rendered exactly as stored — never trimmed or edited. */
 function ReviewCard({ t }: { t: Testimonial }) {
   return (
-    <figure className="panel hover-rim group flex h-full w-[300px] shrink-0 flex-col rounded-[1.5rem] p-6 transition-[transform,box-shadow] duration-500 ease-out-expo hover:-translate-y-1 hover:shadow-deep sm:w-[340px]">
+    <figure className="panel hover-rim flex h-full w-[260px] shrink-0 flex-col rounded-[1.5rem] p-4 sm:w-[320px] sm:p-5 transition-[transform,box-shadow] duration-500 ease-out-expo hover:-translate-y-1 hover:shadow-deep">
       <div className="flex items-center justify-between">
-        <Quote size={20} className="text-accent/60" aria-hidden />
+        <Quote size={18} className="text-accent/70" aria-hidden />
         <Stars rating={t.rating} size={13} />
       </div>
-      <blockquote className="mt-4 flex-1 text-[15px] leading-relaxed text-ink">{t.text}</blockquote>
-      <figcaption className="mt-5 flex items-center gap-3 border-t border-border pt-4">
+      <blockquote className="mt-3 flex-1 text-[15px] leading-relaxed text-ink">{t.text}</blockquote>
+      <figcaption className="mt-4 flex items-center gap-3 border-t border-border pt-3">
         <span
           aria-hidden
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-tint font-display text-sm font-bold text-accent-deep"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent-tint font-display text-sm font-bold text-accent-deep"
         >
           {t.name.trim().charAt(0).toUpperCase()}
         </span>
@@ -75,51 +76,49 @@ function ReviewCard({ t }: { t: Testimonial }) {
 }
 
 /**
- * Reviews: the longest review set as a large pull quote, then the rest on
- * two slow counter-scrolling rails (paused on hover; static under reduced
- * motion). The rails duplicate their cards for a seamless loop — the copy is
- * aria-hidden, so every review is announced once.
+ * Reviews, on one screen: heading and rating badge, the longest review as a
+ * large pull quote that takes the spare height, and every other review on a
+ * slow rail along the bottom (paused on hover; static under reduced motion).
+ * The rail duplicates its cards for a seamless loop — the copy is
+ * aria-hidden, so each review is announced once.
  */
 export function Testimonials({ index }: { index?: number }) {
   const ordered = [...testimonials].sort((a, b) => b.text.length - a.text.length);
   const [featured, ...rest] = ordered;
-  const half = Math.ceil(rest.length / 2);
-  const rails = [rest.slice(0, half), rest.slice(half)].filter((r) => r.length);
 
   return (
-    <section id="reviews" className="relative overflow-hidden py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end">
+    <Screen id="reviews" labelledBy="reviews-heading" containerClassName="max-w-none px-0 sm:px-0">
+      <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-5 sm:px-8">
+        <div className="flex flex-col items-start justify-between gap-5 lg:flex-row lg:items-end">
           <SectionHeading
+            id="reviews-heading"
             index={index}
             eyebrow={content.reviews.eyebrow}
             heading={content.reviews.heading}
             intro={content.reviews.intro}
+            introClassName="hidden sm:block"
             className="max-w-2xl"
           />
-          <Reveal index={1}>
+          <Reveal index={1} className="[@media(max-height:760px)]:hidden lg:block">
             <RatingBadge />
           </Reveal>
         </div>
 
         {featured && (
-          <Reveal variant="rise" className="mt-14">
-            <figure className="theme-inverse relative overflow-hidden rounded-[2rem] px-7 py-12 sm:px-14 sm:py-16">
+          <Reveal variant="rise" className="mt-[clamp(1.25rem,3.5svh,2.25rem)] flex flex-1">
+            <figure className="theme-inverse relative flex w-full flex-col justify-center overflow-hidden rounded-[clamp(1.5rem,3.5svh,2.5rem)] px-5 py-[clamp(1.25rem,4.5svh,3.5rem)] sm:px-12">
               <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-accent/25 blur-[100px]" />
-              <Quote
-                aria-hidden
-                className="pointer-events-none absolute -left-4 -top-6 h-40 w-40 text-white/[0.04] sm:h-56 sm:w-56"
-              />
-              <div className="relative grid grid-cols-1 items-end gap-10 lg:grid-cols-12">
-                <blockquote className="font-display text-[1.75rem] font-bold leading-[1.2] tracking-[-0.03em] text-ink sm:text-4xl lg:col-span-8 lg:text-[2.75rem]">
+              <Quote aria-hidden className="pointer-events-none absolute -left-3 -top-5 h-40 w-40 text-white/[0.04] sm:h-52 sm:w-52" />
+              <div className="relative grid grid-cols-1 items-end gap-6 lg:grid-cols-12 lg:gap-10">
+                <blockquote className="font-display text-[length:clamp(1.15rem,min(3vw,4.2svh),2.6rem)] font-bold leading-[1.22] tracking-[-0.03em] text-ink lg:col-span-8">
                   <span className="text-accent">&ldquo;</span>
                   {featured.text}
                   <span className="text-accent">&rdquo;</span>
                 </blockquote>
-                <figcaption className="flex flex-col gap-4 lg:col-span-4 lg:items-end lg:text-right">
-                  <Stars rating={featured.rating} size={18} />
+                <figcaption className="flex flex-wrap items-center justify-between gap-3 lg:col-span-4 lg:flex-col lg:items-end lg:text-right">
                   <span>
-                    <span className="block text-lg font-semibold text-ink">{featured.name}</span>
+                    <Stars rating={featured.rating} size={16} />
+                    <span className="mt-2 block font-semibold text-ink">{featured.name}</span>
                     <time dateTime={featured.date} className="block text-sm text-ink-muted">
                       {dateFmt.format(new Date(featured.date))} · Google review
                     </time>
@@ -128,9 +127,9 @@ export function Testimonials({ index }: { index?: number }) {
                     href={googleRating.profileUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="focus-ring group inline-flex items-center gap-2 rounded-full text-sm font-semibold text-accent-deep"
+                    className="focus-ring group inline-flex items-center gap-2 rounded-full text-sm font-semibold text-accent-deep [@media(max-height:700px)]:hidden"
                   >
-                    <RollText>{`Read all ${googleRating.count} reviews on Google`}</RollText>
+                    <RollText>{`All ${googleRating.count} reviews on Google`}</RollText>
                     <ArrowSwap diagonal size={15} />
                   </a>
                 </figcaption>
@@ -140,16 +139,14 @@ export function Testimonials({ index }: { index?: number }) {
         )}
       </div>
 
-      {/* Rails run edge to edge, faded at both ends. */}
-      <div className="mt-6 flex flex-col gap-5 [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
-        {rails.map((rail, r) => (
-          <Marquee key={r} duration={48 + r * 8} reverse={r === 1} gap={20} className="py-3">
-            {rail.map((t) => (
-              <ReviewCard key={t.name + t.date} t={t} />
-            ))}
-          </Marquee>
-        ))}
+      {/* Rail runs edge to edge, faded at both ends. */}
+      <div className="mt-[clamp(0.75rem,2.5svh,1.5rem)] shrink-0 [mask-image:linear-gradient(90deg,transparent,#000_6%,#000_94%,transparent)]">
+        <Marquee duration={60} gap={16} className="py-1 sm:py-2">
+          {rest.map((t) => (
+            <ReviewCard key={t.name + t.date} t={t} />
+          ))}
+        </Marquee>
       </div>
-    </section>
+    </Screen>
   );
 }

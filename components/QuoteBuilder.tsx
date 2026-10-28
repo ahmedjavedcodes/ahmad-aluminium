@@ -11,6 +11,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/lib/motion";
 import { Button, RollText, ArrowSwap } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Screen } from "@/components/Screen";
 
 const OTHER_AREA = "__other";
 
@@ -23,16 +24,17 @@ const OTHER_AREA = "__other";
  * *composes* the enquiry — trades, area, a few details — shows exactly what
  * will be sent, and opens WhatsApp with it pre-written. One tap to send, and
  * the workshop receives a structured request instead of a bare "hi".
+ *
+ * QuoteForm is the builder itself — trades, area and details on the left, the
+ * live message and send button on the right — used by the quote section below
+ * and as the first thing on the contact page.
  */
-export function QuoteBuilder({
+export function QuoteForm({
   defaultService,
-  index,
   className,
 }: {
   /** Slug of a service to pre-select (used on service pages). */
   defaultService?: string;
-  /** Section number for the eyebrow. */
-  index?: number;
   className?: string;
 }) {
   const ids = useId();
@@ -53,33 +55,22 @@ export function QuoteBuilder({
   const toggle = (slug: string) =>
     setSelected((prev) => (prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]));
 
-  const stepLabel = "font-mono text-[11px] uppercase tracking-[0.18em] text-ink-subtle";
+  const stepLabel = "text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-subtle";
 
   return (
-    <section id="quote" className={cn("relative isolate scroll-mt-24 py-24 sm:py-28", className)}>
-      <div aria-hidden className="blueprint absolute inset-0 -z-10 opacity-50" />
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <SectionHeading
-          index={index}
-          eyebrow="Free quotation"
-          heading={{ lead: "Tell us about", accent: "the job", tail: "." }}
-          intro={`Pick the work and your area in ${cityName}. We'll open WhatsApp with your request written out — check it, press send, and the workshop replies with next steps.`}
-          className="max-w-2xl"
-        />
-
-        <div className="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-12">
+        <div className={cn("grid grid-cols-1 gap-3 md:grid-cols-12 md:gap-5", className)}>
           {/* Builder */}
-          <Reveal index={1} className="lg:col-span-7">
-            <div className="panel h-full rounded-[1.5rem] p-5 sm:p-8">
+          <Reveal index={1} className="md:col-span-7">
+            <div className="panel flex h-full flex-col rounded-[clamp(1.25rem,3svh,2rem)] p-[clamp(1rem,3svh,2rem)]">
               <fieldset>
                 <legend className="flex w-full items-baseline justify-between gap-3">
-                  <span className="font-display text-xl font-semibold text-ink">
+                  <span className="font-display text-[length:clamp(1.05rem,2.6svh,1.3rem)] font-bold text-ink">
                     What do you need?
                   </span>
                   <span className={stepLabel}>Step 01</span>
                 </legend>
-                <p className="mt-1 text-sm text-ink-muted">Choose one or more trades.</p>
-                <div className="mt-5 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+                <p className="mt-1 hidden text-sm text-ink-muted sm:block">Choose one or more trades.</p>
+                <div className="mt-[clamp(0.75rem,2svh,1.25rem)] grid grid-cols-2 gap-2 sm:gap-2.5 xl:grid-cols-3">
                   {services.map((s) => {
                     const on = selected.includes(s.slug);
                     return (
@@ -89,7 +80,7 @@ export function QuoteBuilder({
                         aria-pressed={on}
                         onClick={() => toggle(s.slug)}
                         className={cn(
-                          "focus-ring group flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border px-3.5 py-3 text-left text-sm transition-[border-color,background-color,color,transform,box-shadow] duration-300 hover:-translate-y-0.5 active:scale-[0.98]",
+                          "focus-ring group flex min-h-11 cursor-pointer items-center gap-2.5 rounded-xl border px-3 py-2 text-left text-[13px] sm:text-sm transition-[border-color,background-color,color,transform,box-shadow] duration-300 hover:-translate-y-0.5 active:scale-[0.98]",
                           on
                             ? "border-accent/70 bg-accent-tint text-ink shadow-[0_8px_20px_-12px_rgb(var(--color-accent)/0.6)]"
                             : "border-border bg-surface text-ink-muted hover:border-border-strong hover:text-ink"
@@ -111,20 +102,20 @@ export function QuoteBuilder({
                 </div>
               </fieldset>
 
-              <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div className="mt-[clamp(1rem,3svh,2rem)] grid flex-1 grid-cols-2 gap-[clamp(0.6rem,2.5svh,1.5rem)]">
                 <div>
                   <label htmlFor={`${ids}-area`} className="flex items-baseline justify-between gap-3">
-                    <span className="font-display text-xl font-semibold text-ink">Where is the site?</span>
+                    <span className="font-display text-[length:clamp(1.05rem,2.6svh,1.3rem)] font-bold text-ink">Where is the site?</span>
                     <span className={stepLabel}>02</span>
                   </label>
-                  <div className="relative mt-3">
+                  <div className="relative mt-2.5">
                     <select
                       id={`${ids}-area`}
                       value={area}
                       onChange={(e) => setArea(e.target.value)}
-                      className="focus-ring h-12 w-full cursor-pointer appearance-none rounded-xl border border-border-strong bg-bg-elevated px-3.5 pr-10 text-[15px] text-ink transition-colors hover:border-accent/50 focus:border-accent focus:outline-none"
+                      className="focus-ring h-12 w-full cursor-pointer appearance-none rounded-xl border border-border-strong bg-bg-elevated px-3 pr-9 text-sm sm:px-3.5 sm:pr-10 sm:text-[15px] text-ink transition-colors hover:border-accent/50 focus:border-accent focus:outline-none"
                     >
-                      <option value="">Select your area</option>
+                      <option value="">Choose area</option>
                       {content.areas.list.map((a) => (
                         <option key={a} value={a}>
                           {a}
@@ -140,9 +131,9 @@ export function QuoteBuilder({
                   </div>
                 </div>
 
-                <div>
+                <div className="flex flex-col">
                   <label htmlFor={`${ids}-details`} className="flex items-baseline justify-between gap-3">
-                    <span className="font-display text-xl font-semibold text-ink">
+                    <span className="font-display text-[length:clamp(1.05rem,2.6svh,1.3rem)] font-bold text-ink">
                       Details <span className="text-sm font-normal text-ink-subtle">(optional)</span>
                     </span>
                     <span className={stepLabel}>03</span>
@@ -152,9 +143,9 @@ export function QuoteBuilder({
                     value={details}
                     onChange={(e) => setDetails(e.target.value)}
                     maxLength={500}
-                    rows={3}
+                    rows={2}
                     placeholder="Sizes, quantities, finish, timeline…"
-                    className="focus-ring mt-3 block w-full resize-none rounded-xl border border-border-strong bg-bg-elevated px-3.5 py-3 text-[15px] text-ink placeholder:text-ink-subtle transition-colors hover:border-accent/50 focus:border-accent focus:outline-none"
+                    className="focus-ring mt-2.5 block min-h-[4.5rem] w-full flex-1 resize-none rounded-xl border border-border-strong bg-bg-elevated px-3.5 py-3 text-[15px] text-ink placeholder:text-ink-subtle transition-colors hover:border-accent/50 focus:border-accent focus:outline-none"
                   />
                 </div>
               </div>
@@ -162,10 +153,10 @@ export function QuoteBuilder({
           </Reveal>
 
           {/* Live preview + send */}
-          <Reveal index={2} className="lg:col-span-5">
+          <Reveal index={2} className="md:col-span-5">
             <div className="theme-inverse crop-marks relative flex h-full flex-col overflow-hidden rounded-[1.5rem] shadow-deep">
               <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent/25 blur-[90px]" />
-              <div className="relative flex items-center justify-between border-b border-border px-5 py-3">
+              <div className="relative hidden items-center justify-between border-b border-border px-5 py-3 sm:flex">
                 <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-subtle">
                   Your message
                 </span>
@@ -175,7 +166,7 @@ export function QuoteBuilder({
                 </span>
               </div>
 
-              <div className="relative flex-1 px-5 py-5" aria-live="polite">
+              <div className="relative hidden flex-1 px-5 py-[clamp(0.75rem,2.5svh,1.25rem)] sm:block" aria-live="polite">
                 <div className="rounded-2xl rounded-tr-sm border border-accent/25 bg-accent-tint p-4">
                   <AnimatePresence mode="popLayout" initial={false}>
                     <motion.p
@@ -195,7 +186,7 @@ export function QuoteBuilder({
                 </p>
               </div>
 
-              <div className="relative flex flex-col gap-2.5 border-t border-border p-4">
+              <div className="relative flex flex-col gap-2 p-3 sm:border-t sm:border-border sm:p-4">
                 <Button asChild size="lg" className="w-full">
                   <a href={whatsappHref(message)} target="_blank" rel="noopener noreferrer">
                     <MessageCircle size={17} aria-hidden />
@@ -203,7 +194,7 @@ export function QuoteBuilder({
                     <ArrowSwap size={16} />
                   </a>
                 </Button>
-                <Button asChild variant="ghost" className="w-full">
+                <Button asChild variant="ghost" className="hidden w-full sm:inline-flex">
                   <a href={telHref}>
                     <Phone size={15} className="text-accent" aria-hidden />
                     Prefer to talk? Call {site.phoneLocal}
@@ -213,7 +204,39 @@ export function QuoteBuilder({
             </div>
           </Reveal>
         </div>
-      </div>
-    </section>
+  );
+}
+
+/** Home and service-page section: heading, then the form, on one screen. */
+export function QuoteBuilder({
+  defaultService,
+  index,
+  className,
+}: {
+  /** Slug of a service to pre-select (used on service pages). */
+  defaultService?: string;
+  /** Section number for the eyebrow. */
+  index?: number;
+  className?: string;
+}) {
+  return (
+    <Screen
+      id="quote"
+      labelledBy="quote-heading"
+      reserveActionBar={false}
+      className={className}
+      background={<div aria-hidden className="blueprint absolute inset-0 -z-10 opacity-50" />}
+    >
+      <SectionHeading
+        id="quote-heading"
+        index={index}
+        eyebrow="Free quotation"
+        heading={{ lead: "Tell us about", accent: "the job", tail: "." }}
+        intro={`Pick the work and your area in ${cityName}. We'll open WhatsApp with your request written out — check it, press send, and the workshop replies with next steps.`}
+        introClassName="hidden sm:block"
+        className="max-w-2xl"
+      />
+      <QuoteForm defaultService={defaultService} className="mt-[clamp(1.25rem,4svh,2.5rem)] flex-1" />
+    </Screen>
   );
 }

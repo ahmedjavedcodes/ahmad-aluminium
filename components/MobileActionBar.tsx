@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { MessageCircle, Phone } from "lucide-react";
 import { content } from "@/data/content";
 import { site, cityName, telHref, whatsappHref } from "@/data/site";
@@ -11,17 +12,31 @@ import { cn } from "@/lib/utils";
  *
  * Hidden over the first screen, where the hero already carries both actions,
  * and slides up once the visitor starts reading — so the two channels that
- * actually convert are never more than one tap away on a long page.
+ * actually convert are never more than one tap away on a long page. It also
+ * steps aside while the quote form (#quote) is on screen: the form has its
+ * own send button, and the bar would cover it.
  */
 export function MobileActionBar() {
-  const [visible, setVisible] = useState(false);
+  const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+  const [overQuote, setOverQuote] = useState(false);
+  const visible = scrolled && !overQuote;
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.6);
+    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.6);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    const quote = document.getElementById("quote");
+    setOverQuote(false);
+    if (!quote) return;
+    const io = new IntersectionObserver(([entry]) => setOverQuote(entry.isIntersecting), { threshold: 0.2 });
+    io.observe(quote);
+    return () => io.disconnect();
+  }, [pathname]);
 
   return (
     <div

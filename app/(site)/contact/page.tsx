@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import { PageHero } from "@/components/PageHero";
 import { ContactMethods } from "@/components/ContactMethods";
-import { QuoteBuilder } from "@/components/QuoteBuilder";
+import { ContactHero } from "@/components/ContactHero";
 import { FAQ } from "@/components/FAQ";
 import { ServiceAreas } from "@/components/ServiceAreas";
 import { JsonLd } from "@/components/JsonLd";
-import { heroImage } from "@/data/services";
 import { content } from "@/data/content";
 import { absoluteUrl, breadcrumbSchema, faqSchema, graph } from "@/lib/structured-data";
 
@@ -37,19 +35,11 @@ export default function ContactPage() {
         })}
       />
 
-      <PageHero
-        eyebrow={content.contact.eyebrow}
-        title={content.contact.title}
-        accentWords={1}
-        description={content.contact.description}
-        crumbs={crumbs}
-        image={heroImage}
-      />
-
-      <QuoteBuilder index={1} />
-      <ContactMethods index={2} />
-      <ServiceAreas index={3} />
-      <FAQ index={4} />
+      {/* The form is the first screen: no scrolling before starting a quote. */}
+      <ContactHero crumbs={crumbs} />
+      <ContactMethods index={1} />
+      <ServiceAreas index={2} />
+      <FAQ index={3} />
     </>
   );
 }
