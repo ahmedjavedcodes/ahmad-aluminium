@@ -1,5 +1,3 @@
-import "@fontsource-variable/archivo/wdth.css";
-import "@fontsource-variable/jetbrains-mono";
 import Link from "next/link";
 import { ArrowRight, Home, Phone } from "lucide-react";
 import { services } from "@/data/services";
@@ -8,6 +6,7 @@ import { LogoMark } from "@/components/Logo";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import { siteFontVariables } from "@/app/site-fonts";
 
 export const metadata = {
   title: { absolute: `Page not found | ${site.name}` },
@@ -28,7 +27,7 @@ export const metadata = {
  */
 export default function NotFound() {
   return (
-    <div className="site-theme">
+    <div className={`site-theme ${siteFontVariables}`}>
       <Navbar />
       <main id="main">
         <section className="relative isolate flex min-h-[70vh] items-center overflow-hidden pb-24 pt-36">

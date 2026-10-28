@@ -15,7 +15,7 @@ const AccordionItem = React.forwardRef<
   <AccordionPrimitive.Item
     ref={ref}
     className={cn(
-      "panel overflow-hidden rounded-xl transition-colors duration-300 hover:border-border-strong data-[state=open]:border-accent/40",
+      "panel overflow-hidden rounded-2xl transition-colors duration-300 hover:border-border-strong data-[state=open]:border-accent/40",
       className
     )}
     {...props}
@@ -48,7 +48,7 @@ const AccordionTrigger = React.forwardRef<
         <span className="flex-1 font-medium text-ink">{children}</span>
         <span
           aria-hidden
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-border-strong text-accent transition-[transform,background-color,color,border-color] duration-500 ease-out-expo group-data-[state=open]:rotate-45 group-data-[state=open]:border-accent group-data-[state=open]:bg-accent group-data-[state=open]:text-on-accent"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border-strong text-accent transition-[transform,background-color,color,border-color] duration-500 ease-out-expo group-data-[state=open]:rotate-45 group-data-[state=open]:border-accent group-data-[state=open]:bg-accent group-data-[state=open]:text-on-accent"
         >
           <Plus size={15} />
         </span>

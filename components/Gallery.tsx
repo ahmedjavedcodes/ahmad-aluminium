@@ -60,11 +60,11 @@ export default function Gallery({ index }: { index?: number }) {
             return (
               <Reveal
                 key={item.href + i}
-                index={i}
-                variant="scale"
+                index={i % 4}
+                variant="clip"
                 as="li"
                 className={cn(
-                  "group relative overflow-hidden rounded-xl border border-border transition-[border-color,box-shadow] duration-500 hover:border-accent/50 hover:shadow-deep",
+                  "group relative overflow-hidden rounded-2xl bg-bg-sunken shadow-card transition-shadow duration-700 ease-out-expo hover:shadow-deep",
                   tileClass(i)
                 )}
               >
@@ -78,7 +78,7 @@ export default function Gallery({ index }: { index?: number }) {
                         ? "(min-width: 640px) 50vw, 100vw"
                         : "(min-width: 640px) 25vw, 50vw"
                     }
-                    className="object-cover brightness-[0.8] transition-[transform,filter] duration-[1000ms] ease-out-expo group-hover:scale-[1.07] group-hover:brightness-100"
+                    className="object-cover transition-transform duration-[1400ms] ease-out-expo group-hover:scale-[1.08]"
                   />
                   {/* Fixed-height caption scrim, so the label keeps the same
                       contrast on every tile size and over bright photos. */}
@@ -93,7 +93,12 @@ export default function Gallery({ index }: { index?: number }) {
                     {String(i + 1).padStart(2, "0")}
                   </span>
 
-                  <span className="absolute inset-x-4 bottom-3.5 flex items-end justify-between gap-2">
+                  {/* Copper hairline that draws in along the bottom edge. */}
+                  <span
+                    aria-hidden
+                    className="absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 bg-accent transition-transform duration-700 ease-out-expo group-hover:scale-x-100"
+                  />
+                  <span className="absolute inset-x-4 bottom-3.5 flex translate-y-0 items-end justify-between gap-2 transition-transform duration-500 ease-out-expo group-hover:-translate-y-1">
                     <span
                       className={cn(
                         "font-display font-bold tracking-[-0.01em] text-white",
@@ -102,7 +107,7 @@ export default function Gallery({ index }: { index?: number }) {
                     >
                       {item.label}
                     </span>
-                    <span className="flex h-8 w-8 shrink-0 translate-y-2 items-center justify-center rounded-md bg-accent text-on-accent opacity-0 transition-[transform,opacity] duration-500 ease-out-expo group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+                    <span className="flex h-9 w-9 shrink-0 translate-y-2 items-center justify-center rounded-full bg-accent text-on-accent opacity-0 transition-[transform,opacity] duration-500 ease-out-expo group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
                       <ArrowUpRight size={16} aria-hidden />
                     </span>
                   </span>

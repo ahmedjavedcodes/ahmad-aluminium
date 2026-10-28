@@ -37,17 +37,17 @@ function Channel({
   primary?: boolean;
 }) {
   return (
-    <Spotlight className="h-full rounded-xl">
+    <Spotlight className="h-full rounded-[1.5rem]">
       <div
         className={cn(
-          "flex h-full flex-col rounded-xl p-7",
-          primary ? "glass-panel border-accent/35" : "panel"
+          "hover-rim flex h-full flex-col rounded-[1.5rem] p-7 transition-[box-shadow,transform] duration-700 ease-out-expo hover:-translate-y-1 hover:shadow-deep",
+          primary ? "theme-inverse" : "panel"
         )}
       >
         <div className="mb-6 flex items-center justify-between">
           <span
             className={cn(
-              "flex h-12 w-12 items-center justify-center rounded-lg",
+              "flex h-12 w-12 items-center justify-center rounded-full",
               primary ? "bg-accent text-on-accent" : "border border-border bg-bg text-accent"
             )}
           >
@@ -159,17 +159,17 @@ export function ContactMethods({ index }: { index?: number }) {
         </div>
 
         {/* Map of the workshop: a lazy iframe embed — no Maps JS, no key, and
-            nothing that blocks first paint. The darkening filter keeps the
-            light map tiles from glaring against the page. */}
+            nothing that blocks first paint. A light desaturation keeps the
+            tiles in the site's steel palette. */}
         <Reveal index={3} className="mt-5">
-          <div className="panel relative overflow-hidden rounded-xl">
+          <div className="panel relative overflow-hidden rounded-[1.5rem]">
             <iframe
               src={mapEmbedSrc}
               title={`Map showing ${site.name} in ${site.address.street}, ${cityName}`}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               allowFullScreen
-              className="block h-[320px] w-full border-0 [filter:invert(0.9)_hue-rotate(180deg)_saturate(0.6)_brightness(0.95)] sm:h-[400px]"
+              className="block h-[320px] w-full border-0 [filter:grayscale(0.35)_contrast(1.02)] sm:h-[400px]"
             />
             <div className="flex flex-col gap-3 border-t border-border p-5 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-ink-muted">

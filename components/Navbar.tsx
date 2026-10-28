@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Menu, Phone, MessageCircle, ArrowRight, Clock } from "lucide-react";
+import { Menu, Phone, MessageCircle, Clock } from "lucide-react";
 import { content } from "@/data/content";
 import { site, cityName, telHref, whatsappHref } from "@/data/site";
 import { Logo } from "@/components/Logo";
-import { Button } from "@/components/ui/button";
+import { Button, RollText, ArrowSwap } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -65,7 +65,7 @@ export default function Navbar() {
       <nav
         aria-label="Main"
         className={cn(
-          "mx-auto flex h-16 max-w-7xl items-center gap-3 rounded-xl border px-3 transition-[background-color,border-color,box-shadow] duration-500 ease-out-expo sm:px-4",
+          "mx-auto flex h-16 max-w-7xl items-center gap-3 rounded-full border px-3 transition-[background-color,border-color,box-shadow] duration-500 ease-out-expo sm:px-4",
           scrolled
             ? "glass-panel border-border"
             : "border-transparent bg-transparent"
@@ -93,13 +93,14 @@ export default function Navbar() {
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "focus-ring relative block rounded-md px-3.5 py-2 text-sm transition-colors duration-300",
-                    active ? "text-ink" : "text-ink-muted hover:text-ink"
+                    active ? "text-ink" : "text-ink-muted hover:text-ink",
+                    "after:absolute after:inset-x-3.5 after:-bottom-[3px] after:h-[2px] after:origin-left after:scale-x-0 after:rounded-full after:bg-ink/25 after:transition-transform after:duration-500 after:ease-out-expo hover:after:scale-x-100"
                   )}
                 >
                   {active && (
                     <motion.span
                       layoutId="nav-active"
-                      className="absolute inset-x-3 -bottom-[3px] h-[2px] rounded-full bg-accent"
+                      className="absolute inset-x-3.5 -bottom-[3px] z-10 h-[2px] rounded-full bg-accent"
                       transition={{ type: "spring", stiffness: 420, damping: 36 }}
                     />
                   )}
@@ -121,19 +122,15 @@ export default function Navbar() {
 
           <Button asChild size="sm" className="hidden sm:inline-flex">
             <Link href={QUOTE_HREF}>
-              {content.nav.quote}
-              <ArrowRight
-                size={15}
-                aria-hidden
-                className="transition-transform duration-300 group-hover:translate-x-0.5"
-              />
+              <RollText>{content.nav.quote}</RollText>
+              <ArrowSwap size={15} />
             </Link>
           </Button>
 
           <a
             href={telHref}
             aria-label={`Call ${site.phoneLocal}`}
-            className="focus-ring flex h-10 w-10 items-center justify-center rounded-lg border border-border text-accent transition-colors hover:border-accent/50 sm:hidden"
+            className="focus-ring flex h-10 w-10 items-center justify-center rounded-full border border-border bg-bg-elevated text-accent transition-colors hover:border-accent/50 sm:hidden"
           >
             <Phone size={16} aria-hidden />
           </a>
@@ -142,7 +139,7 @@ export default function Navbar() {
             <SheetTrigger asChild>
               <button
                 aria-label="Open menu"
-                className="focus-ring flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-border text-ink transition-colors hover:border-accent/50 md:hidden"
+                className="focus-ring flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-border bg-bg-elevated text-ink transition-colors hover:border-accent/50 md:hidden"
               >
                 <Menu size={18} aria-hidden />
               </button>
@@ -193,8 +190,8 @@ export default function Navbar() {
               <div className="mt-auto flex flex-col gap-2.5 border-t border-border p-5">
                 <Button asChild size="lg">
                   <Link href={QUOTE_HREF} onClick={() => setOpen(false)}>
-                    {content.nav.quote}
-                    <ArrowRight size={16} aria-hidden />
+                    <RollText>{content.nav.quote}</RollText>
+                    <ArrowSwap size={16} />
                   </Link>
                 </Button>
                 <div className="grid grid-cols-2 gap-2.5">

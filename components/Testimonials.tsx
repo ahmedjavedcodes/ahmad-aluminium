@@ -35,7 +35,7 @@ export function RatingBadge({ className }: { className?: string }) {
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        "focus-ring group inline-flex items-center gap-2.5 rounded-md border border-border bg-bg-elevated px-3.5 py-2 transition-colors duration-300 hover:border-accent/40",
+        "focus-ring group inline-flex items-center gap-2.5 rounded-full border border-border bg-bg-elevated px-4 py-2 shadow-card transition-[border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-accent/40",
         className
       )}
     >
@@ -65,15 +65,21 @@ function tileClass(text: string, isFeature: boolean): string {
 /** Review text is rendered exactly as stored — never trimmed or edited. */
 function Card({ t, isFeature }: { t: Testimonial; isFeature: boolean }) {
   return (
-    <Spotlight className="h-full rounded-xl">
+    <Spotlight className="h-full rounded-[1.5rem]">
       <figure
         className={cn(
-          "flex h-full flex-col rounded-xl p-6 transition-[border-color,box-shadow] duration-500",
+          "hover-rim flex h-full flex-col rounded-[1.5rem] p-6 transition-[box-shadow,transform] duration-700 ease-out-expo hover:-translate-y-1 sm:p-7",
           isFeature
-            ? "glass-panel border-accent/30 hover:shadow-copper-rim sm:p-8"
-            : "panel hover:border-border-strong"
+            ? "theme-inverse relative overflow-hidden hover:shadow-copper-rim sm:p-9"
+            : "panel hover:shadow-deep"
         )}
       >
+        {isFeature && (
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/25 blur-[80px]"
+          />
+        )}
         <div className="mb-4 flex items-center justify-between gap-3">
           <Quote
             size={isFeature ? 30 : 20}
@@ -86,7 +92,7 @@ function Card({ t, isFeature }: { t: Testimonial; isFeature: boolean }) {
           className={cn(
             "flex-1 text-ink",
             isFeature
-              ? "font-display text-2xl font-semibold leading-snug tracking-[-0.01em] sm:text-[1.75rem]"
+              ? "relative font-display text-2xl font-semibold leading-snug tracking-[-0.02em] sm:text-[2rem]"
               : "text-[0.95rem] leading-relaxed"
           )}
         >
@@ -96,7 +102,7 @@ function Card({ t, isFeature }: { t: Testimonial; isFeature: boolean }) {
           <span className="flex min-w-0 items-center gap-3">
             <span
               aria-hidden
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-surface font-display text-sm font-bold text-accent-deep"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-tint font-display text-sm font-bold text-accent-deep ring-1 ring-accent/20"
             >
               {t.name.trim().charAt(0).toUpperCase()}
             </span>
@@ -135,7 +141,7 @@ export function Testimonials({ index }: { index?: number }) {
               href={googleRating.profileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="focus-ring glass-panel group flex items-center gap-5 rounded-xl px-6 py-5 transition-colors duration-300 hover:border-accent/40"
+              className="focus-ring glass-panel hover-rim group flex items-center gap-5 rounded-2xl px-6 py-5 transition-[box-shadow,transform] duration-500 ease-out-expo hover:-translate-y-0.5 hover:shadow-copper-rim"
             >
               <span className="font-display text-6xl font-bold leading-none text-ink">
                 {googleRating.value.toFixed(1)}
@@ -160,6 +166,7 @@ export function Testimonials({ index }: { index?: number }) {
             <Reveal
               key={t.name + t.date}
               index={i}
+              variant="rise"
               as="li"
               className={cn("h-full", tileClass(t.text, i === 0))}
             >

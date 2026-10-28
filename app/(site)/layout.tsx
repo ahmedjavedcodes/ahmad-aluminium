@@ -1,5 +1,3 @@
-import "@fontsource-variable/archivo/wdth.css";
-import "@fontsource-variable/jetbrains-mono";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -8,10 +6,11 @@ import { ScrollProgress } from "@/components/motion/ScrollProgress";
 import { MobileActionBar } from "@/components/MobileActionBar";
 import { JsonLd } from "@/components/JsonLd";
 import { graph, localBusinessSchema, websiteSchema } from "@/lib/structured-data";
+import { siteFontVariables } from "@/app/site-fonts";
 
-/** Browser chrome colour to match the dark site ground (mobile address bar). */
+/** Browser chrome colour to match the site ground (mobile address bar). */
 export const viewport = {
-  themeColor: "#0b0d0f",
+  themeColor: "#f6f6f4",
 };
 
 /**
@@ -23,12 +22,12 @@ export const viewport = {
  * a `(group)` folder never appears in the path.
  *
  * `.site-theme` switches every colour token and the display/mono fonts to the
- * dark "anodised workshop" palette for these pages only; /admin keeps the
- * light palette from :root.
+ * light industrial palette for these pages only; /admin keeps the palette
+ * from :root.
  */
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="site-theme">
+    <div className={`site-theme ${siteFontVariables}`}>
       <JsonLd data={graph(localBusinessSchema(), websiteSchema())} />
       <a
         href="#main"

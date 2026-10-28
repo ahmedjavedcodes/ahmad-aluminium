@@ -2,28 +2,28 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Phone } from "lucide-react";
+import { Phone } from "lucide-react";
 import { content } from "@/data/content";
 import { heroImage } from "@/data/services";
 import { site, cityName, telHref, whatsappHref } from "@/data/site";
 import { Reveal } from "@/lib/motion";
 import { QUOTE_HREF } from "@/lib/quote";
 import { MagneticButton } from "@/components/motion/MagneticButton";
-import { Button } from "@/components/ui/button";
+import { Button, RollText, ArrowSwap } from "@/components/ui/button";
 
 export default function CTASection() {
   return (
     <section className="relative py-12 sm:py-16">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <Reveal variant="scale">
-          <div className="crop-marks relative isolate overflow-hidden rounded-xl border border-accent/25 px-6 py-16 sm:px-14 sm:py-20">
+          <div className="theme-inverse crop-marks relative isolate overflow-hidden rounded-[2rem] px-6 py-16 shadow-deep sm:px-14 sm:py-20">
             <Image
               src={heroImage}
               alt=""
               aria-hidden
               fill
               sizes="(min-width: 1280px) 1280px, 100vw"
-              className="-z-20 object-cover opacity-35"
+              className="-z-20 object-cover opacity-40"
             />
             <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-bg via-bg/90 to-bg/60" />
             <div aria-hidden className="absolute -right-24 -top-24 -z-10 h-80 w-80 rounded-full bg-accent/20 blur-[100px]" />
@@ -52,12 +52,8 @@ export default function CTASection() {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {content.hero.ctaPrimary}
-                      <ArrowRight
-                        size={17}
-                        aria-hidden
-                        className="transition-transform duration-300 ease-out-expo group-hover:translate-x-1"
-                      />
+                      <RollText>{content.hero.ctaPrimary}</RollText>
+                      <ArrowSwap size={17} />
                     </a>
                   </Button>
                 </MagneticButton>
@@ -69,7 +65,9 @@ export default function CTASection() {
                     </a>
                   </Button>
                   <Button asChild size="lg" variant="outline">
-                    <Link href={QUOTE_HREF}>Build a quote</Link>
+                    <Link href={QUOTE_HREF}>
+                      <RollText>Build a quote</RollText>
+                    </Link>
                   </Button>
                 </div>
               </div>

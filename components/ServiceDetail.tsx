@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Check, ArrowRight, Phone, Clock } from "lucide-react";
+import { Check, Phone, Clock } from "lucide-react";
 import type { Service } from "@/data/services";
 import { content } from "@/data/content";
 import { site, cityName, telHref, whatsappHref } from "@/data/site";
@@ -12,7 +12,7 @@ import { ServiceAreas } from "@/components/ServiceAreas";
 import { FAQ } from "@/components/FAQ";
 import { QuoteBuilder } from "@/components/QuoteBuilder";
 import { RatingBadge } from "@/components/Testimonials";
-import { Button } from "@/components/ui/button";
+import { Button, RollText, ArrowSwap } from "@/components/ui/button";
 
 const h2Class = "font-display text-2xl font-bold tracking-[-0.02em] text-ink sm:text-[1.75rem]";
 
@@ -37,7 +37,7 @@ export function ServiceDetail({ service, related }: { service: Service; related:
 
               <Reveal index={1} className="mt-14">
                 <h2 className={h2Class}>{content.serviceDetail.atAGlance}</h2>
-                <dl className="panel mt-6 divide-y divide-border overflow-hidden rounded-xl">
+                <dl className="panel mt-6 divide-y divide-border overflow-hidden rounded-[1.5rem]">
                   {service.specs.map((spec) => (
                     <div key={spec.label} className="flex flex-col gap-1 px-5 py-4 sm:flex-row sm:gap-6">
                       <dt className="w-48 shrink-0 font-mono text-[12px] uppercase tracking-[0.12em] text-ink-subtle">
@@ -55,9 +55,9 @@ export function ServiceDetail({ service, related }: { service: Service; related:
                   {service.items.map((item) => (
                     <li
                       key={item}
-                      className="flex items-center gap-3 rounded-lg border border-border bg-surface px-4 py-3.5 transition-colors duration-300 hover:border-accent/40"
+                      className="panel flex items-center gap-3 rounded-2xl px-4 py-3.5 transition-[transform,box-shadow] duration-500 ease-out-expo hover:-translate-y-0.5 hover:shadow-card"
                     >
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-accent-tint text-accent">
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-on-accent">
                         <Check size={14} strokeWidth={3} aria-hidden />
                       </span>
                       <span className="text-sm text-ink">{item}</span>
@@ -72,7 +72,7 @@ export function ServiceDetail({ service, related }: { service: Service; related:
                   {service.highlights.map((h) => (
                     <li
                       key={h}
-                      className="flex items-center gap-2.5 rounded-md border border-border px-3.5 py-2 text-sm text-ink"
+                      className="flex items-center gap-2.5 rounded-full border border-border bg-bg-elevated px-4 py-2 text-sm text-ink shadow-card"
                     >
                       <span aria-hidden className="h-1.5 w-1.5 rotate-45 bg-accent" />
                       {h}
@@ -95,7 +95,7 @@ export function ServiceDetail({ service, related }: { service: Service; related:
             {/* Sticky quote card */}
             <div className="lg:col-span-5">
               <Reveal index={1} variant="scale" className="lg:sticky lg:top-28">
-                <div className="glass-panel crop-marks overflow-hidden rounded-xl">
+                <div className="glass-panel crop-marks overflow-hidden rounded-[1.75rem]">
                   <div className="relative h-52 w-full">
                     <Image
                       src={service.image}
@@ -105,7 +105,7 @@ export function ServiceDetail({ service, related }: { service: Service; related:
                       className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-                    <span className="glass-panel absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-lg text-accent">
+                    <span className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/85 text-accent backdrop-blur">
                       <Icon size={20} aria-hidden />
                     </span>
                     <span className="absolute bottom-4 left-4 font-mono text-[11px] uppercase tracking-[0.16em] text-white/90">
@@ -128,12 +128,8 @@ export function ServiceDetail({ service, related }: { service: Service; related:
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          {content.serviceDetail.requestQuotation}
-                          <ArrowRight
-                            size={16}
-                            aria-hidden
-                            className="transition-transform duration-300 ease-out-expo group-hover:translate-x-1"
-                          />
+                          <RollText>{content.serviceDetail.requestQuotation}</RollText>
+                          <ArrowSwap size={16} />
                         </a>
                       </Button>
                     </MagneticButton>

@@ -30,7 +30,7 @@ export function AboutStory({ index }: { index?: number }) {
 
           <Reveal index={1} variant="scale">
             <div className="crop-marks">
-              <div className="relative h-[440px] overflow-hidden rounded-xl border border-border">
+              <div className="relative h-[440px] overflow-hidden rounded-[1.5rem] border border-border">
                 <Image
                   src={services[0].image}
                   alt={`Aluminium and glass fabrication workshop in ${cityName}`}
@@ -63,14 +63,14 @@ export function AboutValues({ index }: { index?: number }) {
         />
 
         <Reveal index={1} className="mt-14">
-          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-[1.5rem] border border-border bg-border sm:grid-cols-2">
             {content.about.values.map((v, i) => {
               const Icon = icons[i];
               return (
                 <Spotlight key={v.title} className="group h-full bg-bg-elevated">
                   <div className="flex h-full flex-col p-8 sm:p-10">
                     <div className="mb-8 flex items-center justify-between">
-                      <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-bg text-accent transition-colors duration-500 group-hover:border-accent/50">
+                      <span className="flex h-12 w-12 items-center justify-center rounded-full border border-border bg-bg text-accent transition-colors duration-500 group-hover:border-accent/50">
                         <Icon size={20} aria-hidden />
                       </span>
                       <span className="font-mono text-[11px] text-ink-subtle">

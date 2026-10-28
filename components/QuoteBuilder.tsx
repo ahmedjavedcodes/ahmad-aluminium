@@ -9,7 +9,7 @@ import { site, cityName, telHref, whatsappHref } from "@/data/site";
 import { buildQuoteMessage } from "@/lib/quote";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/lib/motion";
-import { Button } from "@/components/ui/button";
+import { Button, RollText, ArrowSwap } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const OTHER_AREA = "__other";
@@ -70,7 +70,7 @@ export function QuoteBuilder({
         <div className="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-12">
           {/* Builder */}
           <Reveal index={1} className="lg:col-span-7">
-            <div className="panel h-full rounded-xl p-5 sm:p-7">
+            <div className="panel h-full rounded-[1.5rem] p-5 sm:p-8">
               <fieldset>
                 <legend className="flex w-full items-baseline justify-between gap-3">
                   <span className="font-display text-xl font-semibold text-ink">
@@ -89,9 +89,9 @@ export function QuoteBuilder({
                         aria-pressed={on}
                         onClick={() => toggle(s.slug)}
                         className={cn(
-                          "focus-ring group flex min-h-12 cursor-pointer items-center gap-3 rounded-lg border px-3.5 py-3 text-left text-sm transition-[border-color,background-color,color] duration-300",
+                          "focus-ring group flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border px-3.5 py-3 text-left text-sm transition-[border-color,background-color,color,transform,box-shadow] duration-300 hover:-translate-y-0.5 active:scale-[0.98]",
                           on
-                            ? "border-accent/70 bg-accent-tint text-ink"
+                            ? "border-accent/70 bg-accent-tint text-ink shadow-[0_8px_20px_-12px_rgb(var(--color-accent)/0.6)]"
                             : "border-border bg-surface text-ink-muted hover:border-border-strong hover:text-ink"
                         )}
                       >
@@ -122,7 +122,7 @@ export function QuoteBuilder({
                       id={`${ids}-area`}
                       value={area}
                       onChange={(e) => setArea(e.target.value)}
-                      className="focus-ring h-12 w-full cursor-pointer appearance-none rounded-lg border border-border-strong bg-bg px-3.5 pr-10 text-[15px] text-ink transition-colors hover:border-accent/50 focus:border-accent focus:outline-none"
+                      className="focus-ring h-12 w-full cursor-pointer appearance-none rounded-xl border border-border-strong bg-bg-elevated px-3.5 pr-10 text-[15px] text-ink transition-colors hover:border-accent/50 focus:border-accent focus:outline-none"
                     >
                       <option value="">Select your area</option>
                       {content.areas.list.map((a) => (
@@ -154,7 +154,7 @@ export function QuoteBuilder({
                     maxLength={500}
                     rows={3}
                     placeholder="Sizes, quantities, finish, timeline…"
-                    className="focus-ring mt-3 block w-full resize-none rounded-lg border border-border-strong bg-bg px-3.5 py-3 text-[15px] text-ink placeholder:text-ink-subtle transition-colors hover:border-accent/50 focus:border-accent focus:outline-none"
+                    className="focus-ring mt-3 block w-full resize-none rounded-xl border border-border-strong bg-bg-elevated px-3.5 py-3 text-[15px] text-ink placeholder:text-ink-subtle transition-colors hover:border-accent/50 focus:border-accent focus:outline-none"
                   />
                 </div>
               </div>
@@ -163,8 +163,9 @@ export function QuoteBuilder({
 
           {/* Live preview + send */}
           <Reveal index={2} className="lg:col-span-5">
-            <div className="glass-panel crop-marks flex h-full flex-col rounded-xl">
-              <div className="flex items-center justify-between border-b border-border px-5 py-3">
+            <div className="theme-inverse crop-marks relative flex h-full flex-col overflow-hidden rounded-[1.5rem] shadow-deep">
+              <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent/25 blur-[90px]" />
+              <div className="relative flex items-center justify-between border-b border-border px-5 py-3">
                 <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-subtle">
                   Your message
                 </span>
@@ -174,8 +175,8 @@ export function QuoteBuilder({
                 </span>
               </div>
 
-              <div className="flex-1 px-5 py-5" aria-live="polite">
-                <div className="rounded-lg rounded-tr-sm border border-accent/25 bg-accent-tint p-4">
+              <div className="relative flex-1 px-5 py-5" aria-live="polite">
+                <div className="rounded-2xl rounded-tr-sm border border-accent/25 bg-accent-tint p-4">
                   <AnimatePresence mode="popLayout" initial={false}>
                     <motion.p
                       key={message}
@@ -194,11 +195,12 @@ export function QuoteBuilder({
                 </p>
               </div>
 
-              <div className="flex flex-col gap-2.5 border-t border-border p-4">
+              <div className="relative flex flex-col gap-2.5 border-t border-border p-4">
                 <Button asChild size="lg" className="w-full">
                   <a href={whatsappHref(message)} target="_blank" rel="noopener noreferrer">
                     <MessageCircle size={17} aria-hidden />
-                    {content.hero.ctaPrimary}
+                    <RollText>{content.hero.ctaPrimary}</RollText>
+                    <ArrowSwap size={16} />
                   </a>
                 </Button>
                 <Button asChild variant="ghost" className="w-full">

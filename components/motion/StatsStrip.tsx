@@ -56,7 +56,7 @@ export function StatsStrip({ className }: { className?: string }) {
   return (
     <dl
       className={cn(
-        "panel grid grid-cols-2 overflow-hidden rounded-xl lg:grid-cols-4",
+        "panel grid grid-cols-2 overflow-hidden rounded-[1.5rem] lg:grid-cols-4",
         className
       )}
     >

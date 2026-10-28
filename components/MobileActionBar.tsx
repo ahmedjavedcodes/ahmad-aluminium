@@ -31,11 +31,11 @@ export function MobileActionBar() {
         visible ? "translate-y-0" : "pointer-events-none translate-y-[130%]"
       )}
     >
-      <div className="glass-panel grid grid-cols-2 gap-2 rounded-xl p-2">
+      <div className="glass-panel grid grid-cols-2 gap-2 rounded-full p-1.5">
         <a
           href={telHref}
           tabIndex={visible ? undefined : -1}
-          className="focus-ring flex h-12 items-center justify-center gap-2 rounded-lg border border-border-strong text-sm font-semibold text-ink active:scale-[0.98]"
+          className="focus-ring flex h-12 items-center justify-center gap-2 rounded-full border border-border-strong bg-bg-elevated text-sm font-semibold text-ink active:scale-[0.97]"
         >
           <Phone size={16} className="text-accent" aria-hidden />
           {content.hero.ctaSecondary}
@@ -45,7 +45,7 @@ export function MobileActionBar() {
           target="_blank"
           rel="noopener noreferrer"
           tabIndex={visible ? undefined : -1}
-          className="focus-ring flex h-12 items-center justify-center gap-2 rounded-lg bg-accent text-sm font-semibold text-on-accent active:scale-[0.98]"
+          className="focus-ring flex h-12 items-center justify-center gap-2 rounded-full bg-accent text-sm font-semibold text-on-accent shadow-copper-glow active:scale-[0.97]"
         >
           <MessageCircle size={16} aria-hidden />
           WhatsApp

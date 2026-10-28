@@ -32,14 +32,14 @@ export default function WhyUs({ index }: { index?: number }) {
         />
 
         <Reveal index={1} className="mt-14">
-          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-[1.5rem] border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
             {content.whyUs.values.map((v, i) => {
               const Icon = icons[i];
               return (
                 <Spotlight key={v.title} className="group h-full bg-bg-elevated">
                   <div className="relative flex h-full flex-col p-7 sm:p-8">
                     <div className="mb-8 flex items-center justify-between">
-                      <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-bg text-accent transition-[transform,border-color] duration-500 ease-out-expo group-hover:-translate-y-0.5 group-hover:border-accent/50">
+                      <span className="flex h-12 w-12 items-center justify-center rounded-full border border-border bg-bg text-accent transition-[transform,border-color] duration-500 ease-out-expo group-hover:-translate-y-0.5 group-hover:border-accent/50">
                         <Icon size={20} aria-hidden />
                       </span>
                       <span className="font-mono text-[11px] text-ink-subtle">

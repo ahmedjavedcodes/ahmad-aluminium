@@ -6,7 +6,7 @@ import {
   useReducedMotion,
   useSpring,
 } from "framer-motion";
-import type { ReactNode, MouseEvent } from "react";
+import type { ReactNode, PointerEvent } from "react";
 
 // Created once at module scope. Calling `motion(As)` inside render produces a
 // brand-new component type on every render, which unmounts and remounts the
@@ -31,8 +31,9 @@ export function MagneticButton({
   const springX = useSpring(x, { stiffness: 180, damping: 15, mass: 0.4 });
   const springY = useSpring(y, { stiffness: 180, damping: 15, mass: 0.4 });
 
-  function handleMove(e: MouseEvent<HTMLElement>) {
-    if (reduceMotion) return;
+  function handleMove(e: PointerEvent<HTMLElement>) {
+    // Touch has no hover to follow, and reduced motion means staying put.
+    if (reduceMotion || e.pointerType !== "mouse") return;
     const rect = e.currentTarget.getBoundingClientRect();
     x.set((e.clientX - rect.left - rect.width / 2) * strength);
     y.set((e.clientY - rect.top - rect.height / 2) * strength);
@@ -47,9 +48,9 @@ export function MagneticButton({
 
   return (
     <Comp
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-      style={reduceMotion ? undefined : { x: springX, y: springY }}
+      onPointerMove={handleMove}
+      onPointerLeave={handleLeave}
+      style={{ x: springX, y: springY }}
       className={`inline-block will-change-transform ${className ?? ""}`}
     >
       {children}

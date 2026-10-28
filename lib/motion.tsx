@@ -2,7 +2,6 @@
 
 import {
   motion,
-  useReducedMotion,
   type Variants,
   type Transition,
 } from "framer-motion";
@@ -46,10 +45,34 @@ const fadeVariants: Variants = {
   }),
 };
 
+/** Rises with a slight scale — for cards entering a grid. */
+const riseVariants: Variants = {
+  hidden: { opacity: 0, y: 40, scale: 0.97 },
+  visible: (i: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.85, delay: i * 0.09, ease: EASE },
+  }),
+};
+
+/** Wipes in from the bottom edge — for photographs. */
+const clipVariants: Variants = {
+  hidden: { opacity: 0, clipPath: "inset(18% 0% 0% 0% round 1rem)", scale: 1.04 },
+  visible: (i: number = 0) => ({
+    opacity: 1,
+    clipPath: "inset(0% 0% 0% 0% round 1rem)",
+    scale: 1,
+    transition: { duration: 1.05, delay: i * 0.08, ease: EASE },
+  }),
+};
+
 const variantMap = {
   up: upVariants,
   scale: scaleVariants,
   fade: fadeVariants,
+  rise: riseVariants,
+  clip: clipVariants,
 } as const;
 
 export function Reveal({
@@ -69,19 +92,22 @@ export function Reveal({
   once?: boolean;
   id?: string;
 }) {
-  const reduceMotion = useReducedMotion();
   const Comp = motion[as];
-  const variants = variantMap[variant];
 
+  // Same markup for every visitor: the reduced-motion preference is only
+  // known in the browser, so a branch here would fail hydration. The
+  // `data-reveal` hook lets the reduced-motion CSS in globals.css force the
+  // element straight to its visible state instead.
   return (
     <Comp
       id={id}
+      data-reveal=""
       className={className}
       custom={index}
-      initial={reduceMotion ? undefined : "hidden"}
-      whileInView={reduceMotion ? undefined : "visible"}
+      initial="hidden"
+      whileInView="visible"
       viewport={{ once, margin: "-80px" }}
-      variants={reduceMotion ? undefined : variants}
+      variants={variantMap[variant]}
     >
       {children}
     </Comp>

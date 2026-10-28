@@ -22,7 +22,7 @@ export function ServiceAreas({ compact = false, index }: { compact?: boolean; in
         {content.areas.list.map((area) => (
           <span
             key={area}
-            className="rounded-md border border-border bg-surface px-3 py-1.5 text-xs text-ink-muted"
+            className="rounded-full border border-border bg-bg-elevated px-3 py-1.5 text-xs text-ink-muted"
           >
             {area}
           </span>
@@ -50,7 +50,7 @@ export function ServiceAreas({ compact = false, index }: { compact?: boolean; in
         </div>
 
         <Reveal index={1} className="lg:col-span-7">
-          <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3">
+          <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-[1.5rem] border border-border bg-border sm:grid-cols-3">
             {content.areas.list.map((area) => (
               <li
                 key={area}

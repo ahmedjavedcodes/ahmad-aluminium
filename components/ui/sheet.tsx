@@ -4,6 +4,7 @@ import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { siteFontVariables } from "@/app/site-fonts";
 
 /**
  * shadcn/ui Sheet (a Radix Dialog sliding in from the right). Radix handles
@@ -22,8 +23,8 @@ const SheetContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <DialogPrimitive.Portal>
     {/* Portalled to <body>, outside the .site-theme wrapper — so the wrapper
-        class is repeated here to pick up the dark palette and fonts. */}
-    <div className="site-theme contents">
+        class and font variables are repeated here. */}
+    <div className={`site-theme contents ${siteFontVariables}`}>
       <DialogPrimitive.Overlay className="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm data-[state=closed]:animate-overlay-out data-[state=open]:animate-overlay-in" />
       <DialogPrimitive.Content
         ref={ref}

@@ -1,27 +1,48 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+/**
+ * Route transition: the outgoing page lifts away, the incoming one settles
+ * in, and a copper bar sweeps across the top edge to mark the change.
+ *
+ * Opacity and transform only, so it runs on the compositor at 60fps. The
+ * markup is the same for every visitor; under reduced motion the CSS in
+ * globals.css (`[data-reveal]`, `[data-parallax]`) pins everything in place.
+ */
 export function PageTransition({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const reduceMotion = useReducedMotion();
-
-  if (reduceMotion) return <main id="main">{children}</main>;
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.main
-        id="main"
-        key={pathname}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -6 }}
-        transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-      >
-        {children}
-      </motion.main>
-    </AnimatePresence>
+    <>
+      <AnimatePresence initial={false}>
+        <motion.div
+          key={`bar-${pathname}`}
+          aria-hidden
+          data-parallax=""
+          className="pointer-events-none fixed inset-x-0 top-0 z-[61] h-[3px] origin-left bg-gradient-to-r from-accent via-accent to-teal motion-reduce:hidden"
+          initial={{ scaleX: 0, opacity: 1 }}
+          animate={{ scaleX: [0, 1, 1], opacity: [1, 1, 0] }}
+          transition={{ duration: 0.9, times: [0, 0.6, 1], ease: EASE }}
+        />
+      </AnimatePresence>
+
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.main
+          id="main"
+          key={pathname}
+          data-reveal=""
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } }}
+          exit={{ opacity: 0, y: -10, transition: { duration: 0.22, ease: [0.7, 0, 0.84, 0] } }}
+        >
+          {children}
+        </motion.main>
+      </AnimatePresence>
+    </>
   );
 }

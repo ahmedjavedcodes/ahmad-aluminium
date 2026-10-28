@@ -56,10 +56,11 @@ const config: Config = {
         glass: "0 8px 32px rgb(28 26 22 / 0.10)",
         "glow-accent": "0 10px 30px -10px rgb(154 69 19 / 0.55)",
         lift: "0 18px 40px -18px rgb(28 26 22 / 0.28)",
-        // Public site (dark) — deep drop plus a copper rim on hover.
-        deep: "0 30px 60px -30px rgb(0 0 0 / 0.85)",
-        "copper-rim": "0 0 0 1px rgb(222 135 80 / 0.35), 0 24px 50px -24px rgb(222 135 80 / 0.35)",
-        "copper-glow": "0 12px 36px -10px rgb(222 135 80 / 0.6)",
+        // Public site — copper values follow the active theme's token.
+        deep: "0 1px 2px rgb(20 22 25 / 0.05), 0 30px 60px -28px rgb(20 22 25 / 0.35)",
+        "copper-rim": "0 0 0 1px rgb(var(--color-accent) / 0.35), 0 24px 50px -24px rgb(var(--color-accent) / 0.45)",
+        "copper-glow": "0 14px 34px -12px rgb(var(--color-accent) / 0.65)",
+        card: "0 1px 2px rgb(20 22 25 / 0.04), 0 10px 30px -18px rgb(20 22 25 / 0.25)",
       },
       animation: {
         "accordion-down": "accordion-down 0.32s cubic-bezier(0.16, 1, 0.3, 1)",

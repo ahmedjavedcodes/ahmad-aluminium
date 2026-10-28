@@ -15,13 +15,14 @@ const companyLinks = [
 ];
 
 const headingClass = "font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-ink-subtle";
-const linkClass = "focus-ring rounded text-sm text-ink-muted transition-colors hover:text-accent-deep";
+const linkClass =
+  "focus-ring inline-block rounded text-sm text-ink-muted transition-[color,transform] duration-300 ease-out-expo hover:translate-x-1 hover:text-accent-deep";
 
 export default function Footer() {
   const [wordmark] = site.name.split(" ");
 
   return (
-    <footer className="relative overflow-hidden border-t border-border bg-bg-sunken pt-16">
+    <footer className="theme-inverse relative overflow-hidden pt-20">
       <div aria-hidden className="copper-rule absolute inset-x-0 top-0" />
 
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -37,7 +38,7 @@ export default function Footer() {
               href={googleRating.profileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="focus-ring group mt-6 inline-flex items-center gap-3 rounded-md border border-border bg-bg-elevated px-3.5 py-2.5 text-xs text-ink-muted transition-colors hover:border-accent/40 hover:text-ink"
+              className="focus-ring group mt-6 inline-flex items-center gap-3 rounded-full border border-border bg-bg-elevated px-3.5 py-2.5 text-xs text-ink-muted transition-colors hover:border-accent/40 hover:text-ink"
             >
               <span className="flex items-center gap-0.5" aria-hidden>
                 {Array.from({ length: 5 }, (_, i) => (
