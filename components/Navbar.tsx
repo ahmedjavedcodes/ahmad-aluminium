@@ -75,7 +75,7 @@ export default function Navbar() {
       >
         <Link
           href="/"
-          aria-label={`${site.name} — home`}
+          aria-label={`${site.name} home page`}
           className="focus-ring group mr-auto shrink-0 rounded-lg lg:mr-0"
         >
           <Logo

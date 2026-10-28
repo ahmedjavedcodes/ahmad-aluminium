@@ -99,7 +99,7 @@ export function ServiceDetail({ service, related }: { service: Service; related:
                   <div className="relative h-52 w-full">
                     <Image
                       src={service.image}
-                      alt={`${service.heading} — ${service.tagline}`}
+                      alt={`${service.heading}: ${service.tagline}`}
                       fill
                       sizes="(min-width: 1024px) 40vw, 100vw"
                       className="object-cover"

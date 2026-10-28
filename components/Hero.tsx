@@ -11,6 +11,7 @@ import { googleRating, testimonials } from "@/data/testimonials";
 import { SplitText } from "@/components/motion/SplitText";
 import { Typewriter } from "@/components/motion/Typewriter";
 import { Counter } from "@/components/motion/Counter";
+import { WordRotator } from "@/components/motion/WordRotator";
 import { MagneticButton } from "@/components/motion/MagneticButton";
 import { Marquee } from "@/components/motion/Marquee";
 import { Parallax } from "@/components/motion/Parallax";
@@ -54,10 +55,14 @@ export default function Hero() {
         <div className="flex flex-col justify-center lg:col-span-6">
           <motion.p
             {...rise(0)}
-            className="inline-flex max-w-full items-start gap-2.5 self-start rounded-full border border-border bg-bg-elevated/80 px-4 py-1.5 text-[10.5px] font-semibold uppercase leading-relaxed tracking-[0.12em] text-accent-deep shadow-card sm:items-center sm:text-[11px]"
+            className="inline-flex max-w-full items-center gap-2.5 self-start rounded-full border border-border bg-bg-elevated/80 px-4 py-1.5 text-[10.5px] font-semibold uppercase leading-relaxed tracking-[0.12em] text-accent-deep shadow-card sm:items-center sm:text-[11px]"
           >
-            <span aria-hidden className="status-dot mt-[0.4em] h-2 w-2 shrink-0 rounded-full bg-accent sm:mt-0" />
-            <span>{content.hero.eyebrow}</span>
+            <span aria-hidden className="status-dot h-2 w-2 shrink-0 rounded-full bg-accent" />
+            {/* The six trades take turns in one slot; the full list is still
+                read out once for screen readers and crawlers. */}
+            <span>{cityName}</span>
+            <span aria-hidden>·</span>
+            <WordRotator words={services.map((sv) => sv.title)} />
           </motion.p>
 
           {/* Line one rises in word by word; line two is typed out after it.

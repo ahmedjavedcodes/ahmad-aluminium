@@ -34,7 +34,7 @@ export default function WhyUs({ index }: { index?: number }) {
       />
 
       <SwipeGrid
-        label="Why choose us — swipe for more"
+        label="Why choose us. Swipe for more."
         className="mt-[clamp(1.25rem,4svh,2.5rem)] min-h-[15rem] flex-1 lg:grid-cols-3 lg:grid-rows-2 lg:gap-4"
       >
         {content.whyUs.values.map((v, i) => {

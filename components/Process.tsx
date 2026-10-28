@@ -61,7 +61,7 @@ export default function Process({ index }: { index?: number }) {
           />
         </div>
 
-        <SwipeGrid label="How it works — swipe through the steps" className="relative flex-1 lg:grid-cols-4 lg:gap-5">
+        <SwipeGrid label="How it works. Swipe through the steps." className="relative flex-1 lg:grid-cols-4 lg:gap-5">
           {processSteps.map((step, i) => (
             <Reveal
               key={step.title}

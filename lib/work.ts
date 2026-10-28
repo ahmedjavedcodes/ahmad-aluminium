@@ -42,7 +42,7 @@ export const workItems: WorkItem[] = [
     image: s.image,
     title: s.title,
     tagline: s.tagline,
-    alt: `${s.title} in ${cityName} — ${s.tagline}`,
+    alt: `${s.title} in ${cityName}: ${s.tagline}`,
     serviceHref: `/services/${s.slug}`,
     items: s.items,
   })),

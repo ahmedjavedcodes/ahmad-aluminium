@@ -27,7 +27,7 @@ export function WorkWall({
 }) {
   return (
     <SwipeGrid
-      label="Our work — swipe for more"
+      label="Recent projects. Swipe for more."
       className={cn("lg:grid-cols-12 lg:grid-rows-3 lg:gap-4", className)}
     >
       {workItems.slice(0, WORK_PLACEMENT.length).map((item, i) => (
@@ -93,7 +93,7 @@ function Frame({ item, index, onOpen }: { item: WorkItem; index: number; onOpen?
     );
   }
   return (
-    <Link href={workHref(item.id)} aria-label={`${item.title} — view in Our Work`} className={frameClass}>
+    <Link href={workHref(item.id)} aria-label={`View the ${item.title} project`} className={frameClass}>
       {body}
     </Link>
   );

@@ -175,7 +175,7 @@ export function ContactMethods({ index }: { index?: number }) {
               <p className="text-sm text-ink-muted">
                 <MapPin size={14} className="mr-2 inline text-accent" aria-hidden />
                 <span className="font-medium text-ink">{nap.short}</span>
-                {" — "}
+                {", "}
                 {site.address.postalCode}, {site.address.country}
               </p>
               <a
@@ -202,7 +202,7 @@ export function ContactMethods({ index }: { index?: number }) {
             Prefer email?{" "}
             <a
               href={`mailto:${site.email}?subject=${encodeURIComponent(
-                `Quotation request — ${cityName}`
+                `Quotation request, ${cityName}`
               )}`}
               className="focus-ring link-underline font-medium text-accent-deep"
             >

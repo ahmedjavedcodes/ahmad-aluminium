@@ -42,7 +42,7 @@ export default function NotFound() {
             </h1>
             <p className="mx-auto mt-4 max-w-prose leading-relaxed text-ink-muted">
               The page may have moved or the link may be out of date. Everything we do in{" "}
-              {cityName} is still here — pick a service below, or call us and we&apos;ll help
+              {cityName} is still here. Pick a service below, or call us and we&apos;ll help
               directly.
             </p>
 

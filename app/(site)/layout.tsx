@@ -38,7 +38,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       {/* Without JavaScript nothing would ever be marked as revealed, so show
           everything outright. */}
       <noscript>
-        <style>{`.reveal,.reveal-child,.split-word{opacity:1!important;transform:none!important}`}</style>
+        <style>{`.reveal,.reveal-child,.split-word,.compare-row,.compare-mark{opacity:1!important;transform:none!important}`}</style>
       </noscript>
       <ScrollProgress />
       <Navbar />

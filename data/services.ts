@@ -18,7 +18,7 @@ export interface Service {
   icon: ServiceIcon;
   /** Short label used in nav, cards, marquee and breadcrumbs. */
   title: string;
-  /** Full location-qualified H1 — the phrase people and LLMs actually search. */
+  /** Full location-qualified H1: the phrase people and LLMs actually search. */
   heading: string;
   /** <title> tag. Kept under ~60 chars where possible. */
   seoTitle: string;
@@ -33,7 +33,7 @@ export interface Service {
   description: string;
   items: string[];
   highlights: string[];
-  /** Concrete specs — the detail that makes a page citable rather than generic. */
+  /** Concrete specs: the detail that makes a page citable rather than generic. */
   specs: { label: string; value: string }[];
   faqs: ServiceFaq[];
   keywords: string[];
@@ -47,10 +47,10 @@ export const services: Service[] = [
     title: "Aluminium & Glass",
     heading: `Aluminium & Glass Work in ${cityName}`,
     seoTitle: `Aluminium & Glass Work in ${cityName} | Windows & Partitions`,
-    metaDescription: `Aluminium and glass fabrication in ${cityName} — windows, sliding doors, glass partitions, office cabins, shower enclosures, shop fronts and curtain walls. Free survey and quotation across ${cityName}.`,
+    metaDescription: `Aluminium windows, sliding doors, glass partitions, office cabins, shower enclosures, shop fronts and curtain walls in ${cityName}. Free survey and quote.`,
     tagline: "Windows, doors, partitions, shop fronts & curtain walls",
-    answer: `${site.name} fabricates and installs aluminium and glass systems across ${cityName} — including aluminium windows and doors, sliding systems, frameless glass partitions, office cabins, shower enclosures, shop fronts and curtain walls. Every job starts with a free on-site measurement anywhere in ${cityName}, followed by an itemised quotation covering profile section, glass thickness, hardware and installation.`,
-    description: `Aluminium and glass is the trade this workshop was built on. We handle the full cycle in-house — site measurement, profile cutting and fabrication, glazing, and installation — so tolerances stay tight and there is one team accountable for the finished opening. Work covers homes, offices, retail shop fronts and industrial units throughout ${cityName}.`,
+    answer: `${site.name} makes and installs aluminium and glass systems across ${cityName}: aluminium windows and doors, sliding systems, frameless glass partitions, office cabins, shower enclosures, shop fronts and curtain walls. Every job starts with a free on-site measurement anywhere in ${cityName}. You then get an itemised quotation that prices the profile section, glass thickness, hardware and installation separately.`,
+    description: `Aluminium and glass is the trade this workshop was founded on. We do every stage ourselves: site measurement, cutting and fabricating the profiles, glazing and installation. That keeps tolerances tight and leaves one team responsible for the finished opening. We work on homes, offices, shop fronts and industrial units throughout ${cityName}.`,
     items: [
       "Aluminium windows (sliding, casement & openable)",
       "Aluminium doors & sliding door systems",
@@ -81,23 +81,23 @@ export const services: Service[] = [
     faqs: [
       {
         q: `Do you install aluminium windows anywhere in ${cityName}?`,
-        a: `Yes. We cover all of ${cityName} — including DHA, Bahria Town, Johar Town, Model Town, Gulberg, Wapda Town, Cantt and the surrounding housing societies — and take on larger commercial work in nearby cities such as Kasur and Sheikhupura.`,
+        a: `Yes. We cover all of ${cityName}, including DHA, Bahria Town, Johar Town, Model Town, Gulberg, Wapda Town, Cantt and the nearby housing societies. We also take on larger commercial jobs in nearby cities such as Kasur and Sheikhupura.`,
       },
       {
         q: "What thickness of glass should I use for a shower enclosure or partition?",
-        a: "Shower enclosures and frameless partitions are normally specified in 8mm to 12mm toughened glass, because toughened glass is required for safety in any frameless application. We confirm the correct thickness for your opening during the free site measurement rather than quoting blind.",
+        a: "Shower enclosures and frameless partitions normally use 8mm to 12mm toughened glass, because any frameless installation needs toughened glass for safety. We confirm the right thickness for your opening at the free site measurement, so the quote isn't a guess.",
       },
       {
         q: "What is the difference between powder-coated and anodised aluminium?",
-        a: "Powder coating is a baked colour finish, so it offers a far wider colour range including wood-grain effects. Anodising is an electrochemical finish that becomes part of the metal, so it is harder-wearing on exposed elevations. We will recommend one over the other based on where the frames sit and how much weather they take.",
+        a: "Powder coating is a baked-on colour finish, so it comes in far more colours, including wood-grain effects. Anodising is an electrochemical finish that becomes part of the metal, so it wears better on walls exposed to the weather. We recommend one or the other based on where the frames go and how much weather they face.",
       },
       {
         q: "Can you replace glass in existing aluminium frames?",
-        a: "Yes — reglazing an existing frame is common and much cheaper than replacing the whole unit. Send a photo of the frame and the approximate opening size and we can advise whether the frame is worth keeping before we visit.",
+        a: "Yes. Reglazing an existing frame is common and costs much less than replacing the whole unit. Send a photo of the frame and the rough size of the opening, and we can tell you whether the frame is worth keeping before we visit.",
       },
       {
         q: "How much does aluminium and glass work cost in Lahore?",
-        a: "Cost depends on the profile section, glass specification, hardware and the size of the opening, so we do not publish a flat rate. The free site survey ends with an itemised quotation that prices each of those separately, so you can see exactly what you are paying for.",
+        a: "The cost depends on the profile section, the glass, the hardware and the size of the opening, so we don't publish a flat rate. After the free site survey you get an itemised quotation that prices each of these separately, so you can see exactly what you are paying for.",
       },
     ],
     keywords: [
@@ -118,10 +118,10 @@ export const services: Service[] = [
     title: "Woodwork",
     heading: `Woodwork & Custom Furniture in ${cityName}`,
     seoTitle: `Woodwork in ${cityName} | Kitchen Cabinets & Wardrobes`,
-    metaDescription: `Custom woodwork in ${cityName} — kitchen cabinets, wardrobes, TV units, bedroom and office furniture, doors and wall panelling. Made to measure, installed by our own carpenters. Free quotation.`,
+    metaDescription: `Made-to-measure kitchen cabinets, wardrobes, TV units, bedroom and office furniture, doors and wall panelling in ${cityName}, fitted by our own carpenters.`,
     tagline: "Kitchen cabinets, wardrobes, TV units & fitted furniture",
-    answer: `${site.name} builds made-to-measure woodwork in ${cityName} — kitchen cabinets, wardrobes, TV units, bedroom and office furniture, doors and wall panelling. Everything is measured on site, fabricated to your dimensions and installed by our own carpenters, for homes, offices and shops across ${cityName}.`,
-    description: `Fitted joinery only works if it is cut for the room it goes into. We measure on site, build to those dimensions, and install — which is why our cabinets sit flush against walls that are rarely perfectly square. Materials are chosen with you at quotation stage, so the finish and the budget are agreed before anything is cut.`,
+    answer: `${site.name} builds made-to-measure woodwork in ${cityName}: kitchen cabinets, wardrobes, TV units, bedroom and office furniture, doors and wall panelling. We measure on site, build to your dimensions, and our own carpenters install everything, for homes, offices and shops across ${cityName}.`,
+    description: `Fitted furniture only works if it is cut for the room it goes into. We measure on site, build to those measurements and install the result, which is why our cabinets sit flush against walls that are rarely perfectly square. You choose the materials with us at the quotation stage, so the finish and the budget are agreed before anything is cut.`,
     items: [
       "Kitchen cabinets & modular kitchens",
       "Wardrobes & fitted closets",
@@ -150,19 +150,19 @@ export const services: Service[] = [
     faqs: [
       {
         q: "Do you make kitchen cabinets to measure?",
-        a: "Yes — every kitchen is measured on site and built to those dimensions. That matters most at the ends of runs and around windows, where a standard-size modular unit usually leaves a gap that has to be filled with trim.",
+        a: "Yes. We measure every kitchen on site and build it to those dimensions. This matters most at the ends of a run and around windows, where standard-size units usually leave gaps that have to be covered with trim.",
       },
       {
         q: "Which board should I choose for a kitchen in Lahore?",
-        a: "For kitchen carcasses in Lahore's humidity, we normally recommend a moisture-resistant board rather than standard MDF, particularly for the base units under the sink. We will walk you through the options and the cost difference at quotation stage.",
+        a: "Because of Lahore's humidity, we usually recommend a moisture-resistant board over standard MDF for the kitchen carcasses, especially the base units under the sink. We'll go through the options and the difference in cost when we quote.",
       },
       {
         q: "Can you match new furniture to what I already have?",
-        a: "In most cases yes. Bring us a photo or let us see the existing piece during the site visit, and we will match the laminate or finish as closely as the available range allows.",
+        a: "In most cases, yes. Show us a photo, or let us see the piece during the site visit, and we'll match the laminate or finish as closely as the available range allows.",
       },
       {
         q: "Do you do office furniture and workstations as well as home furniture?",
-        a: "Yes. Office fit-outs are a regular part of the work — workstations, reception counters, storage and cabin furniture — and can be coordinated with the glass partitioning so the whole office is handled by one team.",
+        a: "Yes. We regularly make workstations, reception counters, storage and cabin furniture for offices, and we can plan them alongside the glass partitions so one team handles the whole office.",
       },
     ],
     keywords: [
@@ -182,10 +182,10 @@ export const services: Service[] = [
     title: "Iron Work",
     heading: `Iron Work & Steel Fabrication in ${cityName}`,
     seoTitle: `Iron Work in ${cityName} | Gates, Grills & Railings`,
-    metaDescription: `Iron and steel fabrication in ${cityName} — gates, safety grills, stair and balcony railings, window grills, fencing, sheds and steel structures. Welded, finished and installed on site.`,
+    metaDescription: `Gates, safety grills, stair and balcony railings, window grills, fencing, sheds and steel structures in ${cityName}. Welded in our workshop, fitted on site.`,
     tagline: "Gates, grills, railings, fencing & steel structures",
-    answer: `${site.name} fabricates and installs iron and steel work across ${cityName} — main gates, safety grills, stair and balcony railings, boundary fencing, sheds, canopies and structural steel. Fabrication and welding are done by our own team, with anti-rust treatment and finishing applied before handover.`,
-    description: `Iron work is judged on two things: the strength of the weld and how well the finish holds up outdoors. We fabricate to your drawing or ours, prepare and prime every section against rust, and finish on site after installation so scratches from fitting do not turn into rust lines a year later.`,
+    answer: `${site.name} makes and installs iron and steel work across ${cityName}: main gates, safety grills, stair and balcony railings, boundary fencing, sheds, canopies and structural steel. Our own team does the fabrication and welding, and every piece is rust-proofed and finished before handover.`,
+    description: `Good iron work comes down to two things: a strong weld and a finish that holds up outdoors. We build to your drawing or ours and prime every section against rust. After installation we touch up the finish on site, so scratches from fitting don't turn into rust lines a year later.`,
     items: [
       "Main gates & sliding gates",
       "Safety grills & window grills",
@@ -216,19 +216,19 @@ export const services: Service[] = [
     faqs: [
       {
         q: "Can you make a gate to a design I have seen?",
-        a: "Yes — bring a photo or a sketch. We fabricate to custom designs as standard, and during the site visit we will tell you honestly if a design needs adjusting to work at your opening width or to carry its own weight.",
+        a: "Yes. Bring a photo or a sketch. Custom designs are normal for us, and at the site visit we'll tell you honestly if a design needs changing to suit your opening or to carry its own weight.",
       },
       {
         q: "How do you stop iron work rusting in Lahore's weather?",
-        a: "Sections are cleaned and primed with a rust-preventive coat before the finish coat goes on, and we touch up on site after installation so the marks made while fitting are sealed rather than left open. For exposed boundary work, stainless steel is worth considering where budget allows.",
+        a: "We clean every section and prime it with a rust-preventive coat before the finish coat goes on. After installation we touch up on site, so marks made during fitting are sealed instead of left open. For exposed boundary work, stainless steel is worth considering if the budget allows.",
       },
       {
         q: "Do you make gates ready for an automatic opener?",
-        a: "Yes. Tell us at the design stage that you plan to automate the gate and we will build it with the right clearance, track and mounting points so an operator can be fitted later without rework.",
+        a: "Yes. Tell us at the design stage that you plan to automate it, and we'll build the gate with the right clearance, track and mounting points. An opener can then be fitted later without any rework.",
       },
       {
         q: "Do you take on structural steel and shed work?",
-        a: "Yes — sheds, canopies, trusses and light steel structures for commercial and industrial sites in Lahore are part of the regular workload, not just decorative gates and grills.",
+        a: "Yes. Sheds, canopies, trusses and light steel structures for commercial and industrial sites in Lahore are regular work for us, alongside gates and grills.",
       },
     ],
     keywords: [
@@ -248,10 +248,10 @@ export const services: Service[] = [
     title: "Glass Paper & Film",
     heading: `Glass Paper & Window Film Installation in ${cityName}`,
     seoTitle: `Glass Paper in ${cityName} | Frosted & Privacy Film`,
-    metaDescription: `Glass paper and window film installation in ${cityName} — frosted and privacy film, office glass branding, UV and sun control film, reflective and safety film. Bubble-free fitting, same-day on small jobs.`,
+    metaDescription: `Frosted and privacy film, office glass branding, UV and sun control film, reflective and safety film in ${cityName}. Bubble-free, often same day for small jobs.`,
     tagline: "Frosted, privacy, sun control & branded glass film",
-    answer: `${site.name} supplies and installs glass paper and window film across ${cityName} — frosted and privacy film, decorative and branded office film, UV and sun control film, reflective film and safety film. Film is applied wet and squeegeed for a bubble-free finish, on homes, offices and shop fronts.`,
-    description: `Glass film is the fastest way to change how a glass surface behaves. Frosted film buys privacy without losing daylight, sun control film cuts heat and glare on west-facing glass, and safety film holds a pane together if it breaks. Most jobs are finished in a single visit with no disruption to the room.`,
+    answer: `${site.name} supplies and installs glass paper and window film across ${cityName}: frosted and privacy film, decorative and branded office film, UV and sun control film, reflective film and safety film. We apply film wet and squeegee it for a bubble-free finish, on homes, offices and shop fronts.`,
+    description: `Film is the quickest way to change how a pane of glass behaves. Frosted film gives you privacy without losing daylight. Sun control film cuts heat and glare on west-facing windows. Safety film holds a pane together if it breaks. Most jobs are done in one visit, and the room stays usable throughout.`,
     items: [
       "Frosted glass paper & etched effect",
       "Privacy film for homes & offices",
@@ -280,19 +280,19 @@ export const services: Service[] = [
     faqs: [
       {
         q: "Will frosted film give complete privacy at night?",
-        a: "Frosted film obscures the view in both directions at all times, so yes. Reflective or one-way film behaves differently — it works while the outside is brighter than the inside, so at night with the lights on the effect reverses. If night privacy is the goal, frosted is the right choice.",
+        a: "Yes. Frosted film blocks the view in both directions at all times. Reflective (one-way) film is different: it only works while it is brighter outside than inside, so at night with the lights on, people can see in. If you need privacy at night, choose frosted.",
       },
       {
         q: "Does sun control film actually reduce heat in Lahore?",
-        a: "It measurably reduces solar heat gain and glare through the glass, which makes the biggest difference on west and south-facing windows through a Lahore summer. It reduces the load on your cooling — it does not replace it.",
+        a: "Yes. It noticeably cuts the heat and glare coming through the glass, and makes the biggest difference on west- and south-facing windows during a Lahore summer. It lightens the load on your AC, but it won't replace it.",
       },
       {
         q: "How long does glass film last?",
-        a: "Quality film applied to clean, sound glass lasts for years indoors. The common causes of early failure are dirty glass at application and cheap film, which is why we clean and prepare the pane properly before anything is applied.",
+        a: "Good film on clean, undamaged glass lasts for years indoors. Film usually fails early because the glass was dirty when it went on or the film was cheap, which is why we clean and prepare every pane properly first.",
       },
       {
         q: "Can you print our company logo onto office glass?",
-        a: "Yes — logo cuts and printed graphics on glass partitions and shop fronts are a regular job. Send us your logo file and the glass dimensions and we will advise on the best treatment for the size.",
+        a: "Yes. We regularly put cut logos and printed graphics on glass partitions and shop fronts. Send us your logo file and the size of the glass, and we'll suggest the best treatment.",
       },
     ],
     keywords: [
@@ -312,10 +312,10 @@ export const services: Service[] = [
     title: "Building & Interior",
     heading: `Building & Interior Finishing in ${cityName}`,
     seoTitle: `Interior Fit-Outs in ${cityName} | Complete Finishing`,
-    metaDescription: `Complete building and interior finishing in ${cityName} — aluminium and glass, steel, woodwork, glass film and roller blinds coordinated by one team. Office, shop and home fit-outs with a single point of contact.`,
+    metaDescription: `Office, shop and home fit-outs in ${cityName}. Aluminium and glass, steel, woodwork, glass film and roller blinds, run by one team with one point of contact.`,
     tagline: "Complete fit-outs with one team and one point of contact",
-    answer: `${site.name} delivers complete building and interior finishing in ${cityName} — combining aluminium and glass, steel fabrication, woodwork, glass film and roller blinds under one contract. Clients use this when a project needs several trades in sequence and they would rather manage one team than five separate contractors.`,
-    description: `Most finishing projects stall in the gaps between trades — the carpenter waiting on the glazier, the glazier waiting on the steel. Running those trades in one team removes the handover. You get one schedule, one point of contact, and one party responsible when something needs adjusting.`,
+    answer: `${site.name} handles complete building and interior finishing in ${cityName}, with aluminium and glass, steel fabrication, woodwork, glass film and roller blinds under one contract. Clients choose this when a project needs several trades in turn and they would rather manage one team than five contractors.`,
+    description: `Most finishing projects stall between trades: the carpenter waits for the glazier, and the glazier waits for the steel. When one team runs every trade, those gaps disappear. You get one schedule, one point of contact and one company to call if anything needs adjusting.`,
     items: [
       "Complete office fit-outs",
       "Shop & showroom finishing",
@@ -345,19 +345,19 @@ export const services: Service[] = [
     faqs: [
       {
         q: "Can you handle a project that needs wood, aluminium and iron together?",
-        a: "That is exactly what this service is for. One team sequences all the trades your project needs, so you are not chasing separate contractors or arbitrating between them when a dimension does not line up.",
+        a: "Yes. One team schedules every trade your project needs, so you aren't chasing separate contractors or settling disputes between them when a measurement doesn't line up.",
       },
       {
         q: "Do you take on office fit-outs in Lahore?",
-        a: "Yes — glass cabins and partitions, workstations and storage, branded film on the glass, blinds and the steel or aluminium work around them, delivered as one package with a single schedule.",
+        a: "Yes. We deliver glass cabins and partitions, workstations and storage, branded film, blinds and the surrounding steel or aluminium work as one package on a single schedule.",
       },
       {
         q: "Can you work around a shop or office that stays open?",
-        a: "Usually yes. Phased and after-hours working is common for retail and office jobs in Lahore. Tell us your trading hours at the survey and we will programme the work around them in the quotation.",
+        a: "Usually, yes. We often work in phases or after hours on shop and office jobs in Lahore. Tell us your opening hours at the survey, and the quotation will schedule the work around them.",
       },
       {
         q: "Do you provide a free consultation before quoting?",
-        a: "Yes. Every project starts with a free consultation and site assessment, and the quotation that follows is itemised by trade so you can see the cost of each part and adjust scope before committing.",
+        a: "Yes. Every project starts with a free consultation and site assessment. The quotation that follows is itemised by trade, so you can see what each part costs and change the scope before you commit.",
       },
     ],
     keywords: [
@@ -377,10 +377,10 @@ export const services: Service[] = [
     title: "AC & Refrigerator",
     heading: `AC & Refrigerator Repair in ${cityName}`,
     seoTitle: `AC Repair in ${cityName} | Service & Gas Charging`,
-    metaDescription: `AC and refrigerator repair in ${cityName} — installation, uninstallation, servicing and cleaning, gas charging and compressor replacement for homes and commercial sites. Experienced technicians, on-time visits.`,
+    metaDescription: `AC and fridge installation, servicing, cleaning, gas charging, repair and compressor replacement in ${cityName}, for homes and businesses. On-time visits.`,
     tagline: "Installation, repair, servicing & gas charging",
-    answer: `${site.name} provides AC and refrigerator services across ${cityName} — installation and uninstallation, repair and maintenance, servicing and cleaning, gas charging, and compressor repair or replacement, for both homes and commercial premises.`,
-    description: `Cooling work is seasonal and time-sensitive — a failed AC in a Lahore June is not something to schedule for next week. We handle installation, servicing and repairs for split and window units and for domestic and commercial refrigeration, and we tell you honestly when a unit is worth repairing and when it is not.`,
+    answer: `${site.name} provides AC and refrigerator services across ${cityName}: installation and removal, repair and maintenance, servicing and cleaning, gas charging, and compressor repair or replacement, for homes and businesses.`,
+    description: `Cooling work can't wait. An AC that fails in a Lahore June needs fixing now, not next week. We install, service and repair split and window units, plus home and commercial refrigeration, and we'll tell you honestly whether a unit is worth repairing.`,
     items: [
       "AC installation & uninstallation",
       "AC repair & maintenance",
@@ -409,19 +409,19 @@ export const services: Service[] = [
     faqs: [
       {
         q: "How often should an AC be serviced in Lahore?",
-        a: "Once a year as a minimum, ideally before summer starts. Lahore's dust load clogs filters and coils faster than in most climates, and a clogged coil raises your electricity bill long before the unit actually fails.",
+        a: "At least once a year, ideally before summer starts. Lahore's dust clogs filters and coils faster than most climates, and a clogged coil pushes up your electricity bill long before the unit breaks down.",
       },
       {
-        q: "My AC is cooling weakly — does it need gas?",
-        a: "Weak cooling is often a dirty filter or coil rather than low refrigerant. A proper technician checks airflow and cleans first, because refrigerant does not get used up in a sealed system — if it is genuinely low, there is a leak that needs finding rather than just topping up.",
+        q: "My AC is cooling weakly. Does it need gas?",
+        a: "Not necessarily. Weak cooling is often caused by a dirty filter or coil, so a good technician checks the airflow and cleans first. Refrigerant isn't used up in a sealed system. If it really is low, there is a leak to find and fix, not just a top-up.",
       },
       {
         q: "Do you install new air conditioners as well as repair them?",
-        a: "Yes — installation and uninstallation, including remounting when you move house. We will advise on placement so the unit drains properly and the outdoor unit gets the airflow it needs.",
+        a: "Yes. We install and remove units, including refitting them when you move house, and we'll advise on placement so the unit drains properly and the outdoor unit gets enough air.",
       },
       {
         q: "Do you service commercial refrigeration for shops and restaurants?",
-        a: "Yes, including display chillers and freezers. Annual maintenance contracts are available for commercial sites in Lahore where a breakdown means lost stock.",
+        a: "Yes, including display chillers and freezers. We offer annual maintenance contracts for shops and restaurants in Lahore, where a breakdown means lost stock.",
       },
     ],
     keywords: [
@@ -447,21 +447,21 @@ export const heroImage =
 export const processSteps = [
   {
     title: "Free site survey",
-    description: `Tell us what you need and we visit your site anywhere in ${cityName} to measure and assess the work — at no cost and with no obligation.`,
+    description: `Tell us what you need, and we'll visit your site anywhere in ${cityName} to measure and assess the work. It costs nothing, and you are under no obligation.`,
   },
   {
     title: "Design & itemised quotation",
     description:
-      "We propose a design suited to the space and price it line by line — material, fabrication, hardware and installation shown separately, so nothing is hidden in a lump sum.",
+      "We propose a design that suits the space and price it line by line. Materials, fabrication, hardware and installation are listed separately, so nothing is hidden in a lump sum.",
   },
   {
     title: "Fabrication & installation",
     description:
-      "Our own craftsmen fabricate to the measured dimensions and install on the agreed date, keeping the site clean and workable while we do it.",
+      "Our own craftsmen build to the measurements we took and install on the agreed date. We keep the site clean and usable while we work.",
   },
   {
     title: "Handover & after-service",
     description:
-      "We walk you through the finished work, adjust anything that needs it, and stay reachable afterwards if something needs attention.",
+      "We walk you through the finished work and adjust anything that needs it. You can still reach us afterwards if something needs attention.",
   },
 ];

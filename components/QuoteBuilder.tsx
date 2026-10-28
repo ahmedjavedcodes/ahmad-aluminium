@@ -41,6 +41,7 @@ export function QuoteForm({
   const [selected, setSelected] = useState<string[]>(defaultService ? [defaultService] : []);
   const [area, setArea] = useState("");
   const [details, setDetails] = useState("");
+  const [sent, setSent] = useState(false);
 
   const titles = useMemo(
     () => services.filter((s) => selected.includes(s.slug)).map((s) => s.title),
@@ -187,13 +188,48 @@ export function QuoteForm({
               </div>
 
               <div className="relative flex flex-col gap-2 p-3 sm:border-t sm:border-border sm:p-4">
+                {/* Click → success: the label swaps to a confirmation while
+                    WhatsApp opens in a new tab, then resets. Both labels share
+                    one grid cell, so the button never changes size. */}
                 <Button asChild size="lg" className="w-full">
-                  <a href={whatsappHref(message)} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle size={17} aria-hidden />
-                    <RollText>{content.hero.ctaPrimary}</RollText>
-                    <ArrowSwap size={16} />
+                  <a
+                    href={whatsappHref(message)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => {
+                      setSent(true);
+                      window.setTimeout(() => setSent(false), 2600);
+                    }}
+                  >
+                    <span className="grid">
+                      <span
+                        className={cn(
+                          "col-start-1 row-start-1 flex items-center justify-center gap-2.5 transition-[opacity,transform] duration-300",
+                          sent ? "-translate-y-2 opacity-0" : "opacity-100"
+                        )}
+                      >
+                        <MessageCircle size={17} aria-hidden />
+                        <RollText>{content.hero.ctaPrimary}</RollText>
+                        <ArrowSwap size={16} />
+                      </span>
+                      <span
+                        aria-hidden={!sent}
+                        className={cn(
+                          "col-start-1 row-start-1 flex items-center justify-center gap-2 transition-[opacity,transform] duration-300",
+                          sent ? "opacity-100" : "translate-y-2 opacity-0"
+                        )}
+                      >
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/25">
+                          <Check size={13} strokeWidth={3} aria-hidden />
+                        </span>
+                        Opening WhatsApp
+                      </span>
+                    </span>
                   </a>
                 </Button>
+                <span role="status" className="sr-only">
+                  {sent ? "Opening WhatsApp with your message." : ""}
+                </span>
                 <Button asChild variant="ghost" className="hidden w-full sm:inline-flex">
                   <a href={telHref}>
                     <Phone size={15} className="text-accent" aria-hidden />
@@ -232,7 +268,7 @@ export function QuoteBuilder({
         index={index}
         eyebrow="Free quotation"
         heading={{ lead: "Tell us about", accent: "the job", tail: "." }}
-        intro={`Pick the work and your area in ${cityName}. We'll open WhatsApp with your request written out — check it, press send, and the workshop replies with next steps.`}
+        intro={`Choose the work and your area in ${cityName}. We'll open WhatsApp with your request already written. Check it, press send, and we'll reply with next steps.`}
         introClassName="hidden sm:block"
         className="max-w-2xl"
       />

@@ -9,8 +9,8 @@ import { animate, useInView, useReducedMotion } from "framer-motion";
  *
  * Starts at 0 on server and client alike — the reduced-motion preference is
  * only known in the browser — and jumps straight to the value when motion is
- * reduced. Digits are tabular and the final width is reserved up front, so
- * nothing around the number moves while it counts.
+ * reduced. The final width is reserved up front, so nothing around the
+ * number moves while it counts.
  */
 export function Counter({
   value,
@@ -43,18 +43,18 @@ export function Counter({
   }, [inView, value, duration, reduceMotion]);
 
   return (
-    // Reserve the final value's width from the first frame (tabular digits
-    // are 1ch each), so "0" → "20" never pushes a following "+" sideways.
+    // The final value sits invisibly in the same grid cell, reserving its
+    // exact width from the first frame, so "0" → "20" never pushes a
+    // following "+" sideways (and leaves no gap once it lands).
     <span
       ref={ref}
       className={className}
-      style={{
-        fontVariantNumeric: "tabular-nums",
-        display: "inline-block",
-        minWidth: `${value.toFixed(decimals).length}ch`,
-      }}
+      style={{ fontVariantNumeric: "tabular-nums", display: "inline-grid", justifyItems: "end" }}
     >
-      {display.toFixed(decimals)}
+      <span aria-hidden style={{ gridArea: "1 / 1", visibility: "hidden" }}>
+        {value.toFixed(decimals)}
+      </span>
+      <span style={{ gridArea: "1 / 1" }}>{display.toFixed(decimals)}</span>
     </span>
   );
 }

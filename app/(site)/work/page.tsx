@@ -7,7 +7,7 @@ import { site, cityName } from "@/data/site";
 import { absoluteUrl, breadcrumbSchema, graph } from "@/lib/structured-data";
 
 const title = `Our Work in ${cityName}`;
-const description = `Aluminium and glass, woodwork, iron work, glass film, interiors and AC projects by ${site.name} across ${cityName}. Browse the work, then get a free site survey and itemised quotation.`;
+const description = `Recent aluminium and glass, woodwork, iron, glass film, interior and AC projects by ${site.name} across ${cityName}. Free site survey and itemised quote.`;
 
 export const metadata: Metadata = {
   title,

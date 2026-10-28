@@ -39,7 +39,7 @@ export function localBusinessSchema() {
     telephone: site.phone,
     email: site.email,
     priceRange: site.priceRange,
-    description: `Multi-trade fabrication and installation workshop in ${cityName}, Pakistan — aluminium and glass, woodwork, iron and steel fabrication, glass film, interior finishing, and AC and refrigerator services for residential, commercial and industrial projects.`,
+    description: `Fabrication and installation workshop in ${cityName}, Pakistan, covering aluminium and glass, woodwork, iron and steel fabrication, glass film, interior finishing, and AC and refrigerator services for homes, businesses and industry.`,
     address: {
       "@type": "PostalAddress",
       streetAddress: site.address.street,

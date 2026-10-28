@@ -42,7 +42,7 @@ export function ServiceCard({ service, index }: { service: Service; index: numbe
           <Reveal variant="clip" index={index % 3} className="relative aspect-[16/11] w-full overflow-hidden rounded-2xl bg-bg-sunken">
             <Image
               src={service.image}
-              alt={`${service.title} — ${service.tagline}`}
+              alt={`${service.title}: ${service.tagline}`}
               fill
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
               className="object-cover transition-transform duration-[1200ms] ease-out-expo group-hover:scale-[1.07]"
@@ -119,7 +119,7 @@ function BentoTile({ service, index }: { service: Service; index: number }) {
       >
         <Image
           src={service.image}
-          alt={`${service.title} — ${service.tagline}`}
+          alt={`${service.title}: ${service.tagline}`}
           fill
           sizes={feature ? "(min-width: 1024px) 42vw, 85vw" : "(min-width: 1024px) 34vw, (min-width: 640px) 46vw, 85vw"}
           className="object-cover transition-transform duration-[1400ms] ease-out-expo group-hover:scale-[1.08]"
@@ -218,7 +218,7 @@ export function ServicesGrid({
 
   return (
     <SwipeGrid
-      label="Services — swipe for more"
+      label="Services. Swipe for more."
       className={cn("lg:grid-cols-12 lg:grid-rows-3 lg:gap-4", className)}
     >
       {list.map((service, i) => (

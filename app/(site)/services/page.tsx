@@ -4,6 +4,7 @@ import { ServicesGrid } from "@/components/ServicesGrid";
 import { ServiceAreas } from "@/components/ServiceAreas";
 import CTASection from "@/components/CTASection";
 import Process from "@/components/Process";
+import { Compare } from "@/components/Compare";
 import { QuoteBuilder } from "@/components/QuoteBuilder";
 import { JsonLd } from "@/components/JsonLd";
 import { heroImage, services } from "@/data/services";
@@ -58,9 +59,10 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <Process index={1} />
-      <QuoteBuilder index={2} />
-      <ServiceAreas index={3} />
+      <Compare index={1} />
+      <Process index={2} />
+      <QuoteBuilder index={3} />
+      <ServiceAreas index={4} />
       <CTASection />
     </>
   );

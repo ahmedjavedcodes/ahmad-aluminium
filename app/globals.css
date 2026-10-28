@@ -537,6 +537,13 @@ html:has(.site-theme)::-webkit-scrollbar-thumb:hover { background: rgb(180 84 31
 .split-text[data-shown] .split-word,
 .reveal-group[data-shown] .split-text[data-split="parent"] .split-word { opacity: 1; transform: none; }
 
+/* Comparison rows (components/Compare.tsx) rise in turn once the table is
+   revealed, and the copper ticks pop in a beat after their row. */
+.compare-row { opacity: 0; transform: translate3d(0, 10px, 0); transition: opacity 0.6s var(--ease-reveal) calc(var(--reveal-delay, 0ms) + 200ms), transform 0.6s var(--ease-reveal) calc(var(--reveal-delay, 0ms) + 200ms); }
+.reveal[data-shown] .compare-row { opacity: 1; transform: none; }
+.compare-mark { transform: scale(0); transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--reveal-delay, 0ms) + 450ms); }
+.reveal[data-shown] .compare-mark { transform: scale(1); }
+
 /* Swipe rails: scrollable, but without a visible scrollbar. */
 .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -736,6 +743,8 @@ html:has(.site-theme)::-webkit-scrollbar-thumb:hover { background: rgb(180 84 31
   [data-parallax],
   .reveal,
   .reveal-child,
+  .compare-row,
+  .compare-mark,
   .split-mask > span {
     opacity: 1 !important;
     transform: none !important;
