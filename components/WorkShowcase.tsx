@@ -33,7 +33,7 @@ const quoteFor = (title: string) =>
  */
 export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string }[] }) {
   const [open, setOpen] = useState<number | null>(null);
-  const [trades, , areas] = content.stats;
+  const [trades] = content.stats;
   const { lead, accent, tail } = content.gallery.heading;
 
   // Deep link: /work#<id> opens that project.

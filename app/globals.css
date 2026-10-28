@@ -137,30 +137,6 @@ p {
   color: rgb(var(--color-accent));
 }
 
-/* Optional understroke for an accent word — a flat rule, not a gradient. */
-.accent-underline {
-  background-image: linear-gradient(rgb(var(--color-accent)), rgb(var(--color-accent)));
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 100% 2px;
-  padding-bottom: 0.06em;
-}
-
-.noise-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-.bg-grid {
-  background-image:
-    linear-gradient(rgba(23, 21, 16, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(23, 21, 16, 0.045) 1px, transparent 1px);
-  background-size: 56px 56px;
-}
-
 .focus-ring:focus-visible {
   outline: 2px solid rgb(var(--color-accent));
   outline-offset: 3px;
@@ -206,10 +182,6 @@ p {
 }
 .animate-marquee { animation: marquee linear infinite; }
 .animate-marquee-reverse { animation: marquee-reverse linear infinite; }
-
-.perspective-1000 {
-  perspective: 1000px;
-}
 
 /* ---------------------------------------------------------------------------
    Loading screen
@@ -456,13 +428,6 @@ html:has(.site-theme)::-webkit-scrollbar-thumb:hover { background: rgb(180 84 31
     repeating-linear-gradient(0deg, rgb(20 22 25 / 0.018) 0 1px, transparent 1px 2px);
 }
 
-.site-theme .bg-grid {
-  background-image:
-    linear-gradient(rgb(20 22 25 / 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(20 22 25 / 0.05) 1px, transparent 1px);
-  background-size: 56px 56px;
-}
-
 /* Blueprint grid that fades towards the edges of its box. */
 .blueprint {
   --grid-line: rgb(20 22 25 / 0.055);
@@ -480,8 +445,6 @@ html:has(.site-theme)::-webkit-scrollbar-thumb:hover { background: rgb(180 84 31
   --grid-line: rgb(255 255 255 / 0.05);
   --grid-fine: rgb(255 255 255 / 0.022);
 }
-
-.site-theme .noise-overlay { opacity: 0.03; mix-blend-mode: multiply; }
 
 .copper-rule {
   height: 1px;
@@ -671,38 +634,11 @@ html:has(.site-theme)::-webkit-scrollbar-thumb:hover { background: rgb(180 84 31
 .group:hover .arrow-swap.diagonal > svg:last-child,
 .group:focus-visible .arrow-swap.diagonal > svg:last-child { transform: translate(0, 0); }
 
-/* Slow light sweep across a glass panel. */
-@keyframes glass-sweep {
-  0%, 15% { transform: translateX(-130%) skewX(-18deg); }
-  55%, 100% { transform: translateX(230%) skewX(-18deg); }
-}
-/* No `position` here: the element is usually absolutely placed already, and
-   a declaration in this file would override Tailwind's `absolute`. Give
-   it `relative` where it is in normal flow. */
-.glass-sweep { overflow: hidden; }
-.glass-sweep::before {
-  content: "";
-  position: absolute;
-  inset: -20% auto -20% 0;
-  width: 40%;
-  pointer-events: none;
-  z-index: 1;
-  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.55), transparent);
-  animation: glass-sweep 7s ease-in-out infinite;
-}
-
 @keyframes status-pulse {
   0% { box-shadow: 0 0 0 0 rgb(var(--color-accent) / 0.5); }
   70%, 100% { box-shadow: 0 0 0 8px rgb(var(--color-accent) / 0); }
 }
 .status-dot { animation: status-pulse 2.4s ease-out infinite; }
-
-/* Gentle float for the hero's overlapping cards. */
-@keyframes float-y {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-.float-slow { animation: float-y 6s ease-in-out infinite; }
 
 /* Accordion height animation (components/ui/accordion.tsx). */
 @keyframes accordion-down {
@@ -756,9 +692,7 @@ html:has(.site-theme)::-webkit-scrollbar-thumb:hover { background: rgb(180 84 31
     clip-path: none !important;
     transition: none !important;
   }
-  .glass-sweep::before,
   .status-dot,
-  .float-slow,
   .typewriter-caret {
     animation: none;
   }
