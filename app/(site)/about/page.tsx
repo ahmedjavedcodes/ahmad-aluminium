@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { AboutStory, AboutValues } from "@/components/AboutContent";
+import { AboutLeader } from "@/components/AboutLeader";
 import { StatsStrip } from "@/components/motion/StatsStrip";
 import Process from "@/components/Process";
 import { ServiceAreas } from "@/components/ServiceAreas";
@@ -49,12 +50,13 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <AboutStory index={1} />
-      <AboutValues index={2} />
-      <Testimonials index={3} />
-      <Process index={4} />
-      <ServiceAreas index={5} />
-      <Gallery index={6} />
+      <AboutLeader index={1} />
+      <AboutStory index={2} />
+      <AboutValues index={3} />
+      <Testimonials index={4} />
+      <Process index={5} />
+      <ServiceAreas index={6} />
+      <Gallery index={7} />
       <CTASection />
     </>
   );

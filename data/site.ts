@@ -74,6 +74,19 @@ export const site = {
 
 export const cityName = site.address.city;
 
+/** Company leadership, as shown on the About page and the home page. */
+export const leadership = {
+  /** The registered name written out in normal case, for display. */
+  companyName: "Ahmad Aluminium & Glass Fabrication (SMC-Private) Limited",
+  tagline: ["Quality", "Precision", "Trust"],
+  ceo: {
+    name: "Ahmad Hassan",
+    title: "Chief Executive Officer (CEO)",
+    /** 896 × 1195 portrait in public/about/. */
+    photo: "/about/ceo-ahmad-hassan.png",
+  },
+} as const;
+
 /**
  * Neighbourhoods and towns the business covers. These are the phrases people
  * actually type ("aluminium windows in DHA Lahore"), so they are rendered as

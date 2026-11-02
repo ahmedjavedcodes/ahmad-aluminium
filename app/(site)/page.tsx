@@ -6,6 +6,7 @@ import WhyUs from "@/components/WhyUs";
 import { Testimonials } from "@/components/Testimonials";
 import Process from "@/components/Process";
 import Gallery from "@/components/Gallery";
+import { AboutLeader } from "@/components/AboutLeader";
 import CTASection from "@/components/CTASection";
 import { FAQ } from "@/components/FAQ";
 import { QuoteBuilder } from "@/components/QuoteBuilder";
@@ -19,7 +20,7 @@ import { graph, faqSchema, breadcrumbSchema } from "@/lib/structured-data";
 
 /**
  * Home, as a run of one-screen chapters ordered like a sales conversation:
- * who we are → the work itself → what we do → why trust us → what customers
+ * who we are → the work itself → who leads it → what we do → why trust us → what customers
  * say → how a job runs → build a quote. Coverage, FAQs and the closing call
  * to action follow as ordinary flowing sections.
  */
@@ -35,12 +36,13 @@ export default function Home() {
 
       <Hero />
       <Gallery index={1} />
+      <AboutLeader index={2} showLinks />
 
       <Screen id="services" labelledBy="services-heading">
         <div className="flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-end">
           <SectionHeading
             id="services-heading"
-            index={2}
+            index={3}
             eyebrow={content.home.servicesEyebrow}
             heading={content.home.servicesHeading}
             intro={content.home.servicesIntro}
@@ -58,12 +60,12 @@ export default function Home() {
         <ServicesGrid className="mt-[clamp(1.25rem,4svh,2.5rem)] min-h-[20rem] flex-1" />
       </Screen>
 
-      <WhyUs index={3} />
-      <Testimonials index={4} />
-      <Process index={5} />
-      <QuoteBuilder index={6} />
-      <ServiceAreas index={7} />
-      <FAQ index={8} />
+      <WhyUs index={4} />
+      <Testimonials index={5} />
+      <Process index={6} />
+      <QuoteBuilder index={7} />
+      <ServiceAreas index={8} />
+      <FAQ index={9} />
       <CTASection />
     </>
   );

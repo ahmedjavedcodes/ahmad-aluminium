@@ -66,7 +66,7 @@ function Frame({ item, index, onOpen }: { item: WorkItem; index: number; onOpen?
               index === 0 ? "text-[length:clamp(1.4rem,3.6svh,2.1rem)]" : "text-base sm:text-lg"
             )}
           >
-            {item.title}
+            {item.shortTitle ?? item.title}
           </span>
         </div>
         <span className="flex h-10 w-10 shrink-0 translate-y-2 items-center justify-center rounded-full bg-accent text-on-accent opacity-0 transition-[transform,opacity] duration-500 ease-out-expo group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 max-lg:translate-y-0 max-lg:opacity-100">

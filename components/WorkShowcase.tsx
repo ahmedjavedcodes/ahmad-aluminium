@@ -1,14 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { content } from "@/data/content";
 import { site, cityName, whatsappHref } from "@/data/site";
 import { googleRating } from "@/data/testimonials";
 import { Reveal } from "@/lib/motion";
-import { workItems, WORK_HREF } from "@/lib/work";
+import { workItems, WORK_HREF, type WorkItem } from "@/lib/work";
 import { Screen } from "@/components/Screen";
 import { WorkWall } from "@/components/WorkWall";
 import { CharReveal } from "@/components/motion/CharReveal";
@@ -26,10 +26,11 @@ const quoteFor = (title: string) =>
  *
  * First screen: breadcrumb, the "Craftsmanship you can see." headline
  * (letters cascade in, the accent word is typed), three counters, and the
- * portfolio wall filling the rest of the viewport. Every frame opens a
- * project viewer (Radix dialog, arrow-key navigation); /work#<project> opens
- * it directly, which is how the home page's frames land here. Below, each
- * project gets a full row with its scope and a quote button.
+ * portfolio wall filling the rest of the viewport. Every frame opens that
+ * project's photos in a swipeable carousel (Radix dialog, arrow keys move
+ * between photos); /work#<project> opens it directly, which is how the home
+ * page's frames land here. Below, each project gets a full row with its
+ * description, scope and a quote button.
  */
 export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string }[] }) {
   const [open, setOpen] = useState<number | null>(null);
@@ -53,16 +54,6 @@ export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string
     const hash = i === null ? "" : `#${workItems[i].id}`;
     window.history.replaceState(null, "", `${WORK_HREF}${hash}`);
   }, []);
-
-  const step = useCallback(
-    (d: number) => setOpen((cur) => {
-      if (cur === null) return cur;
-      const next = (cur + d + workItems.length) % workItems.length;
-      window.history.replaceState(null, "", `${WORK_HREF}#${workItems[next].id}`);
-      return next;
-    }),
-    []
-  );
 
   const current = open === null ? null : workItems[open];
 
@@ -150,6 +141,11 @@ export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string
                   <span className="absolute left-5 top-5 rounded-full bg-white/90 px-3 py-1 font-mono text-[11px] font-medium tracking-[0.12em] text-ink">
                     {String(i + 1).padStart(2, "0")} / {String(workItems.length).padStart(2, "0")}
                   </span>
+                  {item.photos.length > 1 && (
+                    <span className="absolute right-5 top-5 rounded-full bg-black/60 px-3 py-1 text-[12px] font-semibold text-white backdrop-blur">
+                      {item.photos.length} photos
+                    </span>
+                  )}
                 </button>
               </Reveal>
 
@@ -162,6 +158,7 @@ export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string
                     {item.title}
                   </h2>
                   {item.tagline && <p className="mt-3 text-lg font-medium text-ink-muted">{item.tagline}</p>}
+                  {item.description && <p className="mt-4 leading-relaxed text-ink-muted">{item.description}</p>}
                 </Reveal>
                 {item.items.length > 0 && (
                   <Reveal index={1}>
@@ -195,139 +192,135 @@ export function WorkShowcase({ crumbs }: { crumbs: { href: string; label: string
         </div>
       </section>
 
-      {/* Viewer: photo on top (left on desktop), details in the middle, and the
-          two actions pinned to the bottom so they are always in sight. The
-          window itself never scrolls; a long scope list folds behind "Show
-          more" on phones and tablets. */}
+      {/* Viewer: the project's photos only, Instagram-style. Swipe (or use
+          the arrows / arrow keys) between them; the counter appears from the
+          second photo on, since the first is the overall view. */}
       <Dialog open={open !== null} onOpenChange={(o) => !o && show(null)}>
         <DialogContent
-          className="flex flex-col overflow-hidden"
-          // Focus the window itself rather than its first button, so opening a
-          // project doesn't light up a focus ring on the "previous" arrow.
+          className="flex h-[min(92svh,860px)] max-w-6xl flex-col overflow-hidden bg-black p-0 max-sm:h-[100svh] max-sm:max-h-none max-sm:w-full max-sm:rounded-none"
           onOpenAutoFocus={(e) => {
             e.preventDefault();
             (e.currentTarget as HTMLElement).focus();
           }}
-          onKeyDown={(e) => {
-            if (e.key === "ArrowRight") step(1);
-            if (e.key === "ArrowLeft") step(-1);
-          }}
         >
-          {current && (
-            <div className="flex min-h-0 flex-1 flex-col lg:grid lg:grid-cols-12">
-              <div className="relative h-[clamp(6.5rem,22svh,16rem)] shrink-0 sm:h-[clamp(7.5rem,26svh,16rem)] bg-bg-sunken lg:col-span-7 lg:h-auto lg:min-h-[32rem]">
-                <Image key={current.id} src={current.image} alt={current.alt} fill sizes="(min-width: 1024px) 60vw, (min-width: 640px) 100vw, 70vw" className="object-cover" />
-                <div className="absolute inset-x-3 bottom-3 flex justify-between">
-                  <button
-                    type="button"
-                    onClick={() => step(-1)}
-                    aria-label="Previous project"
-                    className="focus-ring flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-white/90 text-ink shadow-card transition-colors hover:bg-accent hover:text-on-accent"
-                  >
-                    <ChevronLeft size={20} aria-hidden />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => step(1)}
-                    aria-label="Next project"
-                    className="focus-ring flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-white/90 text-ink shadow-card transition-colors hover:bg-accent hover:text-on-accent"
-                  >
-                    <ChevronRight size={20} aria-hidden />
-                  </button>
-                </div>
-              </div>
-              <ProjectDetails
-                key={current.id}
-                item={current}
-                position={`${String((open ?? 0) + 1).padStart(2, "0")} / ${String(workItems.length).padStart(2, "0")}`}
-                onLeave={() => setOpen(null)}
-              />
-            </div>
-          )}
+          {current && <PhotoCarousel key={current.id} item={current} />}
         </DialogContent>
       </Dialog>
     </>
   );
 }
 
-/** Scope chips shown before "Show more" on phones and tablets. */
-const SCOPE_PREVIEW = 3;
-
 /**
- * The viewer's text column. Keyed by project, so the "Show more" state resets
- * when the visitor steps to the next one. Only the middle part scrolls (if a
- * fully expanded list needs it); the actions stay put underneath.
+ * Scroll-snap carousel of one project's photos. Native horizontal scrolling
+ * gives phones a real swipe; buttons and arrow keys scroll the same track.
  */
-function ProjectDetails({
-  item,
-  position,
-  onLeave,
-}: {
-  item: (typeof workItems)[number];
-  position: string;
-  onLeave: () => void;
-}) {
-  const [expanded, setExpanded] = useState(false);
-  const hidden = Math.max(0, item.items.length - SCOPE_PREVIEW);
+function PhotoCarousel({ item }: { item: WorkItem }) {
+  const track = useRef<HTMLDivElement>(null);
+  const [index, setIndex] = useState(0);
+  const total = item.photos.length;
+
+  const go = useCallback(
+    (i: number) => {
+      const el = track.current;
+      if (!el) return;
+      const next = Math.max(0, Math.min(total - 1, i));
+      el.scrollTo({ left: next * el.clientWidth, behavior: "smooth" });
+      setIndex(next);
+    },
+    [total]
+  );
+
+  // Arrow keys move between photos while the viewer is open.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") { e.preventDefault(); go(index + 1); }
+      if (e.key === "ArrowLeft") { e.preventDefault(); go(index - 1); }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [go, index]);
+
+  const onScroll = () => {
+    const el = track.current;
+    if (!el || !el.clientWidth) return;
+    const i = Math.round(el.scrollLeft / el.clientWidth);
+    if (i !== index) setIndex(i);
+  };
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col lg:col-span-5">
-      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 pb-4 pt-5 sm:px-8 sm:pt-8">
-        <p className="font-mono text-[11px] tracking-[0.14em] text-ink-subtle">
-          {position} · {[item.client, item.location ?? cityName, item.year].filter(Boolean).join(" · ")}
-        </p>
-        <DialogTitle className="mt-2 font-display text-[length:clamp(1.5rem,4svh,1.875rem)] font-extrabold leading-tight tracking-[-0.035em] text-ink">
-          {item.title}
-        </DialogTitle>
-        <DialogDescription className="mt-1.5 text-[0.9375rem] text-ink-muted sm:text-base">
-          {item.tagline ?? content.gallery.heading.lead + " " + content.gallery.heading.accent + "."}
-        </DialogDescription>
-        {item.items.length > 0 && (
-          <>
-            <ul id={`scope-${item.id}`} className="mt-4 flex flex-wrap gap-2">
-              {item.items.map((it, i) => (
-                <li
-                  key={it}
-                  className={cn(
-                    "rounded-full border border-border px-3 py-1 text-sm text-ink",
-                    !expanded && i >= SCOPE_PREVIEW && "max-lg:hidden"
-                  )}
-                >
-                  {it}
-                </li>
-              ))}
-            </ul>
-            {hidden > 0 && (
-              <button
-                type="button"
-                onClick={() => setExpanded((v) => !v)}
-                aria-expanded={expanded}
-                aria-controls={`scope-${item.id}`}
-                className="focus-ring mt-3 inline-flex cursor-pointer items-center gap-1.5 rounded-full text-sm font-semibold text-accent-deep lg:hidden"
-              >
-                {expanded ? "Show less" : `Show ${hidden} more`}
-                <ChevronDown size={16} aria-hidden className={cn("transition-transform duration-300", expanded && "rotate-180")} />
-              </button>
-            )}
-          </>
-        )}
+    <div className="relative flex min-h-0 flex-1 flex-col">
+      <DialogTitle className="sr-only">{item.title}</DialogTitle>
+      <DialogDescription className="sr-only">
+        {`Photo ${index + 1} of ${total}. ${item.photos[index]?.alt ?? ""}`}
+      </DialogDescription>
+
+      <div
+        ref={track}
+        onScroll={onScroll}
+        className="flex min-h-0 flex-1 snap-x snap-mandatory overflow-x-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        aria-roledescription="carousel"
+        aria-label={`${item.title} photos`}
+      >
+        {item.photos.map((photo, i) => (
+          <div
+            key={photo.src}
+            role="group"
+            aria-roledescription="slide"
+            aria-label={`${i + 1} of ${total}`}
+            className="relative h-full w-full shrink-0 snap-center [scroll-snap-stop:always]"
+          >
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              priority={i === 0}
+              sizes="(min-width: 1152px) 1152px, 100vw"
+              className="select-none object-contain"
+              draggable={false}
+            />
+          </div>
+        ))}
       </div>
 
-      <div className="grid shrink-0 gap-2 border-t border-border p-3 sm:gap-2.5 sm:p-5 lg:border-t-0 lg:px-8 lg:pb-8">
-        <Button asChild size="lg" className="max-sm:h-12">
-          <a href={quoteFor(item.title)} target="_blank" rel="noopener noreferrer">
-            <MessageCircle size={17} aria-hidden />
-            <RollText>Get a quote like this</RollText>
-          </a>
-        </Button>
-        {item.serviceHref && (
-          <Button asChild variant="outline" size="lg" className="max-sm:h-12">
-            <Link href={item.serviceHref} onClick={onLeave}>
-              <RollText>{item.tagline ? `About ${item.title.toLowerCase()}` : content.home.viewAllServices}</RollText>
-            </Link>
-          </Button>
-        )}
-      </div>
+      {index > 0 && (
+        <span aria-hidden className="absolute left-3 top-3 rounded-full bg-black/65 px-3 py-1.5 font-mono text-[13px] font-semibold text-white backdrop-blur">
+          {index + 1}/{total}
+        </span>
+      )}
+
+      {total > 1 && (
+        <>
+          <button
+            type="button"
+            onClick={() => go(index - 1)}
+            disabled={index === 0}
+            aria-label="Previous photo"
+            className="focus-ring absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/90 text-ink shadow-card transition-[opacity,colors] hover:bg-accent hover:text-on-accent disabled:pointer-events-none disabled:opacity-0 max-sm:hidden"
+          >
+            <ChevronLeft size={20} aria-hidden />
+          </button>
+          <button
+            type="button"
+            onClick={() => go(index + 1)}
+            disabled={index === total - 1}
+            aria-label="Next photo"
+            className="focus-ring absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/90 text-ink shadow-card transition-[opacity,colors] hover:bg-accent hover:text-on-accent disabled:pointer-events-none disabled:opacity-0 max-sm:hidden"
+          >
+            <ChevronRight size={20} aria-hidden />
+          </button>
+          <div aria-hidden className="flex shrink-0 justify-center gap-1.5 py-3.5">
+            {item.photos.map((p, i) => (
+              <span
+                key={p.src}
+                className={cn(
+                  "h-1.5 w-1.5 rounded-full transition-[background-color,transform] duration-300",
+                  i === index ? "scale-125 bg-white" : "bg-white/35"
+                )}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
