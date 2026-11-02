@@ -74,13 +74,13 @@ export default function Navbar() {
       >
         <Link
           href="/"
-          aria-label={`${site.name} Pvt. Ltd. home page`}
+          aria-label={`${site.name} SMC-Private Ltd. home page`}
           className="focus-ring group mr-auto shrink-0 rounded-lg lg:mr-0"
         >
           <Logo
             markClassName="h-9 w-9 text-accent transition-transform duration-500 ease-out-expo group-hover:-rotate-6"
             textClassName="text-[12.5px] uppercase tracking-[0.01em] min-[360px]:text-[13px] min-[380px]:text-[14px] sm:text-[15px] sm:tracking-[0.02em]"
-            suffix="Pvt. Ltd."
+            suffix="SMC-Private Ltd."
           />
         </Link>
 
@@ -146,7 +146,7 @@ export default function Navbar() {
               <div className="border-b border-border px-6 pb-5 pt-6">
                 <SheetTitle asChild>
                   <span>
-                    <Logo markClassName="h-9 w-9 text-accent" textClassName="text-base uppercase" suffix="Pvt. Ltd." />
+                    <Logo markClassName="h-9 w-9 text-accent" textClassName="text-base uppercase" suffix="SMC-Private Ltd." />
                   </span>
                 </SheetTitle>
                 <SheetDescription className="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-subtle">
